@@ -23,7 +23,7 @@ public class LogIn extends Application {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("LogIn.fxml"));
 			loader.setController(new CLogIn());
 			Parent root = loader.load();
-			Scene scene = new Scene(root,400,215);
+			Scene scene = new Scene(root,375,215);
 			
 			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			loginWindow.setOnCloseRequest(e -> {
