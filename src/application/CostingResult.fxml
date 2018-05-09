@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER" prefHeight="37.0" prefWidth="600.0">
+         <children>
+            <Label text="Results">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <VBox>
+         <children>
+            <HBox alignment="CENTER" prefHeight="27.0" prefWidth="600.0">
+               <children>
+                  <Label text="Number of estimated employees :" />
+                  <Label layoutX="10.0" layoutY="10.0" text="4" />
+                  <Label layoutX="38.0" layoutY="10.0" text="Employee(s)" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="23.0" prefWidth="600.0">
+               <children>
+                  <Label text="Project's estimated time: " />
+                  <Label layoutX="10.0" layoutY="10.0" text="10.5" />
+                  <Label layoutX="38.0" layoutY="10.0" text="Month(s)" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="22.0" prefWidth="600.0" spacing="2.0">
+               <children>
+                  <Label text="Estimation of Effort : " />
+                  <Label text="7,6" />
+                  <Label layoutX="38.0" layoutY="10.0" text="ManMonths" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="248.0" prefWidth="600.0">
+         <children>
+            <Label text="Calculation of manmonths &amp; Cost/employee ">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TableView maxHeight="1.7976931348623157E308" prefHeight="246.0" prefWidth="600.0">
+              <columns>
+                <TableColumn prefWidth="75.0" text="Employee" />
+                <TableColumn prefWidth="111.0" text="Employment time" />
+                  <TableColumn prefWidth="75.0" text="Salary" />
+                  <TableColumn prefWidth="75.0" text="Monmonths" />
+                  <TableColumn prefWidth="129.0" text="Cost/Empoyee" />
+              </columns>
+            </TableView>
+         </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </VBox>
+      <VBox alignment="BOTTOM_CENTER" prefHeight="26.0" prefWidth="600.0">
+         <children>
+            <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onPreviousClicked" text="Previous" />
+                  <Button mnemonicParsing="false" onAction="#onNextClicked" text="   Next   " />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>

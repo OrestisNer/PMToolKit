@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.media.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<VBox fx:id="parentID" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="468.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="TOP_CENTER">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0" prefWidth="143.0" text="Create Task">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets top="20.0" />
+         </padding>
+      </VBox>
+      <VBox prefHeight="30.0" prefWidth="600.0">
+         <children>
+            <Label text="Task Name" />
+            <TextField fx:id="textTaskName" maxWidth="-Infinity" />
+         </children>
+         <padding>
+            <Insets left="20.0" top="20.0" />
+         </padding>
+      </VBox>
+      <HBox prefHeight="171.0" prefWidth="600.0">
+         <children>
+            <VBox prefHeight="100.0" prefWidth="295.0">
+               <children>
+                  <Label text="Prerequisites" />
+                  <HBox fx:id="hboxPrerequisites" prefHeight="94.0" prefWidth="285.0" />
+               </children>
+            </VBox>
+            <VBox prefHeight="100.0" prefWidth="306.0">
+               <children>
+                  <Label text="Assign Task" />
+                  <HBox fx:id="hboxAssign" prefHeight="177.0" prefWidth="313.0" />
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" top="10.0" />
+         </padding>
+      </HBox>
+      <HBox prefHeight="144.0" prefWidth="600.0">
+         <children>
+            <VBox prefHeight="144.0" prefWidth="283.0" spacing="10.0">
+               <children>
+                  <Label text="Calculate Time" />
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Best Case" />
+                        <TextField maxWidth="-Infinity" />
+                        <Label text="Average" />
+                        <TextField maxWidth="-Infinity" />
+                        <Label text="Worst Case " />
+                        <TextField maxWidth="-Infinity" />
+                        <Button mnemonicParsing="false" text="Calculate" />
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+            </VBox>
+            <VBox prefHeight="144.0" prefWidth="305.0">
+               <children>
+                  <Label text="Description" />
+                  <TextArea prefHeight="200.0" prefWidth="298.0" />
+               </children>
+               <padding>
+                  <Insets left="35.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+      <Region layoutX="10.0" layoutY="10.0" prefHeight="65.0" prefWidth="600.0" />
+      <HBox prefHeight="28.0" prefWidth="600.0" spacing="10.0">
+         <children>
+            <Region HBox.hgrow="ALWAYS">
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
+            </Region>
+            <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#onCancelClicked" text="Cancel" />
+            <Button mnemonicParsing="false" text="Create" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" right="40.0" />
+         </padding>
+      </HBox>
+   </children>
+</VBox>
