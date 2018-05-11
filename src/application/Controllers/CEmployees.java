@@ -28,7 +28,7 @@ public class CEmployees implements Initializable{
 		employeesBorderPane.setCenter(employeeListView);		
 	}
 	
-	public void onCreateEmployeeClicked(ActionEvent event) throws Exception{
+	public void onCreateEmployeeClicked() throws Exception{
 		CreateEmployee obj = new CreateEmployee();
 		obj.createCreateEmployeeWindow();
 	}

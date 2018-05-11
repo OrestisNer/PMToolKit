@@ -5,6 +5,7 @@ import java.util.Optional;
 import application.Costing;
 import application.CreateTask;
 import application.Employees;
+import application.Messages;
 import application.Utils;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
@@ -12,6 +13,10 @@ import javafx.scene.control.ButtonType;
 
 public class CMainWindow {
 	
+	public void onMessagesClicked() throws Exception{
+		Messages obj = new Messages();
+		obj.createMessagesWindow();
+	}
 	
 	public void onCreateTaskClicked() throws Exception{
 		CreateTask obj= new CreateTask();
