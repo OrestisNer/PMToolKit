@@ -9,8 +9,8 @@ import javafx.scene.control.TextField;
 
 public class CLogIn {
 	
-	@FXML public TextField usernameField;
-	@FXML public PasswordField passwordField;
+	@FXML private TextField usernameField;
+	@FXML private PasswordField passwordField;
 	
 	public void onClickedLogin(ActionEvent actionEvent) throws Exception{
 		

@@ -5,6 +5,7 @@ import java.util.Optional;
 import application.Costing;
 import application.CreateTask;
 import application.Employees;
+import application.Evaluation;
 import application.Messages;
 import application.Utils;
 import javafx.event.ActionEvent;
@@ -12,6 +13,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
 public class CMainWindow {
+	
+	public void onEvaluationClicked() throws Exception{
+		Evaluation obj = new Evaluation();
+		obj.createEvaluationWindow();
+	}
 	
 	public void onMessagesClicked() throws Exception{
 		Messages obj = new Messages();

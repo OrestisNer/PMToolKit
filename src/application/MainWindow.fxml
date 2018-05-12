@@ -51,7 +51,7 @@
                   <Insets />
                </VBox.margin>
             </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Evaluation" VBox.vgrow="ALWAYS" />
+            <Button alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEvaluationClicked" text="Evaluation" VBox.vgrow="ALWAYS" />
             <Button alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="35.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Diagrams" VBox.vgrow="ALWAYS">
                <opaqueInsets>
                   <Insets />

@@ -13,8 +13,8 @@ import javafx.scene.layout.BorderPane;
 
 public class CEmployees implements Initializable{
 	
-	@FXML public BorderPane employeesBorderPane;
-	public ListView<String> employeeListView;
+	@FXML private BorderPane employeesBorderPane;
+	private ListView<String> employeeListView;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {

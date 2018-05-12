@@ -13,8 +13,8 @@ import javafx.scene.layout.BorderPane;
 
 public class CMessages implements Initializable{
 	
-	@FXML public BorderPane messagesBorderPane;
-	public ListView<String> messagesListView;
+	@FXML private BorderPane messagesBorderPane;
+	private ListView<String> messagesListView;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {

@@ -19,13 +19,13 @@ import javafx.stage.Stage;
 
 public class CCreateTask implements Initializable  {
 
-	@FXML public TextField textTaskName;
-	@FXML public Button buttonCancel;
-	public ListView<String> listView;
-	public ListView<String> listView2;
-	@FXML public HBox hboxPrerequisites;
-	@FXML public HBox hboxAssign;
-	@FXML public VBox parentID;
+	@FXML private TextField textTaskName;
+	@FXML private Button buttonCancel;
+	private ListView<String> listView;
+	private ListView<String> listView2;
+	@FXML private HBox hboxPrerequisites;
+	@FXML private HBox hboxAssign;
+	@FXML private VBox parentID;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
