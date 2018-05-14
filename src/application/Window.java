@@ -30,7 +30,7 @@ public class Window {
 		this.controller=controller;
 		this.modality=false;
 		this.maximized=maximized;
-		this.closeProgramOnCloseRequest=false;
+		this.closeProgramOnCloseRequest=closeProgramOnCloseRequest;
 	}
 	
 	public void createWindow() throws Exception{
