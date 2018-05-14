@@ -2,18 +2,22 @@ package application.Controllers;
 
 import java.io.IOException;
 
-import application.CostingResult;
 import application.Utils;
+import application.Window;
 import javafx.event.ActionEvent;
 
 public class CCosting {
 	
-	public void onCostClicked(ActionEvent actionEvent) throws IOException{
+	private Object controller;
+	private Window window;
+	
+	public void onCostClicked(ActionEvent actionEvent) throws Exception{
 		
 		Utils.closeWindow(actionEvent);
 	    
-		CostingResult costingResult= new CostingResult();
-		costingResult.createCostingResultWindow();
+		controller= new CCostingResult();
+		window= new Window("Costing Results","CostingResult.fxml",controller,true);
+		window.createWindow();
 	}
 
 }

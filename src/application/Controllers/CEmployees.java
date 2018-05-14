@@ -3,8 +3,8 @@ package application.Controllers;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import application.CreateEmployee;
 import application.Utils;
+import application.Window;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,6 +12,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 
 public class CEmployees implements Initializable{
+	
+	Object controller;
+	Window window;
 	
 	@FXML private BorderPane employeesBorderPane;
 	private ListView<String> employeeListView;
@@ -29,8 +32,9 @@ public class CEmployees implements Initializable{
 	}
 	
 	public void onCreateEmployeeClicked() throws Exception{
-		CreateEmployee obj = new CreateEmployee();
-		obj.createCreateEmployeeWindow();
+		controller= new CCreateEmployee();
+		window=new Window("Create Employee","CreateEmployee.fxml",controller,true);
+		window.createWindow();
 	}
 		
 	public void onCancelClicked(ActionEvent actionEvent){

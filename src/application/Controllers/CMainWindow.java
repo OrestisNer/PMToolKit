@@ -2,36 +2,40 @@ package application.Controllers;
 
 import java.util.Optional;
 
-import application.Costing;
-import application.CreateTask;
-import application.Employees;
-import application.Evaluation;
-import application.Messages;
 import application.Utils;
+import application.Window;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
 public class CMainWindow {
 	
+	private Object controller;
+	private Window window;
+	
 	public void onEvaluationClicked() throws Exception{
-		Evaluation obj = new Evaluation();
-		obj.createEvaluationWindow();
+		controller = new CEvaluation();
+		window= new Window("Evaluation","Evaluation.fxml",controller,true);
+		window.createWindow();
 	}
 	
 	public void onMessagesClicked() throws Exception{
-		Messages obj = new Messages();
-		obj.createMessagesWindow();
+		controller= new CMessages();
+		window= new Window("Messages","Messages.fxml",controller,true);
+		window.createWindow();
 	}
 	
 	public void onCreateTaskClicked() throws Exception{
-		CreateTask obj= new CreateTask();
-		obj.createTaskWindow();
+		controller=new CCreateTask();
+		window= new Window("Create Task","CreateTask.fxml",controller,true);
+		window.createWindow();
+		
 	}
 	
 	public void onCostingClicked() throws Exception{
-		Costing costing= new Costing();
-		costing.createCostingWindow();
+		controller= new CCosting();
+		window= new Window("Costing","Costing.fxml",controller,true);
+		window.createWindow();
 	}
 	
 	public void onExitClicked(ActionEvent actionEvent){
@@ -53,7 +57,8 @@ public class CMainWindow {
     }
 	
 	public void onEmployeesClicked() throws Exception{
-		Employees employees = new Employees();
-		employees.createEmployeesWindow();
+		controller= new CEmployees();
+		window= new Window("Employees","Employees.fxml",controller,true);
+		window.createWindow();
 	}
 }

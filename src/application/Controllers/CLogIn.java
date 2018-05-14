@@ -1,7 +1,7 @@
 package application.Controllers;
 
-import application.MainWindow;
 import application.Utils;
+import application.Window;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
@@ -16,8 +16,9 @@ public class CLogIn {
 		
 		if(usernameField.getText().equals("") && passwordField.getText().equals("")) {
 			Utils.closeWindow(actionEvent);
-			MainWindow mainWindow= new MainWindow();
-			mainWindow.createProjectWindow();
+			CMainWindow controller= new CMainWindow();
+			Window mainWindow= new Window("MainWindow","MainWindow.fxml",controller,true,true);
+			mainWindow.createWindow();
 			
 		}else{
 			
