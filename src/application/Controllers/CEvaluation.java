@@ -27,7 +27,7 @@ public class CEvaluation implements Initializable{
 			employeeListView.getItems().add(employee);
 		}
 		
-		evaluationBorderPane.setCenter(employeeListView);		
+		evaluationBorderPane.setCenter(employeeListView);	
 	}
 	
 	public void onNextClicked(ActionEvent actionEvent) throws Exception{
@@ -40,5 +40,6 @@ public class CEvaluation implements Initializable{
 	public void onCancelClicked(ActionEvent event) {
 		Utils.closeWindow(event);
 	}
+	
 
 }

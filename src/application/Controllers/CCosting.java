@@ -7,30 +7,33 @@ import javafx.stage.Stage;
 
 public class CCosting {
 	
-	private CCosting controller;
+	//private CCosting controller;
 	private Window window;
-	
-	
-	public void onCostClicked(ActionEvent actionEvent) throws Exception{
 		
-		controller= new CCosting();
+	public void onCostClicked(ActionEvent actionEvent) throws Exception{
 	    Stage stage  = Utils.getStageFromEvent(actionEvent);
 	    window= new Window(stage);
-	    window.changeScene("CostingResult.fxml", controller);	    
+	    window.changeScene("CostingResult.fxml", this);	    
 	}
 	
 	public void onPreviousClicked(ActionEvent actionEvent) throws Exception{
-	    controller= new CCosting();
 		Stage stage  = Utils.getStageFromEvent(actionEvent);
 	    window= new Window(stage);
-	    window.changeScene("Costing.fxml", controller);	    
+	    window.changeScene("Costing.fxml", this);	    
 	}
 	
-	public void onNextClicked(ActionEvent actionEvent) throws Exception{	    
-		controller= new CCosting();
+	public void onNextClicked(ActionEvent actionEvent) throws Exception{
 		Stage stage  = Utils.getStageFromEvent(actionEvent);
 	    window= new Window(stage);
-	    window.changeScene("CostingTotalProject.fxml", controller);	
+	    window.changeScene("CostingTotalProject.fxml", this);	
+	}
+	
+	public void onCalculateTotalCostClicked(){
+		
+	}
+	
+	public void onSaveClicked(ActionEvent actionEvent){
+		
 	}
 
 }

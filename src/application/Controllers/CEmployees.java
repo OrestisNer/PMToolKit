@@ -1,5 +1,6 @@
 package application.Controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -10,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 public class CEmployees implements Initializable{
 	
@@ -31,18 +33,20 @@ public class CEmployees implements Initializable{
 		employeesBorderPane.setCenter(employeeListView);		
 	}
 	
-	public void onCreateEmployeeClicked() throws Exception{
-		controller= new CCreateEmployee();
-		window=new Window("Create Employee","CreateEmployee.fxml",controller,true);
-		window.createWindow();
+	public void onCreateClicked(ActionEvent actionEvent) throws Exception{
+		Stage stage= Utils.getStageFromEvent(actionEvent);
+		window = new Window(stage);
+		window.changeScene("CreateEmployee.fxml", this);
 	}
 		
 	public void onCancelClicked(ActionEvent actionEvent){
 		Utils.closeWindow(actionEvent);
 	}
 	
-	public void onEditClicked(ActionEvent actionEvent){
-		
+	public void onEditClicked(ActionEvent actionEvent) throws IOException{
+		Stage stage= Utils.getStageFromEvent(actionEvent);
+		window = new Window(stage);
+		window.changeScene("CreateEmployee.fxml", this);
 	}
 	
 	public void onDeleteClicked(ActionEvent actionEvent){
@@ -52,5 +56,19 @@ public class CEmployees implements Initializable{
 	
 	private String getSelectedEmployee(){
 		return employeeListView.getSelectionModel().getSelectedItem();
+	}
+	
+	public void onCreateEmployeeClicked(ActionEvent event) {
+		
+	}
+	
+	public void onSaveChangesClicked(ActionEvent event) {
+		
+	}
+	
+	public void onCancelCreateClicked(ActionEvent actionEvent) throws IOException {
+		Stage stage= Utils.getStageFromEvent(actionEvent);
+		window = new Window(stage);
+		window.changeScene("Employees.fxml",this);
 	}
 }

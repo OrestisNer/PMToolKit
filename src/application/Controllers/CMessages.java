@@ -1,5 +1,6 @@
 package application.Controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -10,10 +11,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 public class CMessages implements Initializable{
 	
-	private Object controller;
 	private Window window;
 	
 	@FXML private BorderPane messagesBorderPane;
@@ -30,14 +31,23 @@ public class CMessages implements Initializable{
 		messagesBorderPane.setCenter(messagesListView);		
 	}
 	
-	public void onWriteMessageClicked(ActionEvent actionEvent) throws Exception{
-		Utils.closeWindow(actionEvent);
-		controller = new CWriteMessage();
-		window = new Window("Write your message","WriteMessage.fxml",controller,true);
-		window.createWindow();	
+	public void onSyntaxClicked(ActionEvent actionEvent) throws Exception{	
+		Stage stage  = Utils.getStageFromEvent(actionEvent);
+	    window= new Window(stage);
+	    window.changeScene("WriteMessage.fxml", this);
 	}
 	
-	public void onCancelClicked(ActionEvent event) {
-		Utils.closeWindow(event);
+	public void onCancelClicked(ActionEvent actionEvent) {
+		Utils.closeWindow(actionEvent);
+	}
+	
+	public void onSendMessageClicked() {
+		
+	}
+	
+	public void onCancelSyntaxClicked(ActionEvent actionEvent) throws IOException {
+		Stage stage  = Utils.getStageFromEvent(actionEvent);
+	    window= new Window(stage);
+	    window.changeScene("Messages.fxml", this);
 	}
 }
