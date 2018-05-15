@@ -1,6 +1,10 @@
 package application;
 
+import java.io.IOException;
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
@@ -8,6 +12,7 @@ import javafx.stage.Stage;
 
 public class Window {
 	
+	private Stage stage;
 	private String title;
 	private String fxmlFilename;
 	private Object controller;
@@ -31,6 +36,11 @@ public class Window {
 		this.modality=false;
 		this.maximized=maximized;
 		this.closeProgramOnCloseRequest=closeProgramOnCloseRequest;
+	}
+	
+	//This constructor is used when changing scenes is needed.
+	public Window(Stage stage){
+		this.stage=stage;
 	}
 	
 	public void createWindow() throws Exception{
@@ -57,6 +67,14 @@ public class Window {
 
 		window.setScene(scene);
 		window.show();
+	}
+	
+	public void changeScene(String FXMLFilename,Object controller) throws IOException{
+	    FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLFilename));
+	    loader.setController(controller);
+		Parent root = loader.load();
+		Scene scene = new Scene(root);
+		stage.setScene(scene);
 	}
 
 }

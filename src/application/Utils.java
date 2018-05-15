@@ -13,8 +13,7 @@ public class Utils {
 	
 	
 	public static void closeWindow(ActionEvent actionEvent){
-		Node  source = (Node)  actionEvent.getSource(); 
-	    Stage stage  = (Stage) source.getScene().getWindow();
+		Stage stage=getStageFromEvent(actionEvent);
 	    stage.close();
 	}
 	
@@ -32,5 +31,11 @@ public class Utils {
         if (result.get() == ButtonType.OK){
         	stage.close();
         }
+	}
+	
+	public static Stage getStageFromEvent(ActionEvent actionEvent){
+		Node  source = (Node)  actionEvent.getSource(); 
+	    Stage stage  = (Stage) source.getScene().getWindow();
+	    return stage;
 	}
 }

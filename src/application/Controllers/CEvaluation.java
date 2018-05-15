@@ -30,7 +30,8 @@ public class CEvaluation implements Initializable{
 		evaluationBorderPane.setCenter(employeeListView);		
 	}
 	
-	public void onNextClicked() throws Exception{
+	public void onNextClicked(ActionEvent actionEvent) throws Exception{
+		Utils.closeWindow(actionEvent);
 		controller= new CEvaluateEmployee();
 		window = new Window("Evaluate Employee","EvaluateEmployee.fxml",controller,true);
 		window.createWindow();

@@ -30,7 +30,8 @@ public class CMessages implements Initializable{
 		messagesBorderPane.setCenter(messagesListView);		
 	}
 	
-	public void onWriteMessageClicked() throws Exception{
+	public void onWriteMessageClicked(ActionEvent actionEvent) throws Exception{
+		Utils.closeWindow(actionEvent);
 		controller = new CWriteMessage();
 		window = new Window("Write your message","WriteMessage.fxml",controller,true);
 		window.createWindow();	
