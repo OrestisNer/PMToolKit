@@ -7,7 +7,6 @@ import javafx.stage.Stage;
 
 public class CCosting {
 	
-	//private CCosting controller;
 	private Window window;
 		
 	public void onCostClicked(ActionEvent actionEvent) throws Exception{
@@ -25,7 +24,7 @@ public class CCosting {
 	public void onNextClicked(ActionEvent actionEvent) throws Exception{
 		Stage stage  = Utils.getStageFromEvent(actionEvent);
 	    window= new Window(stage);
-	    window.changeScene("CostingTotalProject.fxml", this);	
+	    window.changeScene("CostingTotalProject.fxml", this);
 	}
 	
 	public void onCalculateTotalCostClicked(){
