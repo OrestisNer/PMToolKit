@@ -25,9 +25,9 @@ public class CMainWindow {
 		window.createWindow();
 	}
 	
-	public void onCreateTaskClicked() throws Exception{
-		controller=new CCreateTask();
-		window= new Window("Create Task","CreateTask.fxml",controller,true);
+	public void onTasksClicked() throws Exception{
+		controller=new CTasks();
+		window= new Window("Tasks","Tasks.fxml",controller,true);
 		window.createWindow();
 		
 	}

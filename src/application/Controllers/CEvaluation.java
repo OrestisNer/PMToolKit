@@ -13,8 +13,8 @@ import javafx.scene.layout.BorderPane;
 
 public class CEvaluation implements Initializable{
 	
-	Object controller;
-	Window window;
+	private Object controller;
+	private Window window;
 	
 	@FXML private BorderPane evaluationBorderPane;
 	private ListView<String> employeeListView;
