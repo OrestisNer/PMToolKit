@@ -10,27 +10,22 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class CEmployees implements Initializable{
 	
 	Object controller;
 	Window window;
-	
-	@FXML private BorderPane employeesBorderPane;
-	private ListView<String> employeeListView;
+
+	@FXML private ListView<String> employeeListView;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
-		employeeListView = new ListView<>();
+
 		for(int i = 0; i<50; i++) {
 			String employee = "Employee "+ i ;
 			employeeListView.getItems().add(employee);
 		}
-		
-		employeesBorderPane.setCenter(employeeListView);		
 	}
 	
 	public void onCreateClicked(ActionEvent actionEvent) throws Exception{

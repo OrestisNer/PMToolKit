@@ -12,8 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 public class CCreateTask implements Initializable  {
 
@@ -22,27 +20,21 @@ public class CCreateTask implements Initializable  {
 	
 	@FXML private TextField textTaskName;
 	@FXML private Button buttonCancel;
-	private ListView<String> listView;
-	private ListView<String> listView2;
-	@FXML private HBox hboxPrerequisites;
-	@FXML private HBox hboxAssign;
-	@FXML private VBox parentID;
+	@FXML private ListView<String> prerequisitesListView;
+	@FXML private ListView<String> employeesListView;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
-	    listView= new ListView<>();
-	    listView2= new ListView<>();
+
 		for(int i=0; i <50; i++){
-			String item = "Item "+i ;
-            listView.getItems().add(item);
-            listView2.getItems().add(item);
+			String tasks = "Task "+i ;
+			String employees = "Employee "+i ;
+			prerequisitesListView.getItems().add(tasks);
+			employeesListView.getItems().add(employees);
 		}
 		
-		listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		hboxPrerequisites.getChildren().add(listView);
-		hboxAssign.getChildren().add(listView2);
-		
+		employeesListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		prerequisitesListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 	}
 	
 	public void onCancelClicked(ActionEvent actionEvent) throws Exception{

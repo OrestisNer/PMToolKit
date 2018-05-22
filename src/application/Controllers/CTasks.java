@@ -9,25 +9,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.BorderPane;
 
 public class CTasks implements Initializable{
 	
 	private Window window;
 	private Object controller;
 
-	@FXML private BorderPane tasksBorderPane;
 	@FXML private ListView<String> tasksListView;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
-		tasksListView = new ListView<>();
 		for (int i = 0; i < 50; i++) {
 			String tasks = "Task " + i;
 			tasksListView.getItems().add(tasks);
 		}
-		tasksBorderPane.setCenter(tasksListView);
 	}
 	
 	public void onCreateTaskClicked(ActionEvent actionEvent) throws Exception {

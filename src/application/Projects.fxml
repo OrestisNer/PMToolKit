@@ -9,15 +9,9 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="messagesBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
-   <left>
-      <Region prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
-   </left>
-   <right>
-      <Region prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
-   </right>
+<BorderPane fx:id="projectsBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <Label alignment="CENTER" contentDisplay="CENTER" text="Messages" BorderPane.alignment="CENTER">
+      <Label text="Projects" BorderPane.alignment="CENTER">
          <font>
             <Font size="18.0" />
          </font>
@@ -26,10 +20,21 @@
          </BorderPane.margin>
       </Label>
    </top>
+   <left>
+      <Region prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <Region prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+   </right>
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#onSyntaxClicked" text="Compose">
+            <Button mnemonicParsing="false" onAction="#onCreateProjectClicked" text="Create Project">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" text="Select Project">
                <font>
                   <Font size="15.0" />
                </font>
@@ -43,6 +48,6 @@
       </HBox>
    </bottom>
    <center>
-      <ListView fx:id="messagesListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <ListView fx:id="projectsListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

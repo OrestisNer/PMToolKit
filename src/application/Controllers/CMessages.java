@@ -10,25 +10,21 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class CMessages implements Initializable{
 	
 	private Window window;
-	
-	@FXML private BorderPane messagesBorderPane;
-	private ListView<String> messagesListView;
+
+	@FXML private ListView<String> messagesListView;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		messagesListView = new ListView<>();
+
 		for(int i = 0; i<50; i++) {
 			String message = "Message "+ i ;
 			messagesListView.getItems().add(message);
-		}
-		
-		messagesBorderPane.setCenter(messagesListView);		
+		}	
 	}
 	
 	public void onSyntaxClicked(ActionEvent actionEvent) throws Exception{	

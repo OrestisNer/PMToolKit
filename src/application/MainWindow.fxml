@@ -11,14 +11,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="512.0" prefWidth="699.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <opaqueInsets>
       <Insets />
    </opaqueInsets>
    <left>
       <VBox spacing="15.0" BorderPane.alignment="CENTER">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Create Project" VBox.vgrow="ALWAYS" />
+            <Button alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onProjectsClicked" text="Projects" VBox.vgrow="ALWAYS" />
             <Button fx:id="button_create_task" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onTasksClicked" text="Tasks" VBox.vgrow="ALWAYS">
                <opaqueInsets>
                   <Insets />
@@ -52,7 +52,7 @@
                </VBox.margin>
             </Button>
             <Button alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEvaluationClicked" text="Evaluation" VBox.vgrow="ALWAYS" />
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="35.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Diagrams" VBox.vgrow="ALWAYS">
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="35.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDiagramsClicked" text="Diagrams" VBox.vgrow="ALWAYS">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -68,6 +68,8 @@
                   <Insets />
                </VBox.margin>
             </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onInfoClicked" text="Info" />
+            <Region prefHeight="350.0" prefWidth="73.0" />
             <Button alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onExitClicked" text="Exit" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets />
@@ -79,7 +81,7 @@
       </VBox>
    </left>
    <top>
-      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="50.0" prefWidth="601.0" BorderPane.alignment="CENTER">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" text="Main Menu">
                <font>
@@ -125,6 +127,6 @@
       </HBox>
    </bottom>
    <right>
-      <Region prefHeight="304.0" prefWidth="18.0" BorderPane.alignment="CENTER" />
+      <Region prefHeight="375.0" prefWidth="10.0" BorderPane.alignment="CENTER" />
    </right>
 </BorderPane>
