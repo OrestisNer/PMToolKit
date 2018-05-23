@@ -77,7 +77,7 @@ public class CMainWindow {
 	//Exit button Clicked
 	public void onExitClicked(ActionEvent actionEvent){
 		
-		Alert alert = Utils.createConfirmationAler("Exit","Exit Confirmation", "Are sure you want to exit?");
+		Alert alert = Utils.createConfirmationAlert("Exit","Exit Confirmation", "Are sure you want to exit?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
         	Utils.closeWindow(actionEvent);
@@ -87,7 +87,7 @@ public class CMainWindow {
 	//Log out button clicked
 	public void onLogOutClicked(ActionEvent actionEvent){
 		
-		Alert alert = Utils.createConfirmationAler("Log out", "Log Out Confirmation", "Are sure you want to log out?");
+		Alert alert = Utils.createConfirmationAlert("Log out", "Log Out Confirmation", "Are sure you want to log out?");
 		Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
         	// User will log out and will be shown log in window

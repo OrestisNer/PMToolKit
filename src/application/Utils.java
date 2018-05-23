@@ -17,7 +17,7 @@ public class Utils {
 	    stage.close();
 	}
 	
-	public static Alert createConfirmationAler(String title, String headerText, String contentText){ 
+	public static Alert createConfirmationAlert(String title, String headerText, String contentText){ 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle(title);
         alert.setHeaderText(headerText);
@@ -25,8 +25,16 @@ public class Utils {
         return alert;
 	}
 	
+	public static void createErrorAlert(String title, String headerText, String contentText){
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle(title);
+		alert.setHeaderText(headerText);
+		alert.setContentText(contentText);
+        alert.showAndWait();
+	}
+	
 	public static void closeProgram(Stage stage){
-		Alert alert = Utils.createConfirmationAler("Exit","Exit Confirmation", "Are sure you want to exit?");
+		Alert alert = Utils.createConfirmationAlert("Exit","Exit Confirmation", "Are sure you want to exit?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
         	stage.close();

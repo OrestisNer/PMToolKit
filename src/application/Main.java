@@ -1,6 +1,13 @@
 package application;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+
 import application.Controllers.CLogIn;
+import classes.ProjectManager;
+import classes.User;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -11,8 +18,25 @@ public class Main extends Application{
 	}
 	
 	public void start(Stage primaryStage) throws Exception {
+		
 		Window window = new Window("Log In","LogIn.fxml",new CLogIn(),true);
 		window.createWindow();
 	}
+	
+	/*private void createEmpFile(){
+		ArrayList<User> emp= new ArrayList<User>();
+		User pm = new ProjectManager("ProjectManager","123","Stefanos","Mpitzenis",50000,"Project Manager");
+		emp.add(pm);
+		String filename="Employees";
+		ObjectOutputStream  outStream=null;
+	    try{
+	    	outStream=new ObjectOutputStream(new FileOutputStream(filename));
+	    	outStream.writeObject(emp);
+	    }catch(IOException e){
+	    	System.out.println("Error writing to file "+filename);
+	    	System.exit(0);
+	    }
+		outStream.close();
+	}*/
 
 }

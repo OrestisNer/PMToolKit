@@ -1,8 +1,9 @@
 package classes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User {
+public class User implements Serializable {
 	
 	protected String username;
 	protected String password;
@@ -23,6 +24,14 @@ public class User {
 	
 	public void addMessage(Message message){
 		messages.add(message);
+	}
+	
+	public String getUsername(){
+		return username;
+	}
+	
+	public String getPassword(){
+		return password;
 	}
 	
 }

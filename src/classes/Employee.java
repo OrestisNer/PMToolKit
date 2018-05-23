@@ -3,7 +3,7 @@ package classes;
 import java.time.LocalDate;
 import java.util.HashMap;
 
-public class Employee extends User {
+public class Employee extends User  {
 	
 	private String speciality;
 	private String evaluation;
@@ -17,4 +17,5 @@ public class Employee extends User {
 		super(username,password,firstname,lastname, salary);	
 		this.speciality=speciality;
 	}
+	
 }
