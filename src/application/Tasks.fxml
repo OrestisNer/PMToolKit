@@ -29,12 +29,12 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#onCreateTaskClicked" text="Create Task">
+            <Button fx:id="createTaskButton" mnemonicParsing="false" onAction="#onCreateTaskClicked" text="Create Task">
                <font>
                   <Font size="15.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#onSelectTaskClicked" text="Select Task">
+            <Button fx:id="selectTaskButton" mnemonicParsing="false" onAction="#onSelectTaskClicked" text="Select Task">
                <font>
                   <Font size="15.0" />
                </font>
