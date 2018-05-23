@@ -19,7 +19,7 @@
       <VBox spacing="15.0" BorderPane.alignment="CENTER">
          <children>
             <Button alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onProjectsClicked" text="Projects" VBox.vgrow="ALWAYS" />
-            <Button fx:id="button_create_task" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onTasksClicked" text="Tasks" VBox.vgrow="ALWAYS">
+            <Button fx:id="tasksButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onTasksClicked" text="Tasks" VBox.vgrow="ALWAYS">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -51,7 +51,7 @@
                   <Insets />
                </VBox.margin>
             </Button>
-            <Button alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEvaluationClicked" text="Evaluation" VBox.vgrow="ALWAYS" />
+            <Button fx:id="evaluationButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEvaluationClicked" text="Evaluation" VBox.vgrow="ALWAYS" />
             <Button alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="35.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDiagramsClicked" text="Diagrams" VBox.vgrow="ALWAYS">
                <opaqueInsets>
                   <Insets />

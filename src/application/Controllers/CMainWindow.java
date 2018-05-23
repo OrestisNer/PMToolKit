@@ -5,13 +5,18 @@ import java.util.Optional;
 import application.Utils;
 import application.Window;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 
 public class CMainWindow {
 	
 	private Object controller;
 	private Window window;
+	
+	@FXML private Button tasksButton;
+	@FXML private Button evaluationButton;
 	
 	//Projects button clicked
 	public void onProjectsClicked() throws Exception{
@@ -22,7 +27,7 @@ public class CMainWindow {
 	
 	//Tasks button clicked
 	public void onTasksClicked() throws Exception{
-		controller=new CTasks();
+		controller=new CTasks(tasksButton.getText());
 		window= new Window("Tasks","Tasks.fxml",controller,true);
 		window.createWindow();		
 	}
@@ -48,7 +53,7 @@ public class CMainWindow {
 	
 	//Evaluation button clicked
 	public void onEvaluationClicked() throws Exception{
-		controller = new CEvaluation();
+		controller = new CEvaluation(evaluationButton.getText());
 		window= new Window("Evaluation","Evaluation.fxml",controller,true);
 		window.createWindow();
 	}
