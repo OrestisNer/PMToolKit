@@ -1,5 +1,6 @@
 package classes;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,14 +8,14 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class Task {
+public class Task implements Serializable{
 	
 	private String name;
 	private ArrayList<Task> presequisitesTasks;
 	private String description;
 	private LocalDate startingDate;
 	private LocalDate deadline;
-	private HashMap<Employee, Boolean> employees;
+	private HashMap<User, Boolean> employees;
 	private boolean completed;
 	private int estimatedDuration;
 	private double estimatedManMonths;
@@ -24,7 +25,7 @@ public class Task {
 	private Project project;
 	
 	
-	public Task(String name, ArrayList<Task> presequisitesTasks, ArrayList<Employee> emp, int estimatedDuration, String description
+	public Task(String name, ArrayList<Task> presequisitesTasks, ArrayList<User> emp, int estimatedDuration, String description
 			, LocalDate startingDate, Project project ){
 		
 		this.name=name;
@@ -32,8 +33,8 @@ public class Task {
 		
 		this.numberOfEmployees=emp.size();
 		
-		employees= new HashMap<Employee, Boolean>();
-		for(Employee employee: emp){
+		employees= new HashMap<User, Boolean>();
+		for(User employee: emp){
 			employees.put(employee, false);			
 		}
 		
@@ -41,7 +42,7 @@ public class Task {
 		this.description=description;
 		
 		this.startingDate= startingDate;
-		this.deadline=getDeadline(startingDate,estimatedDuration);
+		this.deadline=calcDeadline(startingDate,estimatedDuration);
 		this.estimatedManMonths= calcManMonths(numberOfEmployees,estimatedDuration);
 		this.completed=false;
 		this.project=project;
@@ -69,7 +70,7 @@ public class Task {
 		return manDays/30;
 	}
 	
-	private LocalDate getDeadline(LocalDate startingDate, int estimatedDuration){
+	private LocalDate calcDeadline(LocalDate startingDate, int estimatedDuration){
 		LocalDate deadline = LocalDate.of(startingDate.getYear(), startingDate.getMonth(), startingDate.getDayOfMonth());
 		while(estimatedDuration>0){
 			if(!(deadline.getDayOfWeek().toString().equalsIgnoreCase("SUNDAY") 
@@ -92,14 +93,26 @@ public class Task {
 		return duration;
 	}
 	
-	private boolean isCompleted(HashMap<Employee,Boolean> emp){
-		Iterator<Entry<Employee, Boolean>> it = emp.entrySet().iterator();
+	private boolean isCompleted(HashMap<User,Boolean> emp){
+		Iterator<Entry<User, Boolean>> it = emp.entrySet().iterator();
 	    while (it.hasNext()) {
-	        Map.Entry<Employee,Boolean> pair = (Map.Entry<Employee,Boolean>)it.next();
+	        Map.Entry<User,Boolean> pair = (Map.Entry<User,Boolean>)it.next();
 	        if(!pair.getValue())
 	        	return false;
 	    }
 	    return true;
+	}
+	
+	public static int getEstimatedTime(int averageTime){
+		return 0;
+	}
+	
+	public String getName(){
+		return name;
+	}
+	
+	public LocalDate getDeadLine(){
+		return deadline;
 	}
 	
 	

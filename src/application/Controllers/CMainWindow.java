@@ -1,33 +1,46 @@
 package application.Controllers;
 
+import java.net.URL;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 import application.Utils;
 import application.Window;
+import classes.Project;
+import classes.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 
-public class CMainWindow {
+public class CMainWindow implements Initializable {
 	
 	private Object controller;
 	private Window window;
+	private User employee;
+	private Project project;
 	
 	@FXML private Button tasksButton;
 	@FXML private Button evaluationButton;
+	@FXML private Label headerLabel;
 	
-	//Projects button clicked
-	public void onProjectsClicked() throws Exception{
-		controller=new CProjects();
-		window= new Window("Projects","Projects.fxml",controller,true);
-		window.createWindow();
+	public CMainWindow(User employee, Project project){
+		this.employee=employee;
+		this.project=project;
+	}
+	
+	
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		headerLabel.setText(project.getName());
 	}
 	
 	//Tasks button clicked
 	public void onTasksClicked() throws Exception{
-		controller=new CTasks(tasksButton.getText());
+		controller=new CTasks(project,employee,tasksButton.getText());
 		window= new Window("Tasks","Tasks.fxml",controller,true);
 		window.createWindow();		
 	}
@@ -81,7 +94,6 @@ public class CMainWindow {
 	
 	//Exit button Clicked
 	public void onExitClicked(ActionEvent actionEvent){
-		
 		Alert alert = Utils.createConfirmationAlert("Exit","Exit Confirmation", "Are sure you want to exit?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
@@ -90,12 +102,17 @@ public class CMainWindow {
 	}
 	
 	//Log out button clicked
-	public void onLogOutClicked(ActionEvent actionEvent){
-		
+	public void onLogOutClicked(ActionEvent actionEvent) throws Exception{
 		Alert alert = Utils.createConfirmationAlert("Log out", "Log Out Confirmation", "Are sure you want to log out?");
 		Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
-        	// User will log out and will be shown log in window
+        	Utils.closeWindow(actionEvent);
+        	window = new Window("Log In","LogIn.fxml",new CLogIn(),true);
+    		window.createWindow();
         }
     }
+
+
+
+	
 }

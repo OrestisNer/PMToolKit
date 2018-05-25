@@ -1,12 +1,13 @@
 package classes;
 
 import java.io.File;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Project {
+public class Project implements Serializable{
 	
-	private ProjectManager projectmanager;
+	private User projectmanager;
 	private String name;
 	private ArrayList<Task> tasks;
 	private ArrayList<Employee> employees;
@@ -15,10 +16,13 @@ public class Project {
 	private Calendar calendar;
 	private Cost cost;
 	
-	public Project(String name, ProjectManager projectManager){
+	public Project(String name, User employee){
 		this.name=name;
-		this.projectmanager=projectManager;
+		this.projectmanager=employee;
 		this.startingDate= LocalDate.now();
+		tasks= new ArrayList<Task>();
+		employees= new ArrayList<Employee>();
+		diagrams= new ArrayList<Diagram>();
 	}
 	
 	public void addTask(Task task){
@@ -43,6 +47,13 @@ public class Project {
 		}        
 	}
 	
+	public String getName(){
+		return name;
+	}
+	
+	public ArrayList<Task> getTasks(){
+		return tasks;
+	}
 	
 	
 }

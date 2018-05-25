@@ -1,5 +1,7 @@
 package classes;
 
-public class Diagram {
+import java.io.Serializable;
+
+public class Diagram implements Serializable {
 
 }

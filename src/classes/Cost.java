@@ -1,6 +1,8 @@
 package classes;
 
-public class Cost {
+import java.io.Serializable;
+
+public class Cost implements Serializable {
 	
 	private double directCost;
 	private double indirectCost;
