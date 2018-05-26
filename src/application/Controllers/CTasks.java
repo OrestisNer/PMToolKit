@@ -274,6 +274,8 @@ public class CTasks implements Initializable{
 			System.out.println(p.getName());
 		}
 		Task task = new Task(taskName,prerequisites,employees,estimatedTime,description,startingDate,project);
+		//EDW HTAN TO PROVLHMA :'(
+		tasks.add(task);
 		project.addTask(task);
 		System.out.println(project.getTasks().size());
 		//Utils.saveProjectChanges(project);
