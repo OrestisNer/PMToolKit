@@ -53,20 +53,15 @@ public class Task implements Serializable{
 		
 		if(isCompleted(employees)){
 			completed=true;
-			actualDuration=getDuration(startingDate,LocalDate.now());
+			actualDuration=calcDuration(startingDate,LocalDate.now());
 			actualManMonths=calcManMonths(numberOfEmployees,actualDuration);
 		}
 		//Πρέπει να στέλνω στον PM ένα message ολοκλήρωσης του task.
 	}
-	
-	
-	public int getActualDuration(){
-		return actualDuration;
-	}
-	
+		
 	
 	private double calcManMonths(int numberOfEmployees, int duration){
-		double manDays= estimatedDuration/numberOfEmployees;
+		double manDays= duration/numberOfEmployees;
 		return manDays/30;
 	}
 	
@@ -81,7 +76,7 @@ public class Task implements Serializable{
 		return deadline;
 	}
 	
-	private int getDuration(LocalDate startingDate, LocalDate finishDate){
+	private int calcDuration(LocalDate startingDate, LocalDate finishDate){
 		LocalDate temp = LocalDate.of(startingDate.getYear(), startingDate.getMonth(), startingDate.getDayOfMonth());
 		int duration=0;
 		while(!(temp.equals(finishDate))){
@@ -103,8 +98,11 @@ public class Task implements Serializable{
 	    return true;
 	}
 	
-	public static int getEstimatedTime(int averageTime){
-		return 0;
+	public static int calcEstimatedTime(int best , int worst, int average){
+		average = average*4;
+		int x = best + average + worst;
+		System.out.println(x);
+		return x/6;
 	}
 	
 	public String getName(){
@@ -115,5 +113,43 @@ public class Task implements Serializable{
 		return deadline;
 	}
 	
+	public ArrayList<Task> getPrerequisites(){
+		return presequisitesTasks;
+	}
 	
+	public LocalDate getStartingDate(){
+		return startingDate;
+	}
+	
+	public ArrayList<User> getEmployees(){
+		ArrayList<User> emp = new ArrayList<User>();
+		for (User anEmployee : employees.keySet()) {
+		   emp.add(anEmployee);
+		}
+		return emp;
+	}
+	
+	public String getDescription(){
+		return description;
+	}
+	
+	public int getEstimatedDuration(){
+		return estimatedDuration;
+	}
+	
+	public double getEstimatedManMonths(){
+		return estimatedManMonths;
+	}
+	
+	public boolean isCompleted(){
+		return completed;
+	}
+	
+	public int getActualDuration(){
+		return actualDuration;
+	}
+	
+	public double getActualManMonths(){
+		return actualManMonths;
+	}
 }

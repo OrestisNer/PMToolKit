@@ -66,7 +66,6 @@ public class Utils {
 	
 	public static void saveEmployeeChanges(User employee) throws IOException{
 		ArrayList<User> employees = getEmployeesFromFile();
-		System.out.println(employee.getName());
 		
 		for (Iterator<User> iterator = employees.iterator(); iterator.hasNext(); ) {
 		    User emp = iterator.next();
@@ -78,6 +77,7 @@ public class Utils {
 		employees.add(employee);
 		writeToEmployeeFile(employees);
 	}
+	
 	/*
 	public static void saveProjectChanges(Project project) throws IOException{
 		ArrayList<Project> projects = getProjectsFromFile();
@@ -109,7 +109,7 @@ public class Utils {
 		return employees;
 	}
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public static ArrayList<Project> getProjectsFromFile(){
 		ArrayList<Project> projects=null;
 		String filename="Projects";
@@ -123,7 +123,7 @@ public class Utils {
 		}
 		
 		return projects;
-	}
+	}*/
 	
 	public static void writeToEmployeeFile(ArrayList<User> employees) throws IOException{
 		ObjectOutputStream  outStream=null;

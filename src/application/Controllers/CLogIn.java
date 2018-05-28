@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import application.Utils;
 import application.Window;
+import classes.Employee;
 import classes.ProjectManager;
 import classes.User;
 import javafx.application.Platform;
@@ -44,9 +45,12 @@ public class CLogIn implements Initializable {
 			Utils.closeWindow(actionEvent);
 			Window projectWindow= new Window("Project","Projects.fxml",new CProjects(employee),false);
 			projectWindow.createWindow();
-		}/*else if(employee instanceof Employee){
+		}else if(employee instanceof Employee){
 			Utils.closeWindow(actionEvent); //Εδώ θα ανοίγει το παράθυρο για τον απλό χρήστη
-		}*/else{
+			Window projectWindow= new Window("Project","Projects.fxml",new CProjects(employee),false);
+			projectWindow.createWindow();
+
+		}else{
 			Utils.createErrorAlert("Error", "Log in Failed", "Username or Password is wrong");
 		}
 	}

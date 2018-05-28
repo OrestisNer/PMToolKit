@@ -5,13 +5,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import application.Utils;
 import application.Window;
 import classes.Calendar;
+import classes.Employee;
 import classes.Project;
 import classes.Task;
 import classes.User;
@@ -54,11 +54,19 @@ public class CTasks implements Initializable{
 	@FXML private TextField worstTimeField;
 	@FXML private TextField nameField;
 	@FXML private CheckBox finalCheckbox;
-	@FXML private Label estimatedTimeLabel;
-	@FXML private TextArea descriptionArea;
+	@FXML private Label calculatedEstimatedTimeLabel;
+	@FXML private TextArea composeDescriptionArea;
 	//TaskInfo.fxml
-	@FXML private ListView<String> prerequisitesInfoListView;
-	@FXML private ListView<String> employeesInfoListView;
+	@FXML private ListView<Task> prerequisitesInfoListView;
+	@FXML private ListView<User> employeesInfoListView;
+	@FXML private Label taskNameLabel;
+	@FXML private Label startingDateLabel;
+	@FXML private Label deadLineLabel;
+	@FXML private TextArea descriptionArea;
+	@FXML private Label estimatedTimeLabel;
+	@FXML private Label estimatedManMonthsLabel;
+	@FXML private Label actualTimeLabel;
+	@FXML private Label actutalManMonthsLabel;
 	
 	public CTasks(Project project, User employee,  String buttonText) {
 		this.project=project;
@@ -75,11 +83,11 @@ public class CTasks implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//if the button clicked is Tasks from Main Menu
 		if(buttonText.equals("Tasks")) {
-			System.out.println("AOU");
 			fillTaskListView();
 		//if the button clicked is Create Task from Tasks window
 		}else if(buttonText.equals("Create Task")) {
-			fillEmployeesListView();
+			employees= Utils.getEmployeesFromFile();
+			fillEmployeesListView(employees,employeesListView);
 			setTextProperties();
 			
 			prerequisitesListView.setDisable(true);
@@ -87,7 +95,8 @@ public class CTasks implements Initializable{
 			prerequisitesListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		//if the button clicked is Select Task from Tasks Window
 		}else if(buttonText.equals("Select Task")){
-			
+			Task task = tasksListView.getSelectionModel().getSelectedItem();
+			fillTaskInfo(task);
 		}
 	}
 	
@@ -129,7 +138,6 @@ public class CTasks implements Initializable{
 	}
 	
 	public void onPickDate(ActionEvent actionEvent){
-		System.out.println(startingDatePicker.getValue());
 		fillPrerequisitesListView(startingDatePicker.getValue());
 	}
 	
@@ -163,11 +171,12 @@ public class CTasks implements Initializable{
 		});
 	}
 	
-	private void fillEmployeesListView(){
-		employees= Utils.getEmployeesFromFile();
+	private void fillEmployeesListView(ArrayList<User> employees, ListView<User> listview){
+		
 		ObservableList<User> list = FXCollections.observableArrayList(employees);
-		employeesListView.setItems(list);
-		employeesListView.setCellFactory(param -> new ListCell<User>() {
+		
+		listview.setItems(list);
+		listview.setCellFactory(param -> new ListCell<User>() {
 		    @Override
 		    protected void updateItem(User employee, boolean empty) {
 		        super.updateItem(employee, empty);
@@ -183,7 +192,6 @@ public class CTasks implements Initializable{
 	}
 	
 	private void fillPrerequisitesListView(LocalDate startingDate){
-		//ArrayList<Task> tasks = project.getTasks();
 		ArrayList<Task> prerequisitesTasks = getPrerequisitesTasks(tasks,startingDate) ;
 		this.prerequisitesListView.getItems().clear();
 		if(!prerequisitesTasks.isEmpty()){
@@ -207,12 +215,34 @@ public class CTasks implements Initializable{
 		}
 	}
 	
+	private void fillPrerequisitesInfoListView(Task task){
+		ArrayList<Task> prerequisitesTasks= task.getPrerequisites();
+		prerequisitesInfoListView.getItems().clear();
+		if(!prerequisitesTasks.isEmpty()){
+			prerequisitesInfoListView.setDisable(false);
+			ObservableList<Task> list = FXCollections.observableArrayList(prerequisitesTasks);
+			prerequisitesInfoListView.setItems(list);
+			prerequisitesInfoListView.setCellFactory(param -> new ListCell<Task>() {
+				@Override
+				protected void updateItem(Task task, boolean empty) {
+					super.updateItem(task, empty);
+
+					if (task == null || task.getName() == null || task.getName().equals(" ")) {
+						setText(null);
+					} else {
+						setText(task.getName());
+					}
+				}
+			});
+		}else{
+			prerequisitesInfoListView.setDisable(true);
+		}
+	}
+	
 	private ArrayList<Task> getPrerequisitesTasks(ArrayList<Task> tasks,LocalDate startingDate){
 		ArrayList<Task> prerequisitesTasks= new ArrayList<Task>();
 		for(Task task: tasks){
 			if(Calendar.isBefore(task.getDeadLine(), startingDate)){
-				System.out.println("DeadLine:"+task.getDeadLine());
-				System.out.println("StartingDate: "+startingDate);
 				prerequisitesTasks.add(task);
 			}
 		}
@@ -221,10 +251,10 @@ public class CTasks implements Initializable{
 	private void setTextProperties(){
 		
 		bestTimeField.textProperty().addListener((observable, oldValue, newValue) -> {
-			if(!worstTimeField.getText().isEmpty()){
+			if(!worstTimeField.getText().isEmpty() && !averageTimeField.getText().isEmpty()){
 				try{
-					Integer average = (Integer.parseInt(bestTimeField.getText()) + Integer.parseInt(worstTimeField.getText())) / 2;
-					averageTimeField.setText(average.toString());
+					calculatedEstimatedTimeLabel.setText(""+Task.calcEstimatedTime(Integer.parseInt(bestTimeField.getText())
+							, Integer.parseInt(worstTimeField.getText()),Integer.parseInt(averageTimeField.getText())));
 				}catch(NumberFormatException e){
 					//do nothing
 				}
@@ -232,10 +262,10 @@ public class CTasks implements Initializable{
 		});
 		
 		worstTimeField.textProperty().addListener((observable, oldValue, newValue) -> {
-			if(!bestTimeField.getText().isEmpty()){
+			if(!bestTimeField.getText().isEmpty() && !averageTimeField.getText().isEmpty()){
 				try{	
-					int average = (Integer.parseInt(bestTimeField.getText()) + Integer.parseInt(worstTimeField.getText())) / 2;
-				    averageTimeField.setText(average+"");
+					calculatedEstimatedTimeLabel.setText(""+Task.calcEstimatedTime(Integer.parseInt(bestTimeField.getText())
+							, Integer.parseInt(worstTimeField.getText()),Integer.parseInt(averageTimeField.getText())));
 				}catch(NumberFormatException e){
 					//do nothing
 				}
@@ -243,7 +273,14 @@ public class CTasks implements Initializable{
 		});
 		
 		averageTimeField.textProperty().addListener((observable, oldValue, newValue) -> {
-			estimatedTimeLabel.setText(averageTimeField.getText());
+			if(!bestTimeField.getText().isEmpty() && !worstTimeField.getText().isEmpty()){
+				try{
+					calculatedEstimatedTimeLabel.setText(""+Task.calcEstimatedTime(Integer.parseInt(bestTimeField.getText())
+							, Integer.parseInt(worstTimeField.getText()),Integer.parseInt(averageTimeField.getText())));
+				}catch(NumberFormatException e){
+					//do nothing
+				}
+			}
 		});
 		
 	}
@@ -251,7 +288,7 @@ public class CTasks implements Initializable{
 	private boolean hasAppropriateArgs(){
 		ObservableList<User> employees = employeesListView.getSelectionModel().getSelectedItems();
 		if(nameField.getText().isEmpty() || startingDatePicker.getValue().equals(null) || employees.isEmpty()
-				|| estimatedTimeLabel.getText().equals("") || descriptionArea.getText().equals(""))
+				|| calculatedEstimatedTimeLabel.getText().equals("") || composeDescriptionArea.getText().equals(""))
 			return false;
 		return true;
 	}
@@ -260,35 +297,54 @@ public class CTasks implements Initializable{
 		ObservableList<User> obsEmployees = employeesListView.getSelectionModel().getSelectedItems();
 		String taskName=nameField.getText();
 		ObservableList<Task> obsPrerequisites = prerequisitesListView.getSelectionModel().getSelectedItems();
-		int estimatedTime = Integer.parseInt(estimatedTimeLabel.getText());
-		String description = descriptionArea.getText();
+		int estimatedTime = Integer.parseInt(calculatedEstimatedTimeLabel.getText());
+		String description = composeDescriptionArea.getText();
 		LocalDate startingDate = startingDatePicker.getValue();
 		
 		ArrayList<User> employees = (ArrayList<User>) obsEmployees.stream().collect(Collectors.toList());
 		ArrayList<Task> prerequisites;
+		
 		if(!obsPrerequisites.isEmpty())
 			prerequisites = (ArrayList<Task>) obsPrerequisites.stream().collect(Collectors.toList());
 		else
-			prerequisites=null;
-		for(Project p : employee.getProjects()){
-			System.out.println(p.getName());
-		}
+			prerequisites= new ArrayList<Task>();
+		
+		
 		Task task = new Task(taskName,prerequisites,employees,estimatedTime,description,startingDate,project);
-		//EDW HTAN TO PROVLHMA :'(
+		
 		tasks.add(task);
 		project.addTask(task);
-		System.out.println(project.getTasks().size());
-		//Utils.saveProjectChanges(project);
-		System.out.println("Project:"+project.getName()+" got task : "+task.getName());
+		employee.addTask(task);
+		Utils.saveEmployeeChanges(employee);
 		
 		for(User employee : employees){
-			//if(employee instanceof Employee){
+			if(employee instanceof Employee){
 				employee.addTask(task);
-				System.out.println(employee.getName());
+				if(!employee.getProjects().contains(project)){
+					employee.addProject(project);
+				}
 				Utils.saveEmployeeChanges(employee);
-			//}
+			}
 		}
 		
+	}
+	
+	private void fillTaskInfo(Task task){
+		this.taskNameLabel.setText(task.getName());
+		this.startingDateLabel.setText(task.getStartingDate().toString());
+		this.deadLineLabel.setText(task.getDeadLine().toString());
+		this.fillEmployeesListView(task.getEmployees(), employeesInfoListView);
+		this.fillPrerequisitesInfoListView(task);
+		this.descriptionArea.setText(task.getDescription());
+		this.estimatedTimeLabel.setText(task.getEstimatedDuration()+"");
+		this.estimatedManMonthsLabel.setText(task.getEstimatedManMonths()+"");
+		if(task.isCompleted()){
+			this.actualTimeLabel.setText(task.getActualDuration()+"");
+			this.actutalManMonthsLabel.setText(task.getActualManMonths()+"");
+		}else{
+			this.actualTimeLabel.setText("N/A");
+			this.actutalManMonthsLabel.setText("N/A");
+		}
 	}
 	
 	

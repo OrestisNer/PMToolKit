@@ -95,7 +95,6 @@ public class CProjects implements Initializable{
 	
 	private void fillProjectListView(){
 		ObservableList<Project> projects = FXCollections.observableArrayList(employee.getProjects());
-		System.out.println(employee.getProjects());
 		projectsListView.setItems(projects);
 		projectsListView.setCellFactory(param -> new ListCell<Project>() {
 		    @Override

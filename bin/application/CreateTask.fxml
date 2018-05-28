@@ -111,7 +111,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="averageTimeField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <TextField fx:id="averageTimeField" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets bottom="10.0" left="10.0" top="10.0" />
                      </GridPane.margin>
@@ -128,7 +128,7 @@
                               <Insets />
                            </HBox.margin>
                         </Label>
-                        <Label fx:id="estimatedTimeLabel" text="Label">
+                        <Label fx:id="calculatedEstimatedTimeLabel" text="Label">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -140,7 +140,7 @@
             <VBox prefHeight="200.0" prefWidth="350.0">
                <children>
                   <Label text="Description" />
-                  <TextArea fx:id="descriptionArea" prefHeight="200.0" prefWidth="200.0" />
+                  <TextArea fx:id="composeDescriptionArea" prefHeight="200.0" prefWidth="200.0" />
                </children>
             </VBox>
          </children>
