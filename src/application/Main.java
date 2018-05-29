@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import application.Controllers.CLogIn;
 import classes.Employee;
+import classes.Message;
 import classes.ProjectManager;
 import classes.User;
 import javafx.application.Application;
@@ -24,7 +25,7 @@ public class Main extends Application{
 		window.createWindow();
 		//createEmpFile();
 	}
-	/*
+	
 	private void createEmpFile() throws IOException{
 		ArrayList<User> emp= new ArrayList<User>();
 		User pm = new ProjectManager("ProjectManager","123","Stefanos","Mpitzenis",50000,"Project Manager");
@@ -42,6 +43,6 @@ public class Main extends Application{
 	    	System.exit(0);
 	    }
 		
-	}*/
+	}
 
 }

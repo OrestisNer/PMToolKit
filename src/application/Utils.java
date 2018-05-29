@@ -51,11 +51,12 @@ public class Utils {
 	}
 	
 	public static void closeProgram(Stage stage){
-		Alert alert = Utils.createConfirmationAlert("Exit","Exit Confirmation", "Are sure you want to exit?");
+		/*Alert alert = Utils.createConfirmationAlert("Exit","Exit Confirmation", "Are sure you want to exit?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
         	stage.close();
-        }
+        }*/
+		stage.close();
 	}
 	
 	public static Stage getStageFromEvent(ActionEvent actionEvent){

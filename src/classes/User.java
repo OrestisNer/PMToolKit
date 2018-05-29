@@ -78,6 +78,9 @@ public abstract class User implements Serializable {
 		return unfinishedTask;
 	}
 	
+	public ArrayList<Message> getMessages(){
+		return messages;
+	}
 	
 	
 }

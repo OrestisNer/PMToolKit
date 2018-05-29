@@ -10,7 +10,7 @@ public class Project implements Serializable{
 	private User projectmanager;
 	private String name;
 	private ArrayList<Task> tasks;
-	private ArrayList<Employee> employees;
+	private ArrayList<User> employees;
 	private ArrayList<Diagram> diagrams;
 	private LocalDate startingDate;
 	private Calendar calendar;
@@ -21,7 +21,7 @@ public class Project implements Serializable{
 		this.projectmanager=employee;
 		this.startingDate= LocalDate.now();
 		tasks= new ArrayList<Task>();
-		employees= new ArrayList<Employee>();
+		employees= new ArrayList<User>();
 		diagrams= new ArrayList<Diagram>();
 	}
 	
@@ -29,7 +29,7 @@ public class Project implements Serializable{
 		tasks.add(task);
 	}
 	
-	public void addEmployees(ArrayList<Employee> emp){
+	public void addEmployees(ArrayList<User> emp){
 		employees.addAll(emp);
 	}
 	
@@ -53,6 +53,10 @@ public class Project implements Serializable{
 	
 	public ArrayList<Task> getTasks(){
 		return tasks;
+	}
+	
+	public ArrayList<User> getEmployees(){
+		return employees;
 	}
 	
 	

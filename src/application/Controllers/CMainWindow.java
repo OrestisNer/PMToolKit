@@ -46,13 +46,13 @@ public class CMainWindow implements Initializable {
 	}
 	
 	//Calendar button clicked
-	public void onCalendarClicke() throws Exception{
+	public void onCalendarClicked() throws Exception{
 		
 	}
 	
 	//Message button clicked
 	public void onMessagesClicked() throws Exception{
-		controller= new CMessages();
+		controller= new CMessages(employee,project,"Messages");
 		window= new Window("Messages","Messages.fxml",controller,true);
 		window.createWindow();
 	}

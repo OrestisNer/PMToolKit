@@ -101,7 +101,6 @@ public class Task implements Serializable{
 	public static int calcEstimatedTime(int best , int worst, int average){
 		average = average*4;
 		int x = best + average + worst;
-		System.out.println(x);
 		return x/6;
 	}
 	

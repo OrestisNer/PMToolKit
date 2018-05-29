@@ -314,6 +314,7 @@ public class CTasks implements Initializable{
 		
 		tasks.add(task);
 		project.addTask(task);
+		project.addEmployees(employees);
 		employee.addTask(task);
 		Utils.saveEmployeeChanges(employee);
 		
@@ -326,6 +327,23 @@ public class CTasks implements Initializable{
 				Utils.saveEmployeeChanges(employee);
 			}
 		}
+		
+		/*for(User employee : employees){
+			if(employee instanceof Employee){
+				employee.addTask(task);
+				
+				ArrayList<Project> projects = employee.getProjects();
+				if(projects.isEmpty())
+					employee.addProject(project);
+				else {
+					for(Project p: projects) {
+						if(!p.getName().equals(project.getName()))
+							employee.addProject(project);
+					}
+				}
+				Utils.saveEmployeeChanges(employee);
+			}
+		}*/
 		
 	}
 	
