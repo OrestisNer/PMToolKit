@@ -39,7 +39,6 @@ public class CTasks implements Initializable{
 	private User employee;
 	private ArrayList<Task> tasks;
 	private ArrayList<User> employees;
-	private ArrayList<Task> prerequisites;
 	
 	//Tasks.fxml
 	@FXML private ListView<Task> tasksListView;
@@ -55,14 +54,15 @@ public class CTasks implements Initializable{
 	@FXML private TextField nameField;
 	@FXML private CheckBox finalCheckbox;
 	@FXML private Label calculatedEstimatedTimeLabel;
-	@FXML private TextArea composeDescriptionArea;
+	@FXML private TextArea descriptionArea;
+	@FXML private Button createButton;
 	//TaskInfo.fxml
 	@FXML private ListView<Task> prerequisitesInfoListView;
 	@FXML private ListView<User> employeesInfoListView;
 	@FXML private Label taskNameLabel;
 	@FXML private Label startingDateLabel;
 	@FXML private Label deadLineLabel;
-	@FXML private TextArea descriptionArea;
+	@FXML private TextArea descriptionInfoArea;
 	@FXML private Label estimatedTimeLabel;
 	@FXML private Label estimatedManMonthsLabel;
 	@FXML private Label actualTimeLabel;
@@ -75,17 +75,14 @@ public class CTasks implements Initializable{
 		this.buttonText = buttonText;
 	}
 	
-	public void setButtonText(String btnText) {
+	private void setButtonText(String btnText) {
 		this.buttonText = btnText;
 	}
 	
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		//if the button clicked is Tasks from Main Menu
-		if(buttonText.equals("Tasks")) {
-			fillTaskListView();
+	public void initialize(URL arg0, ResourceBundle arg1) {	
 		//if the button clicked is Create Task from Tasks window
-		}else if(buttonText.equals("Create Task")) {
+		if(buttonText.equals(createTaskButton.getText())) {
 			employees= Utils.getEmployeesFromFile();
 			fillEmployeesListView(employees,employeesListView);
 			setTextProperties();
@@ -94,13 +91,14 @@ public class CTasks implements Initializable{
 			employeesListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 			prerequisitesListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		//if the button clicked is Select Task from Tasks Window
-		}else if(buttonText.equals("Select Task")){
+		}else if(buttonText.equals(selectTaskButton.getText())){
 			Task task = tasksListView.getSelectionModel().getSelectedItem();
 			fillTaskInfo(task);
-		}
+		}else
+			fillTaskListView();
 	}
 	
-	//Tasks window Methods
+	//Tasks.fxml Methods
 	
 	//Create task button 
 	public void onCreateTaskClicked(ActionEvent actionEvent) throws Exception {
@@ -122,38 +120,8 @@ public class CTasks implements Initializable{
 	public void onCancelClicked(ActionEvent actionEvent){
 		Utils.closeWindow(actionEvent);
 	}
-		
-	//Create Task window Methods 
 	
-	/*Cancel or back button clicked
-	 * 
-	 * Method for the cancel button on Create Task window and for the back button
-	 * on Task Info window.
-	 */
-	public void onCancel_BackClicked(ActionEvent actionEvent) throws Exception{
-		Stage stage = Utils.getStageFromEvent(actionEvent);
-		window = new Window(stage);
-		this.setButtonText("Tasks");
-		window.changeScene("Tasks.fxml",this);
-	}
-	
-	public void onPickDate(ActionEvent actionEvent){
-		fillPrerequisitesListView(startingDatePicker.getValue());
-	}
-	
-	public void onCreateClicked(ActionEvent actionEvent) throws IOException{
-		if(hasAppropriateArgs()){
-			createTask();
-			Utils.createInfoAlert("Proccess", "You successfuly create a task");
-			Stage stage = Utils.getStageFromEvent(actionEvent);
-			this.setButtonText("Tasks");
-			window = new Window(stage);
-			window.changeScene("Tasks.fxml", this);
-		}else{
-			Utils.createInfoAlert("Inforamtion", "You have to fill in all the fields");
-		}
-	}
-	
+	//Fills taskListView
 	private void fillTaskListView(){
 		ObservableList<Task> taskList = FXCollections.observableArrayList(tasks);
 		tasksListView.setItems(taskList);
@@ -170,27 +138,37 @@ public class CTasks implements Initializable{
 		    }
 		});
 	}
+		
+	//CreateTask.fxml Methods 
 	
-	private void fillEmployeesListView(ArrayList<User> employees, ListView<User> listview){
-		
-		ObservableList<User> list = FXCollections.observableArrayList(employees);
-		
-		listview.setItems(list);
-		listview.setCellFactory(param -> new ListCell<User>() {
-		    @Override
-		    protected void updateItem(User employee, boolean empty) {
-		        super.updateItem(employee, empty);
-
-		        if (employee == null || employee.getName() == null || employee.getName().equals(" ")) {
-		            setText(null);
-		        } else {
-		            setText(employee.getName()+"-"+employee.getSpeciality());
-		        }
-		    }
-		});
-		
+	/*Cancel or back button clicked
+	 * 
+	 * Method for the cancel button on CreateTask.fxml and for the back button
+	 * on TaskInfo.fxml 
+	 */
+	public void onCancel_BackClicked(ActionEvent actionEvent) throws Exception{
+		Stage stage = Utils.getStageFromEvent(actionEvent);
+		window = new Window(stage);
+		this.setButtonText("Tasks");
+		window.changeScene("Tasks.fxml",this);
 	}
 	
+	public void onPickDate(ActionEvent actionEvent){
+		fillPrerequisitesListView(startingDatePicker.getValue());
+	}
+	
+	//Returns which tasks will be completed based on the deadline of the task the user is creating
+	private ArrayList<Task> getPrerequisitesTasks(ArrayList<Task> tasks,LocalDate startingDate){
+		ArrayList<Task> prerequisitesTasks= new ArrayList<Task>();
+		for(Task task: tasks){
+			if(Calendar.isBefore(task.getDeadLine(), startingDate)){
+				prerequisitesTasks.add(task);
+			}
+		}
+		return prerequisitesTasks;
+	}
+	
+	//Fills prerequisitesListView based on the selected date from startingDatePicker
 	private void fillPrerequisitesListView(LocalDate startingDate){
 		ArrayList<Task> prerequisitesTasks = getPrerequisitesTasks(tasks,startingDate) ;
 		this.prerequisitesListView.getItems().clear();
@@ -215,39 +193,41 @@ public class CTasks implements Initializable{
 		}
 	}
 	
-	private void fillPrerequisitesInfoListView(Task task){
-		ArrayList<Task> prerequisitesTasks= task.getPrerequisites();
-		prerequisitesInfoListView.getItems().clear();
-		if(!prerequisitesTasks.isEmpty()){
-			prerequisitesInfoListView.setDisable(false);
-			ObservableList<Task> list = FXCollections.observableArrayList(prerequisitesTasks);
-			prerequisitesInfoListView.setItems(list);
-			prerequisitesInfoListView.setCellFactory(param -> new ListCell<Task>() {
-				@Override
-				protected void updateItem(Task task, boolean empty) {
-					super.updateItem(task, empty);
+	//Fills employeesListView
+	private void fillEmployeesListView(ArrayList<User> employees, ListView<User> listview){
+		
+		ObservableList<User> list = FXCollections.observableArrayList(employees);
+		
+		listview.setItems(list);
+		listview.setCellFactory(param -> new ListCell<User>() {
+		    @Override
+		    protected void updateItem(User employee, boolean empty) {
+		        super.updateItem(employee, empty);
 
-					if (task == null || task.getName() == null || task.getName().equals(" ")) {
-						setText(null);
-					} else {
-						setText(task.getName());
-					}
-				}
-			});
+		        if (employee == null || employee.getName() == null || employee.getName().equals(" ")) {
+		            setText(null);
+		        } else {
+		            setText(employee.getName()+"-"+employee.getSpeciality());
+		        }
+		    }
+		});
+		
+	}
+	
+	//Create button
+	public void onCreateClicked(ActionEvent actionEvent) throws IOException{
+		if(hasAppropriateArgs()){
+			createTask();
+			Utils.createInfoAlert("Proccess", "You successfuly create a task");
+			Stage stage = Utils.getStageFromEvent(actionEvent);
+			this.setButtonText(createButton.getText());
+			window = new Window(stage);
+			window.changeScene("Tasks.fxml", this);
 		}else{
-			prerequisitesInfoListView.setDisable(true);
+			Utils.createInfoAlert("Inforamtion", "You have to fill in all the fields");
 		}
 	}
 	
-	private ArrayList<Task> getPrerequisitesTasks(ArrayList<Task> tasks,LocalDate startingDate){
-		ArrayList<Task> prerequisitesTasks= new ArrayList<Task>();
-		for(Task task: tasks){
-			if(Calendar.isBefore(task.getDeadLine(), startingDate)){
-				prerequisitesTasks.add(task);
-			}
-		}
-		return prerequisitesTasks;
-	}
 	private void setTextProperties(){
 		
 		bestTimeField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -285,20 +265,22 @@ public class CTasks implements Initializable{
 		
 	}
 	
+	//Checks if the user filled out everything
 	private boolean hasAppropriateArgs(){
 		ObservableList<User> employees = employeesListView.getSelectionModel().getSelectedItems();
 		if(nameField.getText().isEmpty() || startingDatePicker.getValue().equals(null) || employees.isEmpty()
-				|| calculatedEstimatedTimeLabel.getText().equals("") || composeDescriptionArea.getText().equals(""))
+				|| calculatedEstimatedTimeLabel.getText().equals("") || descriptionArea.getText().equals(""))
 			return false;
 		return true;
 	}
 	
+	//Creates a task object
 	private void createTask() throws IOException{
 		ObservableList<User> obsEmployees = employeesListView.getSelectionModel().getSelectedItems();
 		String taskName=nameField.getText();
 		ObservableList<Task> obsPrerequisites = prerequisitesListView.getSelectionModel().getSelectedItems();
 		int estimatedTime = Integer.parseInt(calculatedEstimatedTimeLabel.getText());
-		String description = composeDescriptionArea.getText();
+		String description = descriptionArea.getText();
 		LocalDate startingDate = startingDatePicker.getValue();
 		
 		ArrayList<User> employees = (ArrayList<User>) obsEmployees.stream().collect(Collectors.toList());
@@ -318,7 +300,7 @@ public class CTasks implements Initializable{
 		employee.addTask(task);
 		Utils.saveEmployeeChanges(employee);
 		
-		for(User employee : employees){
+		/*for(User employee : employees){
 			if(employee instanceof Employee){
 				employee.addTask(task);
 				if(!employee.getProjects().contains(project)){
@@ -326,9 +308,9 @@ public class CTasks implements Initializable{
 				}
 				Utils.saveEmployeeChanges(employee);
 			}
-		}
+		}*/
 		
-		/*for(User employee : employees){
+		for(User employee : employees){
 			if(employee instanceof Employee){
 				employee.addTask(task);
 				
@@ -343,17 +325,44 @@ public class CTasks implements Initializable{
 				}
 				Utils.saveEmployeeChanges(employee);
 			}
-		}*/
-		
+		}
 	}
 	
+	//TaskInfo.fxml methods
+	
+	//Fills prerequisitesInfoListView
+	private void fillPrerequisitesInfoListView(Task task){
+		ArrayList<Task> prerequisitesTasks= task.getPrerequisites();
+		prerequisitesInfoListView.getItems().clear();
+		if(!prerequisitesTasks.isEmpty()){
+			prerequisitesInfoListView.setDisable(false);
+			ObservableList<Task> list = FXCollections.observableArrayList(prerequisitesTasks);
+			prerequisitesInfoListView.setItems(list);
+			prerequisitesInfoListView.setCellFactory(param -> new ListCell<Task>() {
+				@Override
+				protected void updateItem(Task task, boolean empty) {
+					super.updateItem(task, empty);
+
+					if (task == null || task.getName() == null || task.getName().equals(" ")) {
+						setText(null);
+					} else {
+						setText(task.getName());
+					}
+				}
+			});
+		}else{
+			prerequisitesInfoListView.setDisable(true);
+		}
+	}
+	
+	//Fills the info of the Task
 	private void fillTaskInfo(Task task){
 		this.taskNameLabel.setText(task.getName());
 		this.startingDateLabel.setText(task.getStartingDate().toString());
 		this.deadLineLabel.setText(task.getDeadLine().toString());
 		this.fillEmployeesListView(task.getEmployees(), employeesInfoListView);
 		this.fillPrerequisitesInfoListView(task);
-		this.descriptionArea.setText(task.getDescription());
+		this.descriptionInfoArea.setText(task.getDescription());
 		this.estimatedTimeLabel.setText(task.getEstimatedDuration()+"");
 		this.estimatedManMonthsLabel.setText(task.getEstimatedManMonths()+"");
 		if(task.isCompleted()){
@@ -363,7 +372,6 @@ public class CTasks implements Initializable{
 			this.actualTimeLabel.setText("N/A");
 			this.actutalManMonthsLabel.setText("N/A");
 		}
-	}
-	
-	
+	}	
 }
+

@@ -82,5 +82,9 @@ public abstract class User implements Serializable {
 		return messages;
 	}
 	
+	@Override
+	public String toString() {
+		return this.getName();
+	}
 	
 }

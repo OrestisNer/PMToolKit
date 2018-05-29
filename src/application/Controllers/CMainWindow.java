@@ -24,6 +24,7 @@ public class CMainWindow implements Initializable {
 	private Project project;
 	
 	@FXML private Button tasksButton;
+	@FXML private Button messagesButton;
 	@FXML private Button evaluationButton;
 	@FXML private Label headerLabel;
 	
@@ -52,7 +53,7 @@ public class CMainWindow implements Initializable {
 	
 	//Message button clicked
 	public void onMessagesClicked() throws Exception{
-		controller= new CMessages(employee,project,"Messages");
+		controller= new CMessages(employee,project,messagesButton.getText());
 		window= new Window("Messages","Messages.fxml",controller,true);
 		window.createWindow();
 	}

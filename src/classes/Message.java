@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Message implements Serializable {
 	
 	private User sender;
-	private ArrayList<User> recievers;
+	private ArrayList<User> receivers;
 	private String subject;
 	private String message;
 	private boolean read;
@@ -14,7 +14,7 @@ public class Message implements Serializable {
 	
 	public Message(User sender, ArrayList<User> recievers, String subject, String message){
 		this.sender=sender;
-		this.recievers=recievers;
+		this.receivers=recievers;
 		this.subject=subject;
 		this.message=message;
 		read=false;
@@ -31,8 +31,8 @@ public class Message implements Serializable {
 	public User getSender(){
 		return sender;
 	}
-	public ArrayList<User> getRecievers(){
-		return recievers;
+	public ArrayList<User> getReceivers(){
+		return receivers;
 	}
 	
 	public String getSubject(){
@@ -43,8 +43,8 @@ public class Message implements Serializable {
 		return message;
 	}
 	
-	public int getNumberOfRecievers(){
-		return recievers.size();
+	public int getNumberOfReceivers(){
+		return receivers.size();
 	}
 
 }
