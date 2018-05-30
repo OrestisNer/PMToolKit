@@ -138,26 +138,35 @@ public class CMessages implements Initializable{
 	
 	//Send message button
 	public void onSendMessageClicked(ActionEvent actionEvent) throws IOException {
+		createMessage();
+		Utils.createInfoAlert("Message", "You successfully send the message");
+		
+		Stage stage = Utils.getStageFromEvent(actionEvent);
+		window = new Window(stage);
+		this.setButtonText(sendMessageButton.getText());
+		window.changeScene("Messages.fxml", this);
+	}
+	
+	//Creates a message Object
+	private void createMessage() throws IOException {
 		ArrayList<User> receivers= new ArrayList<User>();
+		
 		if(selectAllCheckBox.isSelected()){
 			receivers=project.getEmployees();
 		}else{
 			receivers.add(employeesComboBox.getValue());
 		}
+		
 		String message = messageTextArea.getText();
 		String subject = subjectField.getText();
 		Message messageObj = new Message(employee,receivers,subject,message);
+		
 		employee.addMessage(messageObj);
 		Utils.saveEmployeeChanges(employee);
 		for(User receiver: receivers){
 			receiver.addMessage(messageObj);
 			Utils.saveEmployeeChanges(receiver);
 		}
-		Utils.createInfoAlert("Message", "You successfully send the message");
-		Stage stage  = Utils.getStageFromEvent(actionEvent);
-		window= new Window(stage);
-	    this.setButtonText(sendMessageButton.getText());
-		window.changeScene("Messages.fxml", this);
 	}
 	
 	//Cancel button 

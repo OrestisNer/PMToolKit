@@ -211,20 +211,19 @@ public class CTasks implements Initializable{
 		        }
 		    }
 		});
-		
 	}
 	
 	//Create button
 	public void onCreateClicked(ActionEvent actionEvent) throws IOException{
 		if(hasAppropriateArgs()){
 			createTask();
-			Utils.createInfoAlert("Proccess", "You successfuly create a task");
+			Utils.createInfoAlert("Proccess", "You successfully create a task");
 			Stage stage = Utils.getStageFromEvent(actionEvent);
 			this.setButtonText(createButton.getText());
 			window = new Window(stage);
 			window.changeScene("Tasks.fxml", this);
 		}else{
-			Utils.createInfoAlert("Inforamtion", "You have to fill in all the fields");
+			Utils.createInfoAlert("Information", "You have to fill in all the fields");
 		}
 	}
 	

@@ -67,7 +67,7 @@ public class CMainWindow implements Initializable {
 	
 	//Evaluation button clicked
 	public void onEvaluationClicked() throws Exception{
-		controller = new CEvaluation(evaluationButton.getText());
+		controller = new CEvaluation(project, employee, evaluationButton.getText());
 		window= new Window("Evaluation","Evaluation.fxml",controller,true);
 		window.createWindow();
 	}

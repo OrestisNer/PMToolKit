@@ -20,7 +20,7 @@
             <Insets />
          </VBox.margin>
       </Label>
-      <TextArea prefHeight="200.0" prefWidth="200.0" promptText="Type your evaluation">
+      <TextArea fx:id="evaluationTextArea" prefHeight="200.0" prefWidth="200.0" promptText="Type your evaluation">
          <VBox.margin>
             <Insets />
          </VBox.margin>
@@ -57,8 +57,13 @@
                   <Font size="14.0" />
                </font>
             </RadioButton>
-            <Region prefHeight="65.0" prefWidth="116.0" />
-            <Button mnemonicParsing="false" onAction="#onSubmitClicked" text="Submit">
+            <Region prefHeight="65.0" prefWidth="46.0" />
+            <Button fx:id="submitButton" mnemonicParsing="false" onAction="#onSubmitClicked" text="Submit">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelEvaluationClicked" text="Cancel">
                <font>
                   <Font size="14.0" />
                </font>
