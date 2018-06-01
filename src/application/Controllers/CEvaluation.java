@@ -108,7 +108,7 @@ public class CEvaluation implements Initializable{
 				if (employee == null || employee.getName() == null || employee.getName().equals(" ")) {
 					setText(null);
 				} else {
-					setText(employee.getName() + "-" + employee.getSpeciality());
+					setText(employee.getName() + "-" + employee.getSpecialty());
 				}
 			}
 		});

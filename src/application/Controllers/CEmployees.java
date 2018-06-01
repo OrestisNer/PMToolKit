@@ -39,7 +39,7 @@ public class CEmployees implements Initializable{
 	//CreateEmployee.fxml
 	@FXML private TextField userNameField;
 	@FXML private TextField passwordField;
-	@FXML private TextField specialityField;
+	@FXML private TextField specialtyField;
 	@FXML private TextField firstNameField;
 	@FXML private TextField lastNameField;
 	@FXML private TextField salaryField;
@@ -118,13 +118,11 @@ public class CEmployees implements Initializable{
 			@Override
 			protected void updateItem(User employee, boolean empty) {
 				super.updateItem(employee, empty);
-				if (employee == null || employee instanceof ProjectManager) {
+				if (employee == null )
 					setText(null);
-				} else {
-					setText(employee.getName()+"-"+employee.getSpeciality());
-				}
+				else
+					setText(employee.getName()+"-"+employee.getSpecialty());
 			}
-			
 		});
 	}
 	
@@ -135,7 +133,7 @@ public class CEmployees implements Initializable{
 	public void createEmployee() throws IOException{
 		String username = userNameField.getText();
 		String password = passwordField.getText();
-		String speciality = specialityField.getText();
+		String speciality = specialtyField.getText();
 		String firstname= firstNameField.getText();
 		String lastname = lastNameField.getText();
 		double salary = Double.parseDouble(salaryField.getText());
@@ -145,19 +143,19 @@ public class CEmployees implements Initializable{
 		Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
         	project.addEmployee(employee);
-        	employee.addProject(project);
+        	employee.addProject(project.getName());
         }
         
         Utils.saveEmployeeChanges(employee);
+        Utils.saveProjectChanges(project);
 	}
 	
 	private boolean hasAppropriateArgs(){
-		if(userNameField.getText().equals("") || passwordField.getText().equals("") || specialityField.getText().equals("")
+		if(userNameField.getText().equals("") || passwordField.getText().equals("") || specialtyField.getText().equals("")
 				|| firstNameField.getText().equals("") || lastNameField.getText().equals("") || salaryField.getText().equals(""))
 			return false;
 		return true;
 	}
-	
 	
 	private void setProperties(){
 		salaryField.textProperty().addListener((observable, oldValue, newValue) -> {

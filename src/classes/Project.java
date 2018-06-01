@@ -26,6 +26,18 @@ public class Project implements Serializable{
 		diagrams= new ArrayList<Diagram>();
 	}
 	
+	public void showInfo() {
+		System.out.println("PM: "+ projectManager +"Name: "+ name);
+		System.out.println("Tasks:");
+		for(Task task: tasks) {
+			System.out.println(task.getName());
+		}
+		System.out.println("Employees");
+		for(User emp: employees)
+			System.out.println(emp.getName());
+		
+	}
+	
 	public void addTask(Task task){
 		tasks.add(task);
 	}

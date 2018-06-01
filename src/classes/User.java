@@ -13,19 +13,19 @@ public abstract class User implements Serializable {
 	protected String lastname;
 	protected double salary;
 	protected ArrayList<Message> messages;	
-	protected ArrayList<Project> projects;
-	protected String speciality;
+	protected ArrayList<String> projects;
+	protected String specialty;
 	protected HashMap<Project,HashMap<Task,Boolean>> tasks;
 	
-	public User(String username, String password, String firstname, String lastname, double salary, String speciality){
+	public User(String username, String password, String firstname, String lastname, double salary, String specialty){
 		this.username=username;
 		this.password=password;
 		this.firstname= firstname;
 		this.lastname=lastname;
 		this.salary=salary;
-		this.speciality=speciality;
+		this.specialty=specialty;
 		messages= new ArrayList<Message>();
-		projects= new ArrayList<Project>();
+		projects= new ArrayList<String>();
 		tasks= new HashMap<Project,HashMap<Task,Boolean>>();
 		
 	}
@@ -42,11 +42,11 @@ public abstract class User implements Serializable {
 		return password;
 	}
 	
-	public void addProject(Project project){
-		projects.add(project);
+	public void addProject(String projectName){
+		projects.add(projectName);
 	}
 	
-	public ArrayList<Project> getProjects(){
+	public ArrayList<String> getProjects(){
 		return projects;
 	}
 	
@@ -54,8 +54,8 @@ public abstract class User implements Serializable {
 		return firstname+" "+lastname;
 	}
 	
-	public String getSpeciality(){
-		return speciality;
+	public String getSpecialty(){
+		return specialty;
 	}
 	
 	public void addTask(Project project,Task task){
@@ -89,6 +89,14 @@ public abstract class User implements Serializable {
 		}catch(NullPointerException e){
 			//do nothing
 		}
+		
+		if(unfinishedTask.isEmpty())
+			System.out.println("Empty list");
+		else {
+			for(Task t: unfinishedTask)
+				System.out.println(t.getName());
+		}
+		
 		return unfinishedTask;
 		
 	}

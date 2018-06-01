@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import application.Controllers.CLogIn;
 import classes.Employee;
 import classes.Message;
+import classes.Project;
 import classes.ProjectManager;
 import classes.User;
 import javafx.application.Application;
@@ -23,7 +24,8 @@ public class Main extends Application{
 		
 		Window window = new Window("Log In","LogIn.fxml",new CLogIn(),true);	
 		window.createWindow();
-		//createEmpFile();
+		/*createEmpFile();
+		createProjectFile();*/
 	}
 	
 	private void createEmpFile() throws IOException{
@@ -40,7 +42,21 @@ public class Main extends Application{
 	    	System.out.println("Error writing to file "+filename);
 	    	System.exit(0);
 	    }
+	}
+	
+	private void createProjectFile() throws IOException{
+		ArrayList<Project> projects = new ArrayList<>();
+		String filename = "Projects";
+		ObjectOutputStream  outStream=null;
 		
+	    try{
+	    	outStream=new ObjectOutputStream(new FileOutputStream(filename));
+	    	outStream.writeObject(projects);
+	    	outStream.close();
+	    }catch(IOException e){
+	    	System.out.println("Error writing to file "+filename);
+	    	System.exit(0);
+	    }
 	}
 
 }

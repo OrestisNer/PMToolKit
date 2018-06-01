@@ -23,12 +23,4 @@ public class Employee extends User  {
 	public void setGrade(String grade) {
 		this.grade = grade;
 	}
-	
-	public String getEvaluation(){
-		return evaluation;
-	}
-	
-	public String getGrade(){
-		return grade;
-	}
 }

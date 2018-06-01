@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -94,8 +96,11 @@ public class CTasks implements Initializable{
 		}else if(buttonText.equals(selectTaskButton.getText())){
 			Task task = tasksListView.getSelectionModel().getSelectedItem();
 			fillTaskInfo(task);
-		}else
+		}else {
+			// HashMap<Project,HashMap<Task,Boolean>> tasks = employee.getTasks(project);
+			 
 			fillTaskListView();
+		}
 	}
 	
 	//Tasks.fxml Methods
@@ -123,7 +128,7 @@ public class CTasks implements Initializable{
 	
 	//Fills taskListView
 	private void fillTaskListView(){
-		ObservableList<Task> taskList = FXCollections.observableArrayList(tasks);
+		ObservableList<Task> taskList = FXCollections.observableArrayList(employee.getUnfinishedTasks(project));
 		tasksListView.setItems(taskList);
 		tasksListView.setCellFactory(param -> new ListCell<Task>() {
 		    @Override
@@ -170,7 +175,7 @@ public class CTasks implements Initializable{
 	
 	//Fills prerequisitesListView based on the selected date from startingDatePicker
 	private void fillPrerequisitesListView(LocalDate startingDate){
-		ArrayList<Task> prerequisitesTasks = getPrerequisitesTasks(tasks,startingDate) ;
+		ArrayList<Task> prerequisitesTasks = getPrerequisitesTasks(employee.getUnfinishedTasks(project),startingDate) ;
 		this.prerequisitesListView.getItems().clear();
 		if(!prerequisitesTasks.isEmpty()){
 			this.prerequisitesListView.setDisable(false);
@@ -195,7 +200,6 @@ public class CTasks implements Initializable{
 	
 	//Fills employeesListView
 	private void fillEmployeesListView(ArrayList<User> employees, ListView<User> listview){
-		
 		ObservableList<User> list = FXCollections.observableArrayList(employees);
 		
 		listview.setItems(list);
@@ -207,7 +211,7 @@ public class CTasks implements Initializable{
 		        if (employee == null || employee.getName() == null || employee.getName().equals(" ")) {
 		            setText(null);
 		        } else {
-		            setText(employee.getName()+"-"+employee.getSpeciality());
+		            setText(employee.getName()+"-"+employee.getSpecialty());
 		        }
 		    }
 		});
@@ -294,8 +298,7 @@ public class CTasks implements Initializable{
 		Task task = new Task(taskName,prerequisites,employees,estimatedTime,description,startingDate,project);
 		
 		tasks.add(task);
-		project.addTask(task);
-		project.addEmployees(employees);
+		project.addTask(task);		
 		employee.addTask(project,task);
 		Utils.saveEmployeeChanges(employee);
 		
@@ -303,18 +306,19 @@ public class CTasks implements Initializable{
 			if(employee instanceof Employee){
 				employee.addTask(project,task);
 				
-				ArrayList<Project> projects = employee.getProjects();
+				ArrayList<String> projects = employee.getProjects();
 				if(projects.isEmpty())
-					employee.addProject(project);
+					employee.addProject(project.getName());
 				else {
-					for(Project p: projects) {
-						if(!p.getName().equals(project.getName()))
-							employee.addProject(project);
+					for(String project : projects) {
+						if(!project.equalsIgnoreCase(this.project.getName()))
+							employee.addProject(this.project.getName());
 					}
 				}
 				Utils.saveEmployeeChanges(employee);
 			}
 		}
+		Utils.saveProjectChanges(project);
 	}
 	
 	//TaskInfo.fxml methods
@@ -339,9 +343,8 @@ public class CTasks implements Initializable{
 					}
 				}
 			});
-		}else{
+		}else
 			prerequisitesInfoListView.setDisable(true);
-		}
 	}
 	
 	//Fills the info of the Task

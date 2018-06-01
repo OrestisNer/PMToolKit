@@ -1,6 +1,7 @@
 package application.Controllers;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -25,6 +26,7 @@ public class CProjects implements Initializable{
 	
 	private Window window;
 	private User employee;
+	private ArrayList<Project> projects;
 
 	@FXML private ListView<Project> projectsListView;
 	@FXML private Button createButton;
@@ -36,6 +38,7 @@ public class CProjects implements Initializable{
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		projects = Utils.getProjectsFromFile();
 		fillProjectListView();
 	}
 	
@@ -55,22 +58,21 @@ public class CProjects implements Initializable{
         }
 	}
 	
-	
-	
 	public void onCreateClicked(ActionEvent actionEvent) throws Exception{
 		String name=nameField.getText().toString().toUpperCase().trim();
 		if(!name.isEmpty()){
-			for(Project project : employee.getProjects()){
-				if(project.getName().equalsIgnoreCase(name)){
+			for(String project : employee.getProjects()){
+				if(project.equalsIgnoreCase(name)){
 					Utils.createErrorAlert("Error", "Project Name", "This project name already exists");
 					return;
 				}
 			}
 			
 			Project project = new Project(name,employee);
-			employee.addProject(project);
+			employee.addProject(project.getName());
 			
 			Utils.saveEmployeeChanges(employee);
+			Utils.saveProjectChanges(project);
 			fillProjectListView();
 			
 			Stage stage= Utils.getStageFromEvent(actionEvent);
@@ -93,8 +95,18 @@ public class CProjects implements Initializable{
 	
 	
 	private void fillProjectListView(){
-		ObservableList<Project> projects = FXCollections.observableArrayList(employee.getProjects());
-		projectsListView.setItems(projects);
+		ArrayList<String> employeeProjects = employee.getProjects();
+		ArrayList<Project> employeePJ = new ArrayList<>();
+				
+		for(Project project:projects) {
+			for(String employeePj: employeeProjects) {
+				if(project.getName().equalsIgnoreCase(employeePj)) 
+					employeePJ.add(project);
+			}
+		}
+		
+		ObservableList<Project> projectList = FXCollections.observableArrayList(employeePJ);
+		projectsListView.setItems(projectList);
 		projectsListView.setCellFactory(param -> new ListCell<Project>() {
 		    @Override
 		    protected void updateItem(Project project, boolean empty) {

@@ -68,18 +68,23 @@ public class Utils {
 	public static void saveEmployeeChanges(User employee) throws IOException{
 		ArrayList<User> employees = getEmployeesFromFile();
 		
-		for (Iterator<User> iterator = employees.iterator(); iterator.hasNext(); ) {
+		/*for (Iterator<User> iterator = employees.iterator(); iterator.hasNext(); ) {
 		    User emp = iterator.next();
 		    if (emp.getUsername().equalsIgnoreCase(employee.getUsername())) {
 		        iterator.remove();
 		    }
 		}
 		
-		employees.add(employee);
-		writeToEmployeeFile(employees);
+		employees.add(employee);*/
+		ArrayList<User> newFile = new ArrayList<User>();
+		for(User emp: employees) {
+			if(!emp.getName().equals(employee.getName()))
+				newFile.add(emp);
+		}
+		newFile.add(employee);
+		writeToEmployeeFile(newFile);
 	}
 	
-	/*
 	public static void saveProjectChanges(Project project) throws IOException{
 		ArrayList<Project> projects = getProjectsFromFile();
 		
@@ -93,7 +98,7 @@ public class Utils {
 		projects.add(project);
 		writeToProjectFile(projects);
 	}
-	*/
+	
 	@SuppressWarnings("unchecked")
 	public static ArrayList<User> getEmployeesFromFile(){
 		ArrayList<User> employees=null;
@@ -110,7 +115,7 @@ public class Utils {
 		return employees;
 	}
 	
-	/*@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public static ArrayList<Project> getProjectsFromFile(){
 		ArrayList<Project> projects=null;
 		String filename="Projects";
@@ -124,7 +129,7 @@ public class Utils {
 		}
 		
 		return projects;
-	}*/
+	}
 	
 	public static void writeToEmployeeFile(ArrayList<User> employees) throws IOException{
 		ObjectOutputStream  outStream=null;
