@@ -26,6 +26,7 @@ public class CMainWindow implements Initializable {
 	@FXML private Button tasksButton;
 	@FXML private Button messagesButton;
 	@FXML private Button evaluationButton;
+	@FXML private Button employeesButton;
 	@FXML private Label headerLabel;
 	
 	public CMainWindow(User employee, Project project){
@@ -60,7 +61,7 @@ public class CMainWindow implements Initializable {
 	
 	//Employees button clicked
 	public void onEmployeesClicked() throws Exception{
-		controller= new CEmployees();
+		controller= new CEmployees(project,employeesButton.getText());
 		window= new Window("Employees","Employees.fxml",controller,true);
 		window.createWindow();
 	}

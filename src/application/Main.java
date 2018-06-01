@@ -29,9 +29,7 @@ public class Main extends Application{
 	private void createEmpFile() throws IOException{
 		ArrayList<User> emp= new ArrayList<User>();
 		User pm = new ProjectManager("ProjectManager","123","Stefanos","Mpitzenis",50000,"Project Manager");
-		User employee = new Employee("Orestis","123","Orestis","Nerantzis","Programmer",1000);
 		emp.add(pm);
-		emp.add(employee);
 		String filename="Employees";
 		ObjectOutputStream  outStream=null;
 	    try{

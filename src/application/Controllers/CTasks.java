@@ -71,7 +71,7 @@ public class CTasks implements Initializable{
 	public CTasks(Project project, User employee,  String buttonText) {
 		this.project=project;
 		this.employee=employee;
-		tasks = employee.getUnfinishedTasks();
+		tasks = employee.getUnfinishedTasks(project);
 		this.buttonText = buttonText;
 	}
 	
@@ -296,22 +296,12 @@ public class CTasks implements Initializable{
 		tasks.add(task);
 		project.addTask(task);
 		project.addEmployees(employees);
-		employee.addTask(task);
+		employee.addTask(project,task);
 		Utils.saveEmployeeChanges(employee);
-		
-		/*for(User employee : employees){
-			if(employee instanceof Employee){
-				employee.addTask(task);
-				if(!employee.getProjects().contains(project)){
-					employee.addProject(project);
-				}
-				Utils.saveEmployeeChanges(employee);
-			}
-		}*/
 		
 		for(User employee : employees){
 			if(employee instanceof Employee){
-				employee.addTask(task);
+				employee.addTask(project,task);
 				
 				ArrayList<Project> projects = employee.getProjects();
 				if(projects.isEmpty())

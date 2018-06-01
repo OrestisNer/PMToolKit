@@ -15,7 +15,7 @@ public abstract class User implements Serializable {
 	protected ArrayList<Message> messages;	
 	protected ArrayList<Project> projects;
 	protected String speciality;
-	protected HashMap<Task,Boolean> tasks;
+	protected HashMap<Project,HashMap<Task,Boolean>> tasks;
 	
 	public User(String username, String password, String firstname, String lastname, double salary, String speciality){
 		this.username=username;
@@ -26,7 +26,7 @@ public abstract class User implements Serializable {
 		this.speciality=speciality;
 		messages= new ArrayList<Message>();
 		projects= new ArrayList<Project>();
-		tasks= new HashMap<Task,Boolean>();
+		tasks= new HashMap<Project,HashMap<Task,Boolean>>();
 		
 	}
 	
@@ -58,24 +58,39 @@ public abstract class User implements Serializable {
 		return speciality;
 	}
 	
-	public void addTask(Task task){
-		tasks.put(task, false);
+	public void addTask(Project project,Task task){
+		
+		try{
+			tasks.get(project).put(task, false);
+		}catch(NullPointerException e){
+			HashMap<Task, Boolean> taskList = new HashMap<Task,Boolean>();
+			taskList.put(task, false);
+			tasks.put(project, taskList);
+		}
 	}
 	
-	public HashMap<Task,Boolean> getTasks(){
-		return tasks;
+	public HashMap<Task,Boolean> getTasks(Project project){
+		
+		return tasks.get(project);
 	}
 	
-	public ArrayList<Task> getUnfinishedTasks(){
+	public ArrayList<Task> getUnfinishedTasks(Project project){
 		ArrayList<Task> unfinishedTask= new ArrayList<Task>();
-		for (Entry<Task, Boolean> entry : tasks.entrySet()) {
-		    Task task = entry.getKey();
-		    Boolean finished = entry.getValue();
-		    if(!finished){
-		    	unfinishedTask.add(task);
-		    }
+		HashMap<Task,Boolean> employeeTasks;
+		try{
+			employeeTasks=tasks.get(project);
+			for (Entry<Task, Boolean> entry : employeeTasks.entrySet()) {
+			    Task task = entry.getKey();
+			    Boolean finished = entry.getValue();
+			    if(!finished){
+			    	unfinishedTask.add(task);
+			    }
+			}
+		}catch(NullPointerException e){
+			//do nothing
 		}
 		return unfinishedTask;
+		
 	}
 	
 	public ArrayList<Message> getMessages(){

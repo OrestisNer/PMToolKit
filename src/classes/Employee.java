@@ -12,7 +12,7 @@ public class Employee extends User  {
 	private double manmonthsEmployment;
 	
 	
-	public Employee(String username, String password, String firstname, String lastname, String speciality, double salary){
+	public Employee(String username, String password, String firstname, String lastname, double salary,String speciality){
 		super(username,password,firstname,lastname, salary,speciality);		
 	}
 	
@@ -22,5 +22,13 @@ public class Employee extends User  {
 	
 	public void setGrade(String grade) {
 		this.grade = grade;
+	}
+	
+	public String getEvaluation(){
+		return evaluation;
+	}
+	
+	public String getGrade(){
+		return grade;
 	}
 }

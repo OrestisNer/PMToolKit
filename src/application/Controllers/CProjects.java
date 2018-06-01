@@ -71,7 +71,6 @@ public class CProjects implements Initializable{
 			employee.addProject(project);
 			
 			Utils.saveEmployeeChanges(employee);
-			//Utils.saveProjectChanges(project);
 			fillProjectListView();
 			
 			Stage stage= Utils.getStageFromEvent(actionEvent);

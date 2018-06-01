@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Project implements Serializable{
 	
-	private User projectmanager;
+	private User projectManager;
 	private String name;
 	private ArrayList<Task> tasks;
 	private ArrayList<User> employees;
@@ -16,12 +16,13 @@ public class Project implements Serializable{
 	private Calendar calendar;
 	private Cost cost;
 	
-	public Project(String name, User employee){
+	public Project(String name, User projectManager){
 		this.name=name;
-		this.projectmanager=employee;
+		this.projectManager=projectManager;
 		this.startingDate= LocalDate.now();
 		tasks= new ArrayList<Task>();
 		employees= new ArrayList<User>();
+		employees.add(projectManager);
 		diagrams= new ArrayList<Diagram>();
 	}
 	
@@ -31,6 +32,10 @@ public class Project implements Serializable{
 	
 	public void addEmployees(ArrayList<User> emp){
 		employees.addAll(emp);
+	}
+	
+	public void addEmployee(User employee){
+		employees.add(employee);
 	}
 	
 	public void addDiagram(Diagram diagram){
@@ -57,6 +62,10 @@ public class Project implements Serializable{
 	
 	public ArrayList<User> getEmployees(){
 		return employees;
+	}
+	
+	public User getProjectManager(){
+		return projectManager;
 	}
 	
 	
