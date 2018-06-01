@@ -7,7 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Optional;
 
 import classes.Project;
 import classes.User;
@@ -15,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
@@ -32,6 +32,21 @@ public class Utils {
         alert.setHeaderText(headerText);
         alert.setContentText(contentText);
         return alert;
+	}
+	
+	public static Alert createCustomConfirmationAlert(String title, String headerText, String contentText){
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle(title);
+		alert.setHeaderText(headerText);
+		alert.setContentText(contentText);
+
+		ButtonType buttonYes = new ButtonType("Yes");
+		ButtonType buttonNo = new ButtonType("No");
+		
+
+		alert.getButtonTypes().setAll(buttonYes,buttonNo);
+		
+		return alert;
 	}
 	
 	public static void createErrorAlert(String title, String headerText, String contentText){
@@ -68,21 +83,16 @@ public class Utils {
 	public static void saveEmployeeChanges(User employee) throws IOException{
 		ArrayList<User> employees = getEmployeesFromFile();
 		
-		/*for (Iterator<User> iterator = employees.iterator(); iterator.hasNext(); ) {
+		for (Iterator<User> iterator = employees.iterator(); iterator.hasNext(); ) {
 		    User emp = iterator.next();
 		    if (emp.getUsername().equalsIgnoreCase(employee.getUsername())) {
 		        iterator.remove();
 		    }
 		}
 		
-		employees.add(employee);*/
-		ArrayList<User> newFile = new ArrayList<User>();
-		for(User emp: employees) {
-			if(!emp.getName().equals(employee.getName()))
-				newFile.add(emp);
-		}
-		newFile.add(employee);
-		writeToEmployeeFile(newFile);
+		employees.add(employee);
+		writeToEmployeeFile(employees);
+		
 	}
 	
 	public static void saveProjectChanges(Project project) throws IOException{

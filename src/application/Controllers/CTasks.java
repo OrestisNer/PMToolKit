@@ -39,7 +39,7 @@ public class CTasks implements Initializable{
 	private Project project;
 	private String buttonText;
 	private User employee;
-	private ArrayList<Task> tasks;
+	private ArrayList<Task> employeeTasks;
 	private ArrayList<User> employees;
 	
 	//Tasks.fxml
@@ -73,7 +73,7 @@ public class CTasks implements Initializable{
 	public CTasks(Project project, User employee,  String buttonText) {
 		this.project=project;
 		this.employee=employee;
-		tasks = employee.getUnfinishedTasks(project);
+		employeeTasks = employee.getUnfinishedTasks(project);
 		this.buttonText = buttonText;
 	}
 	
@@ -297,7 +297,7 @@ public class CTasks implements Initializable{
 		
 		Task task = new Task(taskName,prerequisites,employees,estimatedTime,description,startingDate,project);
 		
-		tasks.add(task);
+		employeeTasks.add(task);
 		project.addTask(task);		
 		employee.addTask(project,task);
 		Utils.saveEmployeeChanges(employee);

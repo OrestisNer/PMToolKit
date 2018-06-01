@@ -15,7 +15,7 @@ public abstract class User implements Serializable {
 	protected ArrayList<Message> messages;	
 	protected ArrayList<String> projects;
 	protected String specialty;
-	protected HashMap<Project,HashMap<Task,Boolean>> tasks;
+	protected HashMap<String,HashMap<Task,Boolean>> tasks;
 	
 	public User(String username, String password, String firstname, String lastname, double salary, String specialty){
 		this.username=username;
@@ -26,7 +26,7 @@ public abstract class User implements Serializable {
 		this.specialty=specialty;
 		messages= new ArrayList<Message>();
 		projects= new ArrayList<String>();
-		tasks= new HashMap<Project,HashMap<Task,Boolean>>();
+		tasks= new HashMap<String,HashMap<Task,Boolean>>();
 		
 	}
 	
@@ -61,11 +61,13 @@ public abstract class User implements Serializable {
 	public void addTask(Project project,Task task){
 		
 		try{
-			tasks.get(project).put(task, false);
+			tasks.get(project.getName()).put(task, false);
 		}catch(NullPointerException e){
 			HashMap<Task, Boolean> taskList = new HashMap<Task,Boolean>();
 			taskList.put(task, false);
-			tasks.put(project, taskList);
+			tasks.put(project.getName(), taskList);
+			e.printStackTrace();
+			System.out.println("new HashMap<Task,Boolean> taskList ");
 		}
 	}
 	
@@ -78,7 +80,7 @@ public abstract class User implements Serializable {
 		ArrayList<Task> unfinishedTask= new ArrayList<Task>();
 		HashMap<Task,Boolean> employeeTasks;
 		try{
-			employeeTasks=tasks.get(project);
+			employeeTasks=tasks.get(project.getName());
 			for (Entry<Task, Boolean> entry : employeeTasks.entrySet()) {
 			    Task task = entry.getKey();
 			    Boolean finished = entry.getValue();
@@ -87,14 +89,8 @@ public abstract class User implements Serializable {
 			    }
 			}
 		}catch(NullPointerException e){
-			//do nothing
-		}
-		
-		if(unfinishedTask.isEmpty())
-			System.out.println("Empty list");
-		else {
-			for(Task t: unfinishedTask)
-				System.out.println(t.getName());
+			System.out.println("getUnfinishedTasks problem.");
+			e.printStackTrace();
 		}
 		
 		return unfinishedTask;
@@ -109,5 +105,7 @@ public abstract class User implements Serializable {
 	public String toString() {
 		return this.getName();
 	}
+	
+	
 	
 }

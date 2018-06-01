@@ -138,16 +138,18 @@ public class CEmployees implements Initializable{
 		String lastname = lastNameField.getText();
 		double salary = Double.parseDouble(salaryField.getText());
 		User employee = new Employee(username,password,firstname,lastname,salary,speciality);
-		Alert alert=Utils.createConfirmationAlert("Add Employee", null, "Do you want to add employee "+username+" to this project?");
+		Alert alert=Utils.createCustomConfirmationAlert("Add Employee", null, "Do you want to add employee "+username+" to this project?");
 		
 		Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-        	project.addEmployee(employee);
+		
+		if (result.get().getText().equals("Yes")){
+			project.addEmployee(employee);
         	employee.addProject(project.getName());
-        }
-        
+        	Utils.saveProjectChanges(project);
+		}
+		
         Utils.saveEmployeeChanges(employee);
-        Utils.saveProjectChanges(project);
+        
 	}
 	
 	private boolean hasAppropriateArgs(){
