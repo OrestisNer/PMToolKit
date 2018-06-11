@@ -39,7 +39,7 @@ public class CTasks implements Initializable{
 	private Project project;
 	private String buttonText;
 	private User employee;
-	private ArrayList<Task> employeeTasks;
+	private ArrayList<String> employeeTasks;
 	private ArrayList<User> employees;
 	
 	//Tasks.fxml
@@ -128,7 +128,8 @@ public class CTasks implements Initializable{
 	
 	//Fills taskListView
 	private void fillTaskListView(){
-		ObservableList<Task> taskList = FXCollections.observableArrayList(employee.getUnfinishedTasks(project));
+		ArrayList<String> userTasksID=employee.getUnfinishedTasks(project);
+		ObservableList<Task> taskList = FXCollections.observableArrayList(Utils.getTasksFromID(userTasksID));
 		tasksListView.setItems(taskList);
 		tasksListView.setCellFactory(param -> new ListCell<Task>() {
 		    @Override
@@ -163,9 +164,10 @@ public class CTasks implements Initializable{
 	}
 	
 	//Returns which tasks will be completed based on the deadline of the task the user is creating
-	private ArrayList<Task> getPrerequisitesTasks(ArrayList<Task> tasks,LocalDate startingDate){
+	private ArrayList<Task> getPrerequisitesTasks(ArrayList<String> tasksID,LocalDate startingDate){
 		ArrayList<Task> prerequisitesTasks= new ArrayList<Task>();
-		for(Task task: tasks){
+		for(String tID: tasksID){
+			Task task = Utils.getSingleTaskFromFile(tID);
 			if(Calendar.isBefore(task.getDeadLine(), startingDate)){
 				prerequisitesTasks.add(task);
 			}
@@ -175,7 +177,8 @@ public class CTasks implements Initializable{
 	
 	//Fills prerequisitesListView based on the selected date from startingDatePicker
 	private void fillPrerequisitesListView(LocalDate startingDate){
-		ArrayList<Task> prerequisitesTasks = getPrerequisitesTasks(employee.getUnfinishedTasks(project),startingDate) ;
+		ArrayList<String> unfinishedTasksID=employee.getUnfinishedTasks(project);
+		ArrayList<Task> prerequisitesTasks = getPrerequisitesTasks(unfinishedTasksID,startingDate) ;
 		this.prerequisitesListView.getItems().clear();
 		if(!prerequisitesTasks.isEmpty()){
 			this.prerequisitesListView.setDisable(false);
@@ -296,8 +299,8 @@ public class CTasks implements Initializable{
 		
 		
 		Task task = new Task(taskName,prerequisites,employees,estimatedTime,description,startingDate,project);
-		
-		employeeTasks.add(task);
+		Utils.saveTaskChanges(task);
+		employeeTasks.add(task.getId());
 		project.addTask(task);		
 		employee.addTask(project,task);
 		Utils.saveEmployeeChanges(employee);
@@ -324,7 +327,9 @@ public class CTasks implements Initializable{
 	//TaskInfo.fxml methods
 	
 	//Fills prerequisitesInfoListView
-	private void fillPrerequisitesInfoListView(Task task){
+	private void fillPrerequisitesInfoListView(String taskID){
+		Task task= Utils.getSingleTaskFromFile(taskID);
+		System.out.println(task.getId());
 		ArrayList<Task> prerequisitesTasks= task.getPrerequisites();
 		prerequisitesInfoListView.getItems().clear();
 		if(!prerequisitesTasks.isEmpty()){
@@ -353,7 +358,7 @@ public class CTasks implements Initializable{
 		this.startingDateLabel.setText(task.getStartingDate().toString());
 		this.deadLineLabel.setText(task.getDeadLine().toString());
 		this.fillEmployeesListView(task.getEmployees(), employeesInfoListView);
-		this.fillPrerequisitesInfoListView(task);
+		this.fillPrerequisitesInfoListView(task.getId());
 		this.descriptionInfoArea.setText(task.getDescription());
 		this.estimatedTimeLabel.setText(task.getEstimatedDuration()+"");
 		this.estimatedManMonthsLabel.setText(task.getEstimatedManMonths()+"");

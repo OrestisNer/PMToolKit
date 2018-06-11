@@ -25,7 +25,8 @@ public class Main extends Application{
 		Window window = new Window("Log In","LogIn.fxml",new CLogIn(),true);	
 		window.createWindow();
 		/*createEmpFile();
-		createProjectFile();*/
+		createProjectFile();
+		createTaskFile();*/
 	}
 	
 	private void createEmpFile() throws IOException{
@@ -52,6 +53,21 @@ public class Main extends Application{
 	    try{
 	    	outStream=new ObjectOutputStream(new FileOutputStream(filename));
 	    	outStream.writeObject(projects);
+	    	outStream.close();
+	    }catch(IOException e){
+	    	System.out.println("Error writing to file "+filename);
+	    	System.exit(0);
+	    }
+	}
+	
+	private void createTaskFile() throws IOException{
+		ArrayList<Project> tasks = new ArrayList<>();
+		String filename = "Tasks";
+		ObjectOutputStream  outStream=null;
+		
+	    try{
+	    	outStream=new ObjectOutputStream(new FileOutputStream(filename));
+	    	outStream.writeObject(tasks);
 	    	outStream.close();
 	    }catch(IOException e){
 	    	System.out.println("Error writing to file "+filename);

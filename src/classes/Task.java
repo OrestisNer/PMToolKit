@@ -23,6 +23,7 @@ public class Task implements Serializable{
 	private double actualManMonths;
 	private int numberOfEmployees;
 	private Project project;
+	private String id; 
 	
 	
 	public Task(String name, ArrayList<Task> presequisitesTasks, ArrayList<User> emp, int estimatedDuration, String description
@@ -46,6 +47,8 @@ public class Task implements Serializable{
 		this.estimatedManMonths= calcManMonths(numberOfEmployees,estimatedDuration);
 		this.completed=false;
 		this.project=project;
+		this.id=project.getName()+name;
+		id=id.replaceAll("\\s","").toUpperCase().trim();
 	}
 	
 	public void confirmTask(Employee employee){
@@ -150,5 +153,9 @@ public class Task implements Serializable{
 	
 	public double getActualManMonths(){
 		return actualManMonths;
+	}
+	
+	public String getId(){
+		return id;
 	}
 }

@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import classes.Project;
+import classes.Task;
 import classes.User;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
@@ -109,6 +109,20 @@ public class Utils {
 		writeToProjectFile(projects);
 	}
 	
+	public static void saveTaskChanges(Task task) throws IOException{
+		ArrayList<Task> tasks= getTasksFromFile();
+		
+		for(Iterator<Task> iterator = tasks.iterator(); iterator.hasNext();){
+			Task t = iterator.next();
+			if(t.getId().equalsIgnoreCase(task.getId())){
+				iterator.remove();
+			}
+		}
+		
+		tasks.add(task);
+		writeToTaskFile(tasks);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static ArrayList<User> getEmployeesFromFile(){
 		ArrayList<User> employees=null;
@@ -141,6 +155,20 @@ public class Utils {
 		return projects;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static ArrayList<Task> getTasksFromFile(){
+		ArrayList<Task> tasks=null;
+		String filename="Tasks";
+		ObjectInputStream inputStream= null;
+		try{
+			inputStream=new ObjectInputStream(new FileInputStream(filename));
+			tasks= (ArrayList<Task>) inputStream.readObject();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return tasks;
+	}
+	
 	public static void writeToEmployeeFile(ArrayList<User> employees) throws IOException{
 		ObjectOutputStream  outStream=null;
 		String filename="Employees";
@@ -167,5 +195,41 @@ public class Utils {
 	    	e.printStackTrace();
 	    }
 		
+	}
+	
+	public static void writeToTaskFile(ArrayList<Task> tasks) throws IOException{
+		ObjectOutputStream  outStream=null;
+		String filename="Tasks";
+		try{
+			outStream=new ObjectOutputStream(new FileOutputStream(filename));
+	    	outStream.writeObject(tasks);
+	    	outStream.close();
+		}catch(IOException e){
+			System.out.println("Error writing to file "+filename);
+	    	e.printStackTrace();
+		}
+		
+	}
+	
+	public static ArrayList<Task> getTasksFromID(ArrayList<String> tasksId){
+		ArrayList<Task> allTasks = getTasksFromFile();
+		ArrayList<Task> returnedTasks= new ArrayList<Task>();
+		for(Iterator<Task> iterator = allTasks.iterator(); iterator.hasNext();){
+			Task t=iterator.next();
+			if(tasksId.contains(t.getId()))
+				returnedTasks.add(t);
+		}
+		return returnedTasks;
+	}
+	
+	public static Task getSingleTaskFromFile(String taskId){
+		ArrayList<Task> allTasks = getTasksFromFile();
+		for(Iterator<Task> iterator = allTasks.iterator(); iterator.hasNext();){
+			Task t= iterator.next();
+			if(t.getId().equalsIgnoreCase(taskId))
+				return t;
+		}
+		return null;
+	
 	}
 }

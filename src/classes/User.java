@@ -15,7 +15,7 @@ public abstract class User implements Serializable {
 	protected ArrayList<Message> messages;	
 	protected ArrayList<String> projects;
 	protected String specialty;
-	protected HashMap<String,HashMap<Task,Boolean>> tasks;
+	protected HashMap<String,HashMap<String,Boolean>> tasks;
 	
 	public User(String username, String password, String firstname, String lastname, double salary, String specialty){
 		this.username=username;
@@ -26,7 +26,7 @@ public abstract class User implements Serializable {
 		this.specialty=specialty;
 		messages= new ArrayList<Message>();
 		projects= new ArrayList<String>();
-		tasks= new HashMap<String,HashMap<Task,Boolean>>();
+		tasks= new HashMap<String,HashMap<String,Boolean>>();
 		
 	}
 	
@@ -61,36 +61,34 @@ public abstract class User implements Serializable {
 	public void addTask(Project project,Task task){
 		
 		try{
-			tasks.get(project.getName()).put(task, false);
+			tasks.get(project.getName()).put(task.getId(), false);
 		}catch(NullPointerException e){
-			HashMap<Task, Boolean> taskList = new HashMap<Task,Boolean>();
-			taskList.put(task, false);
+			HashMap<String, Boolean> taskList = new HashMap<String,Boolean>();
+			taskList.put(task.getId(), false);
 			tasks.put(project.getName(), taskList);
-			e.printStackTrace();
 			System.out.println("new HashMap<Task,Boolean> taskList ");
 		}
 	}
 	
-	public HashMap<Task,Boolean> getTasks(Project project){
+	public HashMap<String,Boolean> getTasks(Project project){
 		
 		return tasks.get(project);
 	}
 	
-	public ArrayList<Task> getUnfinishedTasks(Project project){
-		ArrayList<Task> unfinishedTask= new ArrayList<Task>();
-		HashMap<Task,Boolean> employeeTasks;
+	public ArrayList<String> getUnfinishedTasks(Project project){
+		ArrayList<String> unfinishedTask= new ArrayList<String>();
+		HashMap<String,Boolean> employeeTasks;
 		try{
 			employeeTasks=tasks.get(project.getName());
-			for (Entry<Task, Boolean> entry : employeeTasks.entrySet()) {
-			    Task task = entry.getKey();
+			for (Entry<String, Boolean> entry : employeeTasks.entrySet()) {
+			    String taskID = entry.getKey();
 			    Boolean finished = entry.getValue();
 			    if(!finished){
-			    	unfinishedTask.add(task);
+			    	unfinishedTask.add(taskID);
 			    }
 			}
 		}catch(NullPointerException e){
 			System.out.println("getUnfinishedTasks problem.");
-			e.printStackTrace();
 		}
 		
 		return unfinishedTask;
