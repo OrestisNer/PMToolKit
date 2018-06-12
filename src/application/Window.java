@@ -43,7 +43,7 @@ public class Window {
 	
 	public void createWindow() throws Exception{
 		Stage window = new Stage();
-		
+		stage=window;
 	    if(modality)
 			window.initModality(Modality.APPLICATION_MODAL);
 		window.setTitle(title);
@@ -73,6 +73,10 @@ public class Window {
 		Parent root = loader.load();
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
+	}
+	
+	public Stage getStage(){
+		return stage;
 	}
 
 }

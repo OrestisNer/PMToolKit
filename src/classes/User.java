@@ -58,7 +58,7 @@ public abstract class User implements Serializable {
 		return specialty;
 	}
 	
-	public void addTask(Project project,Task task){
+	public void addTask(Project project,Activity task){
 		
 		try{
 			tasks.get(project.getName()).put(task.getId(), false);

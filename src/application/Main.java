@@ -26,7 +26,8 @@ public class Main extends Application{
 		window.createWindow();
 		/*createEmpFile();
 		createProjectFile();
-		createTaskFile();*/
+		createTaskFile();
+		System.exit(0);*/
 	}
 	
 	private void createEmpFile() throws IOException{

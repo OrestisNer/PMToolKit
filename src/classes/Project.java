@@ -38,7 +38,7 @@ public class Project implements Serializable{
 		
 	}
 	
-	public void addTask(Task task){
+	public void addTask(Activity task){
 		tasksID.add(task.getId());
 	}
 	
@@ -55,9 +55,9 @@ public class Project implements Serializable{
 	}
 	
 	public void createFolder(){
-		File theDir = new File("Projects/"+name);
+		File theDir = new File("Project Files/"+name);
 		try{
-		    theDir.mkdir();
+		    theDir.mkdirs();
 		} 
 		catch(SecurityException se){
 		     //Failed Message
@@ -68,7 +68,7 @@ public class Project implements Serializable{
 		return name;
 	}
 	
-	public ArrayList<String> getTasks(){
+	public ArrayList<String> getTasksIds(){
 		return tasksID;
 	}
 	

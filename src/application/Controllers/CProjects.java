@@ -69,6 +69,7 @@ public class CProjects implements Initializable{
 			}
 			
 			Project project = new Project(name,employee);
+			project.createFolder();
 			employee.addProject(project.getName());
 			
 			Utils.saveEmployeeChanges(employee);

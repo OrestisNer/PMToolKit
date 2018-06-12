@@ -1,12 +1,138 @@
 package application.Controllers;
 
-import application.Utils;
-import javafx.event.ActionEvent;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
-public class CInfo {
+import application.Utils;
+import classes.Activity;
+import classes.Project;
+import classes.User;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+public class CInfo implements Initializable {
+	
+	private @FXML Label nameLabel;
+	private @FXML Label categoryLabel;
+	private @FXML Label locLabel; // lines of code 
+	private @FXML Label estimatedDurationLabel;
+	private @FXML Label estimatedManmonthsLabel;
+	private @FXML Label currentManmonthsLabel;
+	private @FXML Label completedPercentLabel;
+	private @FXML Label totalCostLabel;
+	private @FXML Label currentCostLabel;
+	private @FXML Button showTaskButton;
+	
+	private Project project;
+	
+	public CInfo(Project project){
+		this.project=project;
+	}
 	
 	public void onBackClicked(ActionEvent actionEvent) throws Exception{
 		Utils.closeWindow(actionEvent);
 	}
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		nameLabel.setText(project.getName());
+		//categoryLabel.setText(project.getCategory());
+		//locLabel.setText(project.getLoc());
+		//estimatedDurationLabel.setText(project.getEstimatedDuration());
+		//estimatedManmonthsLabel.setText(project.getEstimatedManmonths());
+		//currentManmonthsLabel.setText(project.getEstimatedManmonths());
+		//completedPercentLabel.setText(project.getCompletedPercent());
+		//totalCostLabel.setText(project.getTotalCost());
+		//currentCostLabel.setText(project.getCurrnetCost());
+	}
+	
+	public void onShowTaskClicked(){
+		ListView<String> taskListView= new ListView<String>();
+		Button backButton = new Button("  Back  ");
+		ArrayList<String> activitiesids  = project.getTasksIds();
+		ArrayList<Activity> activities= Utils.getTasksFromID(activitiesids);
+		activitiesids.clear();
+		for(Activity act : activities){
+			activitiesids.add(act.getName());
+		}
+
+		ObservableList<String> list =  FXCollections.observableArrayList(activitiesids);
+		
+		taskListView.setItems(list);
+		BorderPane.setAlignment(taskListView,Pos.CENTER);
+		BorderPane.setAlignment(backButton, Pos.BOTTOM_CENTER);
+		BorderPane layout = new BorderPane(taskListView,null,null,backButton,null);
+		BorderPane.setMargin(taskListView, new Insets(15,15,15,15));
+
+        Scene scene = new Scene(layout, 400, 200);
+        
+        Stage window = new Stage();
+        window.setTitle("Activities");
+        window.setScene(scene);
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.show();
+        
+        backButton.setOnAction(new EventHandler<ActionEvent>(){
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				window.close();
+			}
+        });
+	}
+	
+	public void onShowEmployeeClicked(){
+		ListView<String> employeeListView= new ListView<String>();
+		Button backButton = new Button("  Back  ");
+		ArrayList<User> employees  = project.getEmployees();
+		ArrayList<String> empInfo = new ArrayList<String>();
+		for(User emp : employees){
+			empInfo.add(emp.getName()+"-"+emp.getSpecialty());
+		}
+
+		ObservableList<String> list =  FXCollections.observableArrayList(empInfo);
+		
+		employeeListView.setItems(list);
+		
+		BorderPane.setAlignment(employeeListView,Pos.CENTER);
+		BorderPane.setAlignment(backButton, Pos.BOTTOM_CENTER);
+		BorderPane layout = new BorderPane(employeeListView,null,null,backButton,null);
+		BorderPane.setMargin(employeeListView, new Insets(15,15,15,15));
+        Scene scene = new Scene(layout, 400, 200);
+        
+        
+        Stage window = new Stage();
+        
+       
+        window.setTitle("Employees");
+        window.setScene(scene);
+        window.initModality(Modality.APPLICATION_MODAL);
+
+        window.show();
+        
+        backButton.setOnAction(new EventHandler<ActionEvent>(){
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				window.close();
+			}
+        });
+	}
+	
+	
 
 }

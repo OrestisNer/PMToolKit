@@ -28,6 +28,7 @@ public class CMainWindow implements Initializable {
 	@FXML private Button evaluationButton;
 	@FXML private Button employeesButton;
 	@FXML private Label headerLabel;
+	@FXML private Label usernameLabel;
 	
 	public CMainWindow(User employee, Project project){
 		this.employee=employee;
@@ -38,6 +39,7 @@ public class CMainWindow implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		headerLabel.setText(project.getName());
+		usernameLabel.setText(employee.getUsername());
 	}
 	
 	//Tasks button clicked
@@ -75,7 +77,7 @@ public class CMainWindow implements Initializable {
 	
 	//Diagrams button clicked
 	public void onDiagramsClicked() throws Exception{
-		controller = new CDiagrams();
+		controller = new CDiagrams(project);
 		window= new Window("Diagrams","Diagrams.fxml",controller,true);
 		window.createWindow();
 	}
@@ -89,7 +91,7 @@ public class CMainWindow implements Initializable {
 	
 	//Info button clicked
 	public void onInfoClicked() throws Exception{
-		controller = new CInfo();
+		controller = new CInfo(project);
 		window = new Window("Project Info","ProjectInfo.fxml",controller,true);
 		window.createWindow();
 	}

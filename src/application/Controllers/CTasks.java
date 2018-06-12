@@ -15,7 +15,7 @@ import application.Window;
 import classes.Calendar;
 import classes.Employee;
 import classes.Project;
-import classes.Task;
+import classes.Activity;
 import classes.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,11 +43,11 @@ public class CTasks implements Initializable{
 	private ArrayList<User> employees;
 	
 	//Tasks.fxml
-	@FXML private ListView<Task> tasksListView;
+	@FXML private ListView<Activity> tasksListView;
 	@FXML private Button createTaskButton;
 	@FXML private Button selectTaskButton;
 	//CreateTask.fxml
-	@FXML private ListView<Task> prerequisitesListView;
+	@FXML private ListView<Activity> prerequisitesListView;
 	@FXML private ListView<User> employeesListView;
 	@FXML private DatePicker startingDatePicker;
 	@FXML private TextField averageTimeField;
@@ -59,7 +59,7 @@ public class CTasks implements Initializable{
 	@FXML private TextArea descriptionArea;
 	@FXML private Button createButton;
 	//TaskInfo.fxml
-	@FXML private ListView<Task> prerequisitesInfoListView;
+	@FXML private ListView<Activity> prerequisitesInfoListView;
 	@FXML private ListView<User> employeesInfoListView;
 	@FXML private Label taskNameLabel;
 	@FXML private Label startingDateLabel;
@@ -94,7 +94,7 @@ public class CTasks implements Initializable{
 			prerequisitesListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		//if the button clicked is Select Task from Tasks Window
 		}else if(buttonText.equals(selectTaskButton.getText())){
-			Task task = tasksListView.getSelectionModel().getSelectedItem();
+			Activity task = tasksListView.getSelectionModel().getSelectedItem();
 			fillTaskInfo(task);
 		}else {
 			// HashMap<Project,HashMap<Task,Boolean>> tasks = employee.getTasks(project);
@@ -129,11 +129,11 @@ public class CTasks implements Initializable{
 	//Fills taskListView
 	private void fillTaskListView(){
 		ArrayList<String> userTasksID=employee.getUnfinishedTasks(project);
-		ObservableList<Task> taskList = FXCollections.observableArrayList(Utils.getTasksFromID(userTasksID));
+		ObservableList<Activity> taskList = FXCollections.observableArrayList(Utils.getTasksFromID(userTasksID));
 		tasksListView.setItems(taskList);
-		tasksListView.setCellFactory(param -> new ListCell<Task>() {
+		tasksListView.setCellFactory(param -> new ListCell<Activity>() {
 		    @Override
-		    protected void updateItem(Task task, boolean empty) {
+		    protected void updateItem(Activity task, boolean empty) {
 		        super.updateItem(task, empty);
 
 		        if (task == null || task.getName() == null) {
@@ -164,10 +164,10 @@ public class CTasks implements Initializable{
 	}
 	
 	//Returns which tasks will be completed based on the deadline of the task the user is creating
-	private ArrayList<Task> getPrerequisitesTasks(ArrayList<String> tasksID,LocalDate startingDate){
-		ArrayList<Task> prerequisitesTasks= new ArrayList<Task>();
+	private ArrayList<Activity> getPrerequisitesTasks(ArrayList<String> tasksID,LocalDate startingDate){
+		ArrayList<Activity> prerequisitesTasks= new ArrayList<Activity>();
 		for(String tID: tasksID){
-			Task task = Utils.getSingleTaskFromFile(tID);
+			Activity task = Utils.getSingleTaskFromFile(tID);
 			if(Calendar.isBefore(task.getDeadLine(), startingDate)){
 				prerequisitesTasks.add(task);
 			}
@@ -178,15 +178,15 @@ public class CTasks implements Initializable{
 	//Fills prerequisitesListView based on the selected date from startingDatePicker
 	private void fillPrerequisitesListView(LocalDate startingDate){
 		ArrayList<String> unfinishedTasksID=employee.getUnfinishedTasks(project);
-		ArrayList<Task> prerequisitesTasks = getPrerequisitesTasks(unfinishedTasksID,startingDate) ;
+		ArrayList<Activity> prerequisitesTasks = getPrerequisitesTasks(unfinishedTasksID,startingDate) ;
 		this.prerequisitesListView.getItems().clear();
 		if(!prerequisitesTasks.isEmpty()){
 			this.prerequisitesListView.setDisable(false);
-			ObservableList<Task> list = FXCollections.observableArrayList(prerequisitesTasks);
+			ObservableList<Activity> list = FXCollections.observableArrayList(prerequisitesTasks);
 			prerequisitesListView.setItems(list);
-			prerequisitesListView.setCellFactory(param -> new ListCell<Task>() {
+			prerequisitesListView.setCellFactory(param -> new ListCell<Activity>() {
 				@Override
-				protected void updateItem(Task task, boolean empty) {
+				protected void updateItem(Activity task, boolean empty) {
 					super.updateItem(task, empty);
 
 					if (task == null || task.getName() == null || task.getName().equals(" ")) {
@@ -239,7 +239,7 @@ public class CTasks implements Initializable{
 		bestTimeField.textProperty().addListener((observable, oldValue, newValue) -> {
 			if(!worstTimeField.getText().isEmpty() && !averageTimeField.getText().isEmpty()){
 				try{
-					calculatedEstimatedTimeLabel.setText(""+Task.calcEstimatedTime(Integer.parseInt(bestTimeField.getText())
+					calculatedEstimatedTimeLabel.setText(""+Activity.calcEstimatedTime(Integer.parseInt(bestTimeField.getText())
 							, Integer.parseInt(worstTimeField.getText()),Integer.parseInt(averageTimeField.getText())));
 				}catch(NumberFormatException e){
 					//do nothing
@@ -250,7 +250,7 @@ public class CTasks implements Initializable{
 		worstTimeField.textProperty().addListener((observable, oldValue, newValue) -> {
 			if(!bestTimeField.getText().isEmpty() && !averageTimeField.getText().isEmpty()){
 				try{	
-					calculatedEstimatedTimeLabel.setText(""+Task.calcEstimatedTime(Integer.parseInt(bestTimeField.getText())
+					calculatedEstimatedTimeLabel.setText(""+Activity.calcEstimatedTime(Integer.parseInt(bestTimeField.getText())
 							, Integer.parseInt(worstTimeField.getText()),Integer.parseInt(averageTimeField.getText())));
 				}catch(NumberFormatException e){
 					//do nothing
@@ -261,7 +261,7 @@ public class CTasks implements Initializable{
 		averageTimeField.textProperty().addListener((observable, oldValue, newValue) -> {
 			if(!bestTimeField.getText().isEmpty() && !worstTimeField.getText().isEmpty()){
 				try{
-					calculatedEstimatedTimeLabel.setText(""+Task.calcEstimatedTime(Integer.parseInt(bestTimeField.getText())
+					calculatedEstimatedTimeLabel.setText(""+Activity.calcEstimatedTime(Integer.parseInt(bestTimeField.getText())
 							, Integer.parseInt(worstTimeField.getText()),Integer.parseInt(averageTimeField.getText())));
 				}catch(NumberFormatException e){
 					//do nothing
@@ -284,21 +284,21 @@ public class CTasks implements Initializable{
 	private void createTask() throws IOException{
 		ObservableList<User> obsEmployees = employeesListView.getSelectionModel().getSelectedItems();
 		String taskName=nameField.getText();
-		ObservableList<Task> obsPrerequisites = prerequisitesListView.getSelectionModel().getSelectedItems();
+		ObservableList<Activity> obsPrerequisites = prerequisitesListView.getSelectionModel().getSelectedItems();
 		int estimatedTime = Integer.parseInt(calculatedEstimatedTimeLabel.getText());
 		String description = descriptionArea.getText();
 		LocalDate startingDate = startingDatePicker.getValue();
 		
 		ArrayList<User> employees = (ArrayList<User>) obsEmployees.stream().collect(Collectors.toList());
-		ArrayList<Task> prerequisites;
+		ArrayList<Activity> prerequisites;
 		
 		if(!obsPrerequisites.isEmpty())
-			prerequisites = (ArrayList<Task>) obsPrerequisites.stream().collect(Collectors.toList());
+			prerequisites = (ArrayList<Activity>) obsPrerequisites.stream().collect(Collectors.toList());
 		else
-			prerequisites= new ArrayList<Task>();
+			prerequisites= new ArrayList<Activity>();
 		
 		
-		Task task = new Task(taskName,prerequisites,employees,estimatedTime,description,startingDate,project);
+		Activity task = new Activity(taskName,prerequisites,employees,estimatedTime,description,startingDate,project);
 		Utils.saveTaskChanges(task);
 		employeeTasks.add(task.getId());
 		project.addTask(task);		
@@ -328,17 +328,16 @@ public class CTasks implements Initializable{
 	
 	//Fills prerequisitesInfoListView
 	private void fillPrerequisitesInfoListView(String taskID){
-		Task task= Utils.getSingleTaskFromFile(taskID);
-		System.out.println(task.getId());
-		ArrayList<Task> prerequisitesTasks= task.getPrerequisites();
+		Activity task= Utils.getSingleTaskFromFile(taskID);
+		ArrayList<Activity> prerequisitesTasks= task.getPrerequisites();
 		prerequisitesInfoListView.getItems().clear();
 		if(!prerequisitesTasks.isEmpty()){
 			prerequisitesInfoListView.setDisable(false);
-			ObservableList<Task> list = FXCollections.observableArrayList(prerequisitesTasks);
+			ObservableList<Activity> list = FXCollections.observableArrayList(prerequisitesTasks);
 			prerequisitesInfoListView.setItems(list);
-			prerequisitesInfoListView.setCellFactory(param -> new ListCell<Task>() {
+			prerequisitesInfoListView.setCellFactory(param -> new ListCell<Activity>() {
 				@Override
-				protected void updateItem(Task task, boolean empty) {
+				protected void updateItem(Activity task, boolean empty) {
 					super.updateItem(task, empty);
 
 					if (task == null || task.getName() == null || task.getName().equals(" ")) {
@@ -353,7 +352,7 @@ public class CTasks implements Initializable{
 	}
 	
 	//Fills the info of the Task
-	private void fillTaskInfo(Task task){
+	private void fillTaskInfo(Activity task){
 		this.taskNameLabel.setText(task.getName());
 		this.startingDateLabel.setText(task.getStartingDate().toString());
 		this.deadLineLabel.setText(task.getDeadLine().toString());

@@ -111,7 +111,7 @@
       <HBox BorderPane.alignment="CENTER">
          <children>
             <Region HBox.hgrow="ALWAYS" />
-            <Label contentDisplay="RIGHT" text="Orestis R. Nerantzis">
+            <Label fx:id="usernameLabel" contentDisplay="RIGHT" text="Orestis R. Nerantzis">
                <font>
                   <Font size="14.0" />
                </font>

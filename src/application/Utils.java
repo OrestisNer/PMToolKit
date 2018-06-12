@@ -7,15 +7,20 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Optional;
 
+import classes.Activity;
 import classes.Project;
-import classes.Task;
 import classes.User;
 import javafx.event.ActionEvent;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 
 public class Utils {
@@ -65,6 +70,27 @@ public class Utils {
 		alert.showAndWait();
 	}
 	
+	public static String createInputDialog(String title,String headerText, String contentText){
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setTitle(title);
+		dialog.setHeaderText(headerText);
+		dialog.setContentText(contentText);
+
+		// Traditional way to get the response value.
+		Optional<String> result = dialog.showAndWait();
+		if (result.isPresent()){
+		    return result.get();
+		}else{
+			return "";
+		}
+	}
+	
+	public static Window createProgressBar() throws Exception{
+		Window window = new Window("Progress","ProgressBar.fxml",null,true);
+		window.createWindow();
+		return window;
+	}
+	
 	public static void closeProgram(Stage stage){
 		/*Alert alert = Utils.createConfirmationAlert("Exit","Exit Confirmation", "Are sure you want to exit?");
         Optional<ButtonType> result = alert.showAndWait();
@@ -109,11 +135,11 @@ public class Utils {
 		writeToProjectFile(projects);
 	}
 	
-	public static void saveTaskChanges(Task task) throws IOException{
-		ArrayList<Task> tasks= getTasksFromFile();
+	public static void saveTaskChanges(Activity task) throws IOException{
+		ArrayList<Activity> tasks= getTasksFromFile();
 		
-		for(Iterator<Task> iterator = tasks.iterator(); iterator.hasNext();){
-			Task t = iterator.next();
+		for(Iterator<Activity> iterator = tasks.iterator(); iterator.hasNext();){
+			Activity t = iterator.next();
 			if(t.getId().equalsIgnoreCase(task.getId())){
 				iterator.remove();
 			}
@@ -156,13 +182,13 @@ public class Utils {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static ArrayList<Task> getTasksFromFile(){
-		ArrayList<Task> tasks=null;
+	public static ArrayList<Activity> getTasksFromFile(){
+		ArrayList<Activity> tasks=null;
 		String filename="Tasks";
 		ObjectInputStream inputStream= null;
 		try{
 			inputStream=new ObjectInputStream(new FileInputStream(filename));
-			tasks= (ArrayList<Task>) inputStream.readObject();
+			tasks= (ArrayList<Activity>) inputStream.readObject();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -197,7 +223,7 @@ public class Utils {
 		
 	}
 	
-	public static void writeToTaskFile(ArrayList<Task> tasks) throws IOException{
+	public static void writeToTaskFile(ArrayList<Activity> tasks) throws IOException{
 		ObjectOutputStream  outStream=null;
 		String filename="Tasks";
 		try{
@@ -211,21 +237,21 @@ public class Utils {
 		
 	}
 	
-	public static ArrayList<Task> getTasksFromID(ArrayList<String> tasksId){
-		ArrayList<Task> allTasks = getTasksFromFile();
-		ArrayList<Task> returnedTasks= new ArrayList<Task>();
-		for(Iterator<Task> iterator = allTasks.iterator(); iterator.hasNext();){
-			Task t=iterator.next();
+	public static ArrayList<Activity> getTasksFromID(ArrayList<String> tasksId){
+		ArrayList<Activity> allTasks = getTasksFromFile();
+		ArrayList<Activity> returnedTasks= new ArrayList<Activity>();
+		for(Iterator<Activity> iterator = allTasks.iterator(); iterator.hasNext();){
+			Activity t=iterator.next();
 			if(tasksId.contains(t.getId()))
 				returnedTasks.add(t);
 		}
 		return returnedTasks;
 	}
 	
-	public static Task getSingleTaskFromFile(String taskId){
-		ArrayList<Task> allTasks = getTasksFromFile();
-		for(Iterator<Task> iterator = allTasks.iterator(); iterator.hasNext();){
-			Task t= iterator.next();
+	public static Activity getSingleTaskFromFile(String taskId){
+		ArrayList<Activity> allTasks = getTasksFromFile();
+		for(Iterator<Activity> iterator = allTasks.iterator(); iterator.hasNext();){
+			Activity t= iterator.next();
 			if(t.getId().equalsIgnoreCase(taskId))
 				return t;
 		}
