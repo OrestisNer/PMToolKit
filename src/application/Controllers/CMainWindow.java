@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import application.Utils;
 import application.Window;
+import classes.Employee;
 import classes.Project;
 import classes.User;
 import javafx.event.ActionEvent;
@@ -25,10 +26,15 @@ public class CMainWindow implements Initializable {
 	
 	@FXML private Button tasksButton;
 	@FXML private Button messagesButton;
-	@FXML private Button evaluationButton;
-	@FXML private Button employeesButton;
+	
 	@FXML private Label headerLabel;
 	@FXML private Label usernameLabel;
+	
+	@FXML private Button employeesButton;
+	@FXML private Button evaluationButton;
+	@FXML private Button diagramsButton;
+	@FXML private Button costingButton;
+	@FXML private Button infoButton;
 	
 	public CMainWindow(User employee, Project project){
 		this.employee=employee;
@@ -40,6 +46,13 @@ public class CMainWindow implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		headerLabel.setText(project.getName());
 		usernameLabel.setText(employee.getUsername());
+		if(employee instanceof Employee ){
+			evaluationButton.setVisible(false);
+			diagramsButton.setVisible(false);
+			costingButton.setVisible(false);
+			infoButton.setVisible(false);
+			employeesButton.setVisible(false);
+		}
 	}
 	
 	//Tasks button clicked

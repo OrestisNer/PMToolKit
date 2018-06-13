@@ -96,13 +96,19 @@ public class Diagram implements Serializable {
 	}
 	
 	public JFreeChart createGanttDiagram() throws Exception{
-		Window progressWindow = Utils.createProgressBar();
 		ArrayList<String> tasksIds = project.getTasksIds();
-		ArrayList<Activity> tasks = Utils.getTasksFromID(tasksIds);
-		IntervalCategoryDataset dataset = this.createDataset(tasks);
-		ganttChart = this.createChart(dataset);
-		progressWindow.getStage().close();
-		return ganttChart;
+		if(tasksIds.isEmpty()){
+			Utils.createInfoAlert("Information", "Project has no task to create Gantt Diagram");
+			return null;
+		}else{
+			Window progressWindow = Utils.createProgressBar();
+			ArrayList<Activity> tasks = Utils.getTasksFromID(tasksIds);
+			IntervalCategoryDataset dataset = this.createDataset(tasks);
+			ganttChart = this.createChart(dataset);
+			progressWindow.getStage().close();
+			return ganttChart;
+		}
+		
 		
 	}
 	

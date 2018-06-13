@@ -92,10 +92,15 @@ public class CMessages implements Initializable{
 	
 	//Select button
 	public void onSelectClicked(ActionEvent actionEvent) throws IOException{
-		Stage stage  = Utils.getStageFromEvent(actionEvent);
-	    window= new Window(stage);
-	    this.setButtonText(selectButton.getText());
-	    window.changeScene("ShowMessage.fxml", this);
+		Message message=messagesListView.getSelectionModel().getSelectedItem();
+		if(message!=null){
+			Stage stage  = Utils.getStageFromEvent(actionEvent);
+			window= new Window(stage);
+			this.setButtonText(selectButton.getText());
+			window.changeScene("ShowMessage.fxml", this);
+		}else{
+			Utils.createInfoAlert("Information", "Select message first");
+		}
 	}
 	
 	//Cancel button

@@ -104,6 +104,18 @@ public abstract class User implements Serializable {
 		return this.getName();
 	}
 	
+	public double getSalary(){
+		return salary;
+	}
+	
+	public String getFirstname(){
+		return firstname;
+	}
+	
+	public String getLastname(){
+		return lastname;
+	}
+	
 	
 	
 }

@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import application.Utils;
 import application.Window;
+import classes.Employee;
 import classes.Project;
 import classes.User;
 import javafx.collections.FXCollections;
@@ -40,6 +41,8 @@ public class CProjects implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		projects = Utils.getProjectsFromFile();
 		fillProjectListView();
+		if(employee instanceof Employee)
+			createButton.setVisible(false);
 	}
 	
 	public void onCreateProjectClicked(ActionEvent actionEvent) throws Exception{

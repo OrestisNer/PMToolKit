@@ -98,7 +98,8 @@ public class CTasks implements Initializable{
 			fillTaskInfo(task);
 		}else {
 			// HashMap<Project,HashMap<Task,Boolean>> tasks = employee.getTasks(project);
-			 
+			if(employee instanceof Employee)
+				createTaskButton.setVisible(false);
 			fillTaskListView();
 		}
 	}

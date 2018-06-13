@@ -30,6 +30,7 @@ public class CEmployees implements Initializable{
 	private Window window;
 	private Project project;
 	private String buttonText;
+	private User employee;
 
 	//Employees.fxml
 	@FXML private ListView<User> employeeListView;
@@ -46,17 +47,22 @@ public class CEmployees implements Initializable{
 	@FXML private Button createButton;
 	@FXML private Button cancelButton;
 	
+	
+	
 	public CEmployees(Project project, String buttonText){
 		this.project=project;
 		this.buttonText=buttonText;
 	}
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		if (buttonText.equalsIgnoreCase(editButton.getText()))
+		if (buttonText.equalsIgnoreCase(editButton.getText())){
+			createButton.setText("Edit");
 			fillEmployeeInfo();
-		else if(buttonText.equalsIgnoreCase(createEmployeeButton.getText()))
+		}else if(buttonText.equalsIgnoreCase(createEmployeeButton.getText())){
+			createButton.setText("Create");
 			setProperties();
-		else
+		}else
 			fillEmployeesList();
 	}
 	
@@ -73,6 +79,8 @@ public class CEmployees implements Initializable{
 	
 	public void onEditClicked(ActionEvent actionEvent) throws IOException{
 		Stage stage= Utils.getStageFromEvent(actionEvent);
+		this.buttonText=editButton.getText();
+		employee=this.getSelectedEmployee();
 		window = new Window(stage);
 		window.changeScene("CreateEmployee.fxml", this);
 	}
@@ -127,6 +135,14 @@ public class CEmployees implements Initializable{
 	}
 	
 	public void fillEmployeeInfo(){
+		userNameField.setText(employee.getUsername());
+		passwordField.setText(employee.getPassword());
+		specialtyField.setText(employee.getSpecialty());
+		firstNameField.setText(employee.getFirstname());
+		lastNameField.setText(employee.getLastname());
+		salaryField.setText(Double.toString(employee.getSalary()));
+		
+		
 		
 	}
 	

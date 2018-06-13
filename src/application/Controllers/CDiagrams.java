@@ -47,18 +47,19 @@ public class CDiagrams implements Initializable{
 	
 	public void onGenerateClicked() throws Exception {
 		if(diagramsComboBox.getValue().equals("Gantt")) {
-			System.out.println("Gantt");
 			diagram = new Diagram(project);
 			JFreeChart gantt=diagram.createGanttDiagram();
-			Diagram.openGanttWindow(gantt);
-			Alert alert=Utils.createCustomConfirmationAlert("Save as" , null, "Do you want to save diagram as .jpg?");
-			Optional<ButtonType> result = alert.showAndWait();
-			if(result.get().getText().equals("Yes")){
-				String filename = Utils.createInputDialog("Filename", null , "Please enter the filename");
-				filename+=".jpg";
-				if(!filename.equals(""))
-					diagram.saveChart(gantt,filename);
-			}	
+			if(gantt!=null){
+				Diagram.openGanttWindow(gantt);
+				Alert alert=Utils.createCustomConfirmationAlert("Save as" , null, "Do you want to save diagram as .jpg?");
+				Optional<ButtonType> result = alert.showAndWait();
+				if(result.get().getText().equals("Yes")){
+					String filename = Utils.createInputDialog("Filename", null , "Please enter the filename");
+					filename+=".jpg";
+					if(!filename.equals(""))
+						diagram.saveChart(gantt,filename);
+				}	
+			}
 		}else {
 			
 		}
