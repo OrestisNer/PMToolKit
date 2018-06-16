@@ -13,9 +13,17 @@ public class Employee extends User  {
 	
 	
 	public Employee(String username, String password, String firstname, String lastname, double salary,String speciality){
-		super(username,password,firstname,lastname, salary,speciality);		
+		super(username,password,firstname,lastname, salary,speciality);	
+		evaluation = "";
 	}
 	
+	public String getEvaluation() {
+		return evaluation;
+	}
+	
+	public String getGrade() {
+		return grade;
+	}
 	public void setEvaluation(String evaluation) {
 		this.evaluation = evaluation;
 	}

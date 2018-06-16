@@ -93,7 +93,7 @@ public class CProjects implements Initializable{
 			Window window = new Window("Main Window","MainWindow.fxml",new CMainWindow(employee,project),true,true);
 			window.createWindow();
 		}else{
-			Utils.createInfoAlert("Information", "Select project first");
+			Utils.createInfoAlert("Information", "Select a project first!");
 		}
 	}
 	

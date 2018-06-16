@@ -45,7 +45,7 @@ public class CMainWindow implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		headerLabel.setText(project.getName());
-		usernameLabel.setText(employee.getUsername());
+		usernameLabel.setText(employee.getName());
 		if(employee instanceof Employee ){
 			evaluationButton.setVisible(false);
 			diagramsButton.setVisible(false);

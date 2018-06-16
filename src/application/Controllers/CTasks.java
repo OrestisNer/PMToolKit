@@ -73,7 +73,7 @@ public class CTasks implements Initializable{
 	public CTasks(Project project, User employee,  String buttonText) {
 		this.project=project;
 		this.employee=employee;
-		employeeTasks = employee.getUnfinishedTasks(project);
+		employeeTasks = employee.getUnfinishedActivities(project);
 		this.buttonText = buttonText;
 	}
 	
@@ -94,8 +94,8 @@ public class CTasks implements Initializable{
 			prerequisitesListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		//if the button clicked is Select Task from Tasks Window
 		}else if(buttonText.equals(selectTaskButton.getText())){
-			Activity task = tasksListView.getSelectionModel().getSelectedItem();
-			fillTaskInfo(task);
+			Activity activity = tasksListView.getSelectionModel().getSelectedItem();
+			fillTaskInfo(activity);
 		}else {
 			// HashMap<Project,HashMap<Task,Boolean>> tasks = employee.getTasks(project);
 			if(employee instanceof Employee)
@@ -129,18 +129,18 @@ public class CTasks implements Initializable{
 	
 	//Fills taskListView
 	private void fillTaskListView(){
-		ArrayList<String> userTasksID=employee.getUnfinishedTasks(project);
-		ObservableList<Activity> taskList = FXCollections.observableArrayList(Utils.getTasksFromID(userTasksID));
-		tasksListView.setItems(taskList);
+		ArrayList<String> userActivtiesID = employee.getUnfinishedActivities(project);
+		ObservableList<Activity> activityList = FXCollections.observableArrayList(Utils.getTasksFromID(userActivtiesID));
+		tasksListView.setItems(activityList);
 		tasksListView.setCellFactory(param -> new ListCell<Activity>() {
 		    @Override
-		    protected void updateItem(Activity task, boolean empty) {
-		        super.updateItem(task, empty);
+		    protected void updateItem(Activity act, boolean empty) {
+		        super.updateItem(act, empty);
 
-		        if (task == null || task.getName() == null) {
+		        if (act == null || act.getName() == null) {
 		            setText(null);
 		        } else {
-		            setText(task.getName());
+		            setText(act.getName());
 		        }
 		    }
 		});
@@ -165,35 +165,35 @@ public class CTasks implements Initializable{
 	}
 	
 	//Returns which tasks will be completed based on the deadline of the task the user is creating
-	private ArrayList<Activity> getPrerequisitesTasks(ArrayList<String> tasksID,LocalDate startingDate){
-		ArrayList<Activity> prerequisitesTasks= new ArrayList<Activity>();
-		for(String tID: tasksID){
-			Activity task = Utils.getSingleTaskFromFile(tID);
-			if(Calendar.isBefore(task.getDeadLine(), startingDate)){
-				prerequisitesTasks.add(task);
+	private ArrayList<Activity> getPrerequisitesTasks(ArrayList<String> activitiesID,LocalDate startingDate){
+		ArrayList<Activity> prerequisitesActivities= new ArrayList<Activity>();
+		for(String actID: activitiesID){
+			Activity act = Utils.getSingleTaskFromFile(actID);
+			if(Calendar.isBefore(act.getDeadLine(), startingDate)){
+				prerequisitesActivities.add(act);
 			}
 		}
-		return prerequisitesTasks;
+		return prerequisitesActivities;
 	}
 	
 	//Fills prerequisitesListView based on the selected date from startingDatePicker
 	private void fillPrerequisitesListView(LocalDate startingDate){
-		ArrayList<String> unfinishedTasksID=employee.getUnfinishedTasks(project);
-		ArrayList<Activity> prerequisitesTasks = getPrerequisitesTasks(unfinishedTasksID,startingDate) ;
+		ArrayList<String> unfinishedActsID=employee.getUnfinishedActivities(project);
+		ArrayList<Activity> prerequisitesActs = getPrerequisitesTasks(unfinishedActsID,startingDate) ;
 		this.prerequisitesListView.getItems().clear();
-		if(!prerequisitesTasks.isEmpty()){
+		if(!prerequisitesActs.isEmpty()){
 			this.prerequisitesListView.setDisable(false);
-			ObservableList<Activity> list = FXCollections.observableArrayList(prerequisitesTasks);
+			ObservableList<Activity> list = FXCollections.observableArrayList(prerequisitesActs);
 			prerequisitesListView.setItems(list);
 			prerequisitesListView.setCellFactory(param -> new ListCell<Activity>() {
 				@Override
-				protected void updateItem(Activity task, boolean empty) {
-					super.updateItem(task, empty);
+				protected void updateItem(Activity act, boolean empty) {
+					super.updateItem(act, empty);
 
-					if (task == null || task.getName() == null || task.getName().equals(" ")) {
+					if (act == null || act.getName() == null || act.getName().equals(" ")) {
 						setText(null);
 					} else {
-						setText(task.getName());
+						setText(act.getName());
 					}
 				}
 			});
@@ -224,7 +224,7 @@ public class CTasks implements Initializable{
 	//Create button
 	public void onCreateClicked(ActionEvent actionEvent) throws IOException{
 		if(hasAppropriateArgs()){
-			createTask();
+			createActivity();
 			Utils.createInfoAlert("Proccess", "You successfully create a task");
 			Stage stage = Utils.getStageFromEvent(actionEvent);
 			this.setButtonText(createButton.getText());
@@ -282,9 +282,9 @@ public class CTasks implements Initializable{
 	}
 	
 	//Creates a task object
-	private void createTask() throws IOException{
+	private void createActivity() throws IOException{
 		ObservableList<User> obsEmployees = employeesListView.getSelectionModel().getSelectedItems();
-		String taskName=nameField.getText();
+		String activityName=nameField.getText();
 		ObservableList<Activity> obsPrerequisites = prerequisitesListView.getSelectionModel().getSelectedItems();
 		int estimatedTime = Integer.parseInt(calculatedEstimatedTimeLabel.getText());
 		String description = descriptionArea.getText();
@@ -299,21 +299,21 @@ public class CTasks implements Initializable{
 			prerequisites= new ArrayList<Activity>();
 		
 		
-		Activity task = new Activity(taskName,prerequisites,employees,estimatedTime,description,startingDate,project);
-		Utils.saveTaskChanges(task);
-		employeeTasks.add(task.getId());
-		project.addTask(task);		
-		employee.addTask(project,task);
+		Activity activity = new Activity(activityName,prerequisites,employees,estimatedTime,description,startingDate,project);
+		Utils.saveActivityChanges(activity);
+		employeeTasks.add(activity.getId());
+		project.addActivity(activity);		
+		employee.addActivity(project,activity);
 		Utils.saveEmployeeChanges(employee);
 		
 		for(User employee : employees){
 			if(employee instanceof Employee){
-				employee.addTask(project,task);
+				employee.addActivity(project,activity);
 				
 				ArrayList<String> projects = employee.getProjects();
-				if(projects.isEmpty())
+				if(projects.isEmpty()) {
 					employee.addProject(project.getName());
-				else {
+				} else {
 					for(String project : projects) {
 						if(!project.equalsIgnoreCase(this.project.getName()))
 							employee.addProject(this.project.getName());
@@ -322,15 +322,16 @@ public class CTasks implements Initializable{
 				Utils.saveEmployeeChanges(employee);
 			}
 		}
+		
 		Utils.saveProjectChanges(project);
 	}
 	
 	//TaskInfo.fxml methods
 	
 	//Fills prerequisitesInfoListView
-	private void fillPrerequisitesInfoListView(String taskID){
-		Activity task= Utils.getSingleTaskFromFile(taskID);
-		ArrayList<Activity> prerequisitesTasks= task.getPrerequisites();
+	private void fillPrerequisitesInfoListView(String activityID){
+		Activity activity = Utils.getSingleTaskFromFile(activityID);
+		ArrayList<Activity> prerequisitesTasks= activity.getPrerequisites();
 		prerequisitesInfoListView.getItems().clear();
 		if(!prerequisitesTasks.isEmpty()){
 			prerequisitesInfoListView.setDisable(false);
@@ -338,13 +339,13 @@ public class CTasks implements Initializable{
 			prerequisitesInfoListView.setItems(list);
 			prerequisitesInfoListView.setCellFactory(param -> new ListCell<Activity>() {
 				@Override
-				protected void updateItem(Activity task, boolean empty) {
-					super.updateItem(task, empty);
+				protected void updateItem(Activity act, boolean empty) {
+					super.updateItem(act, empty);
 
-					if (task == null || task.getName() == null || task.getName().equals(" ")) {
+					if (act == null || act.getName() == null || act.getName().equals(" ")) {
 						setText(null);
 					} else {
-						setText(task.getName());
+						setText(act.getName());
 					}
 				}
 			});
@@ -353,18 +354,18 @@ public class CTasks implements Initializable{
 	}
 	
 	//Fills the info of the Task
-	private void fillTaskInfo(Activity task){
-		this.taskNameLabel.setText(task.getName());
-		this.startingDateLabel.setText(task.getStartingDate().toString());
-		this.deadLineLabel.setText(task.getDeadLine().toString());
-		this.fillEmployeesListView(task.getEmployees(), employeesInfoListView);
-		this.fillPrerequisitesInfoListView(task.getId());
-		this.descriptionInfoArea.setText(task.getDescription());
-		this.estimatedTimeLabel.setText(task.getEstimatedDuration()+"");
-		this.estimatedManMonthsLabel.setText(task.getEstimatedManMonths()+"");
-		if(task.isCompleted()){
-			this.actualTimeLabel.setText(task.getActualDuration()+"");
-			this.actutalManMonthsLabel.setText(task.getActualManMonths()+"");
+	private void fillTaskInfo(Activity activity){
+		this.taskNameLabel.setText(activity.getName());
+		this.startingDateLabel.setText(activity.getStartingDate().toString());
+		this.deadLineLabel.setText(activity.getDeadLine().toString());
+		this.fillEmployeesListView(activity.getEmployees(), employeesInfoListView);
+		this.fillPrerequisitesInfoListView(activity.getId());
+		this.descriptionInfoArea.setText(activity.getDescription());
+		this.estimatedTimeLabel.setText(activity.getEstimatedDuration()+"");
+		this.estimatedManMonthsLabel.setText(activity.getEstimatedManMonths()+"");
+		if(activity.isCompleted()){
+			this.actualTimeLabel.setText(activity.getActualDuration()+"");
+			this.actutalManMonthsLabel.setText(activity.getActualManMonths()+"");
 		}else{
 			this.actualTimeLabel.setText("N/A");
 			this.actutalManMonthsLabel.setText("N/A");

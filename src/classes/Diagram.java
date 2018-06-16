@@ -96,7 +96,7 @@ public class Diagram implements Serializable {
 	}
 	
 	public JFreeChart createGanttDiagram() throws Exception{
-		ArrayList<String> tasksIds = project.getTasksIds();
+		ArrayList<String> tasksIds = project.getActivitiesIds();
 		if(tasksIds.isEmpty()){
 			Utils.createInfoAlert("Information", "Project has no task to create Gantt Diagram");
 			return null;

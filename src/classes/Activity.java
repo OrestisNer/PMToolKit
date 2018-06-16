@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 public class Activity implements Serializable{
 	
 	private String name;
-	private ArrayList<Activity> presequisitesTasks;
+	private ArrayList<Activity> presequisitesActivities;
 	private String description;
 	private LocalDate startingDate;
 	private LocalDate deadline;
@@ -26,11 +26,11 @@ public class Activity implements Serializable{
 	private String id; 
 	
 	
-	public Activity(String name, ArrayList<Activity> presequisitesTasks, ArrayList<User> emp, int estimatedDuration, String description
+	public Activity(String name, ArrayList<Activity> presequisitesActivities, ArrayList<User> emp, int estimatedDuration, String description
 			, LocalDate startingDate, Project project ){
 		
 		this.name=name;
-		this.presequisitesTasks=presequisitesTasks;
+		this.presequisitesActivities=presequisitesActivities;
 		
 		this.numberOfEmployees=emp.size();
 		
@@ -116,7 +116,7 @@ public class Activity implements Serializable{
 	}
 	
 	public ArrayList<Activity> getPrerequisites(){
-		return presequisitesTasks;
+		return presequisitesActivities;
 	}
 	
 	public LocalDate getStartingDate(){

@@ -63,7 +63,7 @@ public class CInfo implements Initializable {
 	public void onShowTaskClicked(){
 		ListView<String> taskListView= new ListView<String>();
 		Button backButton = new Button("  Back  ");
-		ArrayList<String> activitiesids  = project.getTasksIds();
+		ArrayList<String> activitiesids  = project.getActivitiesIds();
 		ArrayList<Activity> activities= Utils.getTasksFromID(activitiesids);
 		activitiesids.clear();
 		for(Activity act : activities){

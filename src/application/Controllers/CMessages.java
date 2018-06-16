@@ -70,7 +70,7 @@ public class CMessages implements Initializable{
 		//if compose button is clicked
 		if(buttonText.equals(composeButton.getText())){
 			this.setProperties();
-			this.fillEmployeeComboBox(project);
+			this.fillEmployeeComboBox();
 		//if select button is clicked
 		}else if(buttonText.equals(selectButton.getText())){
 			Message message = messagesListView.getSelectionModel().getSelectedItem();
@@ -191,17 +191,8 @@ public class CMessages implements Initializable{
 	}
 	
 	//Fills employeesComboBox
-	private void fillEmployeeComboBox(Project project){
+	private void fillEmployeeComboBox(){
 		ArrayList<User> employees = project.getEmployees();
-		
-		Iterator<User> iter = employees.iterator();
-
-		while (iter.hasNext()) {
-		    User emp = iter.next();
-
-		    if (emp.getUsername().equalsIgnoreCase(employee.getUsername()))
-		        iter.remove();
-		}
 		
 		ObservableList<User> list = FXCollections.observableArrayList(employees);
 		employeesComboBox.getItems().clear();

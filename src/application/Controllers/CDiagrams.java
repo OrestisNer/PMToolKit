@@ -45,12 +45,13 @@ public class CDiagrams implements Initializable{
 		}
 	}
 	
-	public void onGenerateClicked() throws Exception {
+	public void onGenerateClicked(ActionEvent actionEvent) throws Exception {
 		if(diagramsComboBox.getValue().equals("Gantt")) {
 			diagram = new Diagram(project);
 			JFreeChart gantt=diagram.createGanttDiagram();
 			if(gantt!=null){
 				Diagram.openGanttWindow(gantt);
+				Utils.closeWindow(actionEvent);
 				Alert alert=Utils.createCustomConfirmationAlert("Save as" , null, "Do you want to save diagram as .jpg?");
 				Optional<ButtonType> result = alert.showAndWait();
 				if(result.get().getText().equals("Yes")){

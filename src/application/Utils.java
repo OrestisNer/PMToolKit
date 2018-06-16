@@ -132,8 +132,8 @@ public class Utils {
 		writeToProjectFile(projects);
 	}
 	
-	public static void saveTaskChanges(Activity task) throws IOException{
-		ArrayList<Activity> tasks= getTasksFromFile();
+	public static void saveActivityChanges(Activity task) throws IOException{
+		ArrayList<Activity> tasks= getActivitiesFromFile();
 		
 		for(Iterator<Activity> iterator = tasks.iterator(); iterator.hasNext();){
 			Activity t = iterator.next();
@@ -179,17 +179,17 @@ public class Utils {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static ArrayList<Activity> getTasksFromFile(){
-		ArrayList<Activity> tasks=null;
+	public static ArrayList<Activity> getActivitiesFromFile(){
+		ArrayList<Activity> activities=null;
 		String filename="Tasks";
 		ObjectInputStream inputStream= null;
 		try{
 			inputStream=new ObjectInputStream(new FileInputStream(filename));
-			tasks= (ArrayList<Activity>) inputStream.readObject();
+			activities= (ArrayList<Activity>) inputStream.readObject();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return tasks;
+		return activities;
 	}
 	
 	public static void writeToEmployeeFile(ArrayList<User> employees) throws IOException{
@@ -220,12 +220,12 @@ public class Utils {
 		
 	}
 	
-	public static void writeToTaskFile(ArrayList<Activity> tasks) throws IOException{
+	public static void writeToTaskFile(ArrayList<Activity> activities) throws IOException{
 		ObjectOutputStream  outStream=null;
 		String filename="Tasks";
 		try{
 			outStream=new ObjectOutputStream(new FileOutputStream(filename));
-	    	outStream.writeObject(tasks);
+	    	outStream.writeObject(activities);
 	    	outStream.close();
 		}catch(IOException e){
 			System.out.println("Error writing to file "+filename);
@@ -235,7 +235,7 @@ public class Utils {
 	}
 	
 	public static ArrayList<Activity> getTasksFromID(ArrayList<String> tasksId){
-		ArrayList<Activity> allTasks = getTasksFromFile();
+		ArrayList<Activity> allTasks = getActivitiesFromFile();
 		ArrayList<Activity> returnedTasks= new ArrayList<Activity>();
 		for(Iterator<Activity> iterator = allTasks.iterator(); iterator.hasNext();){
 			Activity t=iterator.next();
@@ -246,7 +246,7 @@ public class Utils {
 	}
 	
 	public static Activity getSingleTaskFromFile(String taskId){
-		ArrayList<Activity> allTasks = getTasksFromFile();
+		ArrayList<Activity> allTasks = getActivitiesFromFile();
 		for(Iterator<Activity> iterator = allTasks.iterator(); iterator.hasNext();){
 			Activity t= iterator.next();
 			if(t.getId().equalsIgnoreCase(taskId))

@@ -75,10 +75,14 @@ public class CEvaluation implements Initializable{
 	
 	//Next button
 	public void onNextClicked(ActionEvent actionEvent) throws Exception{
-		Stage stage = Utils.getStageFromEvent(actionEvent);
-		this.setButtonText(nextButton.getText());
-		window = new Window(stage);
-		window.changeScene("EvaluateEmployee.fxml", this);
+		User selectedEmployee = getSelectedEmployee();
+		if(selectedEmployee instanceof Employee) {
+			Stage stage = Utils.getStageFromEvent(actionEvent);
+			this.setButtonText(nextButton.getText());
+			window = new Window(stage);
+			window.changeScene("EvaluateEmployee.fxml", this);
+		}else
+			Utils.createInfoAlert("Information", "The Project Manager can't evaluate himself!");
 	}
 	
 	//Cancel button
@@ -89,14 +93,14 @@ public class CEvaluation implements Initializable{
 	//Fills employeesListView
 	private void fillEmployeesListView() {
 		ArrayList<User> employees = project.getEmployees();
-		Iterator<User> iter = employees.iterator();
+		/*Iterator<User> iter = employees.iterator();
 
 		while (iter.hasNext()) {
 			User emp = iter.next();
 
 			if (emp.getUsername().equalsIgnoreCase(employee.getUsername()))
 				iter.remove();
-		}
+		}*/
 
 		ObservableList<User> list = FXCollections.observableArrayList(employees);
 		employeeListView.setItems(list);
@@ -115,8 +119,8 @@ public class CEvaluation implements Initializable{
 
 	}
 	
-	private Employee getSelectedEmployee() {
-		return (Employee) employeeListView.getSelectionModel().getSelectedItem();
+	private User getSelectedEmployee() {
+		return employeeListView.getSelectionModel().getSelectedItem();
 	}
 	
 	//EvaluateEmployee.fxml methods
@@ -133,7 +137,7 @@ public class CEvaluation implements Initializable{
 	
 	//Sets the evaluation attributes to selected employee
 	private void evaluateEmployee() throws IOException {
-		Employee selectedEmployee = getSelectedEmployee();
+		Employee selectedEmployee = (Employee) getSelectedEmployee();
 		
 		selectedEmployee.setEvaluation(evaluationTextArea.getText());
 		

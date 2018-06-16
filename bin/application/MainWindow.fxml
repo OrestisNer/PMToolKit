@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -16,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="512.0" prefWidth="699.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <opaqueInsets>
       <Insets />
    </opaqueInsets>
@@ -73,7 +68,7 @@
                </VBox.margin>
             </Button>
             <Button fx:id="infoButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onInfoClicked" text="Info" />
-            <Region prefHeight="350.0" prefWidth="73.0" />
+            <Region prefHeight="500.0" prefWidth="73.0" />
             <Button alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onExitClicked" text="Exit" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets />
@@ -111,7 +106,7 @@
       <HBox BorderPane.alignment="CENTER">
          <children>
             <Region HBox.hgrow="ALWAYS" />
-            <Label fx:id="usernameLabel" contentDisplay="RIGHT" text="Orestis R. Nerantzis">
+            <Label fx:id="usernameLabel" contentDisplay="RIGHT" text="username">
                <font>
                   <Font size="14.0" />
                </font>
@@ -131,6 +126,6 @@
       </HBox>
    </bottom>
    <right>
-      <Region prefHeight="375.0" prefWidth="10.0" BorderPane.alignment="CENTER" />
+      <Region maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" />
    </right>
 </BorderPane>

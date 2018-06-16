@@ -15,7 +15,7 @@ public abstract class User implements Serializable {
 	protected ArrayList<Message> messages;	
 	protected ArrayList<String> projects;
 	protected String specialty;
-	protected HashMap<String,HashMap<String,Boolean>> tasks;
+	protected HashMap<String,HashMap<String,Boolean>> activities;
 	
 	public User(String username, String password, String firstname, String lastname, double salary, String specialty){
 		this.username=username;
@@ -26,7 +26,7 @@ public abstract class User implements Serializable {
 		this.specialty=specialty;
 		messages= new ArrayList<Message>();
 		projects= new ArrayList<String>();
-		tasks= new HashMap<String,HashMap<String,Boolean>>();
+		activities= new HashMap<String,HashMap<String,Boolean>>();
 		
 	}
 	
@@ -58,28 +58,28 @@ public abstract class User implements Serializable {
 		return specialty;
 	}
 	
-	public void addTask(Project project,Activity task){
+	public void addActivity(Project project,Activity act){
 		
 		try{
-			tasks.get(project.getName()).put(task.getId(), false);
+			activities.get(project.getName()).put(act.getId(), false);
 		}catch(NullPointerException e){
 			HashMap<String, Boolean> taskList = new HashMap<String,Boolean>();
-			taskList.put(task.getId(), false);
-			tasks.put(project.getName(), taskList);
+			taskList.put(act.getId(), false);
+			activities.put(project.getName(), taskList);
 			System.out.println("new HashMap<Task,Boolean> taskList ");
 		}
 	}
 	
-	public HashMap<String,Boolean> getTasks(Project project){
+	public HashMap<String,Boolean> getActivities(Project project){
 		
-		return tasks.get(project);
+		return activities.get(project);
 	}
 	
-	public ArrayList<String> getUnfinishedTasks(Project project){
+	public ArrayList<String> getUnfinishedActivities(Project project){
 		ArrayList<String> unfinishedTask= new ArrayList<String>();
 		HashMap<String,Boolean> employeeTasks;
 		try{
-			employeeTasks=tasks.get(project.getName());
+			employeeTasks=activities.get(project.getName());
 			for (Entry<String, Boolean> entry : employeeTasks.entrySet()) {
 			    String taskID = entry.getKey();
 			    Boolean finished = entry.getValue();
@@ -115,7 +115,28 @@ public abstract class User implements Serializable {
 	public String getLastname(){
 		return lastname;
 	}
-	
-	
-	
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public void setSalary(double salary) {
+		this.salary = salary;
+	}
+
+	public void setSpecialty(String specialty) {
+		this.specialty = specialty;
+	}
 }
