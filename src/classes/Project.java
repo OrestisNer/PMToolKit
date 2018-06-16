@@ -9,6 +9,7 @@ public class Project implements Serializable{
 	
 	private User projectManager;
 	private String name;
+	private String type;
 	private ArrayList<String> activitiesID;
 	private ArrayList<User> employees;
 	private ArrayList<Diagram> diagrams;
@@ -62,6 +63,14 @@ public class Project implements Serializable{
 	
 	public ArrayList<User> getEmployees(){
 		return employees;
+	}
+	
+	public ArrayList<String> getEmpUsernames(){
+		ArrayList<String> empUsernames = new ArrayList<>();
+		for(User emp : employees) 
+			empUsernames.add(emp.getUsername());
+		
+		return empUsernames;
 	}
 	
 	public User getProjectManager(){

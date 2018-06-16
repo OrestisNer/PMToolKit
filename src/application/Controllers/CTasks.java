@@ -323,6 +323,11 @@ public class CTasks implements Initializable{
 			}
 		}
 		
+		ArrayList<String> empUsernames = project.getEmpUsernames();
+		for(User employee : employees) 
+			if(!empUsernames.contains(employee.getUsername()))
+					this.project.addEmployee(employee);
+	
 		Utils.saveProjectChanges(project);
 	}
 	
