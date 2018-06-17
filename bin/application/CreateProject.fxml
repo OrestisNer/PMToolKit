@@ -1,33 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="350.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="260.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label text="Create your project">
+      <Label layoutX="153.0" layoutY="22.0" text="Create your project">
          <font>
-            <Font size="18.0" />
+            <Font size="17.0" />
          </font>
       </Label>
-      <TextField fx:id="nameField" promptText="Type your project's name">
-         <VBox.margin>
-            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-         </VBox.margin>
-      </TextField>
-      <Button mnemonicParsing="false" onAction="#onCreateClicked" text="Create">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Button>
+      <GridPane layoutX="10.0" layoutY="68.0" vgap="15.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="284.0" minWidth="10.0" prefWidth="117.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="469.0" minWidth="10.0" prefWidth="293.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Project name : " />
+            <Label text="KLOC :" GridPane.rowIndex="1" />
+            <TextField fx:id="projectNameField" minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" promptText="Type your project's name" GridPane.columnIndex="1" />
+            <TextField fx:id="klocField" promptText="How many KLOC has the project?" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Category :" GridPane.rowIndex="2" />
+            <ComboBox fx:id="categoryCombobox" prefWidth="250.0" promptText="Choose project's category" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
+      <Button fx:id="createButton" layoutX="153.0" layoutY="207.0" mnemonicParsing="false" onAction="#onCreateClicked" text="Create" />
+      <Button fx:id="cancelButton" layoutX="243.0" layoutY="207.0" mnemonicParsing="false" onAction="#onCancelClicked" text="Cancel" />
    </children>
-</VBox>
+</AnchorPane>

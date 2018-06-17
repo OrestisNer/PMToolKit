@@ -26,9 +26,10 @@ import javafx.stage.Stage;
 
 public class CInfo implements Initializable {
 	
+	//ProjectInfo.fxml
 	private @FXML Label nameLabel;
 	private @FXML Label categoryLabel;
-	private @FXML Label locLabel; // lines of code 
+	private @FXML Label klocLabel; // lines of code 
 	private @FXML Label estimatedDurationLabel;
 	private @FXML Label estimatedManmonthsLabel;
 	private @FXML Label currentManmonthsLabel;
@@ -50,8 +51,8 @@ public class CInfo implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		nameLabel.setText(project.getName());
-		//categoryLabel.setText(project.getCategory());
-		//locLabel.setText(project.getLoc());
+		categoryLabel.setText(project.getCategory());
+		klocLabel.setText(Integer.toString(project.getKloc()));
 		//estimatedDurationLabel.setText(project.getEstimatedDuration());
 		//estimatedManmonthsLabel.setText(project.getEstimatedManmonths());
 		//currentManmonthsLabel.setText(project.getEstimatedManmonths());
@@ -60,6 +61,7 @@ public class CInfo implements Initializable {
 		//currentCostLabel.setText(project.getCurrnetCost());
 	}
 	
+	//Show Tasks button
 	public void onShowTaskClicked(){
 		ListView<String> taskListView= new ListView<String>();
 		Button backButton = new Button("  Back  ");
@@ -87,7 +89,6 @@ public class CInfo implements Initializable {
         window.show();
         
         backButton.setOnAction(new EventHandler<ActionEvent>(){
-
 			@Override
 			public void handle(ActionEvent arg0) {
 				window.close();
@@ -95,6 +96,7 @@ public class CInfo implements Initializable {
         });
 	}
 	
+	//Show Employees button
 	public void onShowEmployeeClicked(){
 		ListView<String> employeeListView= new ListView<String>();
 		Button backButton = new Button("  Back  ");
@@ -125,14 +127,10 @@ public class CInfo implements Initializable {
         window.show();
         
         backButton.setOnAction(new EventHandler<ActionEvent>(){
-
 			@Override
 			public void handle(ActionEvent arg0) {
 				window.close();
 			}
         });
 	}
-	
-	
-
 }

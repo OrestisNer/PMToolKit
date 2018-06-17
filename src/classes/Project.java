@@ -9,7 +9,8 @@ public class Project implements Serializable{
 	
 	private User projectManager;
 	private String name;
-	private String type;
+	private String category;
+	private int kloc;
 	private ArrayList<String> activitiesID;
 	private ArrayList<User> employees;
 	private ArrayList<Diagram> diagrams;
@@ -17,10 +18,12 @@ public class Project implements Serializable{
 	private Calendar calendar;
 	private Cost cost;
 	
-	public Project(String name, User projectManager){
+	public Project(String name, String category , int kloc, User projectManager){
 		this.name=name;
 		this.projectManager=projectManager;
 		this.startingDate= LocalDate.now();
+		this.category = category;
+		this.kloc = kloc;
 		activitiesID= new ArrayList<String>();
 		employees= new ArrayList<User>();
 		employees.add(projectManager);
@@ -57,6 +60,14 @@ public class Project implements Serializable{
 		return name;
 	}
 	
+	public String getCategory() {
+		return category;
+	}
+	
+	public int getKloc() {
+		return kloc;
+	}
+	
 	public ArrayList<String> getActivitiesIds(){
 		return activitiesID;
 	}
@@ -77,5 +88,7 @@ public class Project implements Serializable{
 		return projectManager;
 	}
 	
-	
+	public LocalDate getStartingDate() {
+		return startingDate;
+	}
 }

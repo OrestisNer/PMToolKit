@@ -43,11 +43,11 @@ public class CLogIn implements Initializable {
 		User employee= isEmployee(inputUsername,inputPassword);
 		if(employee instanceof ProjectManager){
 			Utils.closeWindow(actionEvent);
-			Window projectWindow= new Window("Project","Projects.fxml",new CProjects(employee),false);
+			Window projectWindow= new Window("Project","Projects.fxml",new CProjects(employee,loginButton.getText()),false);
 			projectWindow.createWindow();
 		}else if(employee instanceof Employee){
 			Utils.closeWindow(actionEvent); //Εδώ θα ανοίγει το παράθυρο για τον απλό χρήστη
-			Window projectWindow= new Window("Project","Projects.fxml",new CProjects(employee),false);
+			Window projectWindow= new Window("Project","Projects.fxml",new CProjects(employee,loginButton.getText()),false);
 			projectWindow.createWindow();
 
 		}else{
