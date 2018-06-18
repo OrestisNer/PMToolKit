@@ -1,14 +1,20 @@
 package application.Controllers;
 
+import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import application.Utils;
 import application.Window;
+import classes.Activity;
 import classes.Employee;
 import classes.Project;
 import classes.User;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,6 +22,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class CMainWindow implements Initializable {
 	
@@ -24,28 +33,38 @@ public class CMainWindow implements Initializable {
 	private User employee;
 	private Project project;
 	
-	@FXML private Button tasksButton;
-	@FXML private Button messagesButton;
 	
 	@FXML private Label headerLabel;
 	@FXML private Label usernameLabel;
 	
+	@FXML private Button tasksButton;
+	@FXML private Button messagesButton;
 	@FXML private Button employeesButton;
 	@FXML private Button evaluationButton;
 	@FXML private Button diagramsButton;
 	@FXML private Button costingButton;
 	@FXML private Button infoButton;
 	
+	@FXML private TableView<Activity> taskTable;
+	@FXML private TableColumn<Activity, String> taskNameCol;
+	@FXML private TableColumn<Activity, String> subjectCol;
+	@FXML private TableColumn<Activity, LocalDate> startingDateCol;
+	@FXML private TableColumn<Activity, LocalDate> deadlineCol;
+	@FXML private TableColumn<Activity, String> completedCol;
+	//@FXML private TableColumn<Activity, Button> actionCol;
+	
+	
 	public CMainWindow(User employee, Project project){
 		this.employee=employee;
 		this.project=project;
 	}
-	
-	
+		
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		headerLabel.setText(project.getName());
 		usernameLabel.setText(employee.getName());
+		
+		refreshTaskTable();
 		if(employee instanceof Employee ){
 			evaluationButton.setVisible(false);
 			diagramsButton.setVisible(false);
@@ -53,6 +72,24 @@ public class CMainWindow implements Initializable {
 			infoButton.setVisible(false);
 			employeesButton.setVisible(false);
 		}
+	}
+	
+	//Initializes the data in the task table
+	public void refreshTaskTable() {
+		taskNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+		subjectCol.setCellValueFactory(new PropertyValueFactory<>("subject"));
+		startingDateCol.setCellValueFactory(new PropertyValueFactory<>("startingDate"));
+		deadlineCol.setCellValueFactory(new PropertyValueFactory<>("deadline"));
+		completedCol.setCellValueFactory(new PropertyValueFactory<>("completedPercent"));
+		//actionCol.setCellValueFactory(new PropertyValueFactory<>("confirmButton"));
+		
+		ArrayList<String> userActID = employee.getUnfinishedActivities(project);
+		ObservableList<Activity> activityList = FXCollections.observableArrayList(Utils.getActivitiesFromID(userActID));
+		taskTable.setItems(activityList);
+	}
+	
+	private Activity getSelectedAct() {
+		return taskTable.getSelectionModel().getSelectedItem();
 	}
 	
 	//Tasks button clicked
@@ -72,6 +109,12 @@ public class CMainWindow implements Initializable {
 		controller= new CMessages(employee,project,messagesButton.getText());
 		window= new Window("Messages","Messages.fxml",controller,true);
 		window.createWindow();
+	}
+	
+	//Confirm Task Button
+	public void onConfirmTaskClicked() throws IOException {
+		Activity selectedActivity = getSelectedAct();
+		selectedActivity.confirmActivity(employee);
 	}
 	
 	//Employees button clicked

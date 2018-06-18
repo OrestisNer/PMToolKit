@@ -56,6 +56,7 @@ public class CTasks implements Initializable{
 	@FXML private TextField nameField;
 	@FXML private CheckBox finalCheckbox;
 	@FXML private Label calculatedEstimatedTimeLabel;
+	@FXML private TextField subjectField;
 	@FXML private TextArea descriptionArea;
 	@FXML private Button createButton;
 	//TaskInfo.fxml
@@ -130,7 +131,7 @@ public class CTasks implements Initializable{
 	//Fills taskListView
 	private void fillTaskListView(){
 		ArrayList<String> userActivtiesID = employee.getUnfinishedActivities(project);
-		ObservableList<Activity> activityList = FXCollections.observableArrayList(Utils.getTasksFromID(userActivtiesID));
+		ObservableList<Activity> activityList = FXCollections.observableArrayList(Utils.getActivitiesFromID(userActivtiesID));
 		tasksListView.setItems(activityList);
 		tasksListView.setCellFactory(param -> new ListCell<Activity>() {
 		    @Override
@@ -168,8 +169,8 @@ public class CTasks implements Initializable{
 	private ArrayList<Activity> getPrerequisitesTasks(ArrayList<String> activitiesID,LocalDate startingDate){
 		ArrayList<Activity> prerequisitesActivities= new ArrayList<Activity>();
 		for(String actID: activitiesID){
-			Activity act = Utils.getSingleTaskFromFile(actID);
-			if(Calendar.isBefore(act.getDeadLine(), startingDate)){
+			Activity act = Utils.getSingleActivityFromFile(actID);
+			if(Calendar.isBefore(act.getDeadline(), startingDate)){
 				prerequisitesActivities.add(act);
 			}
 		}
@@ -288,6 +289,7 @@ public class CTasks implements Initializable{
 		ObservableList<Activity> obsPrerequisites = prerequisitesListView.getSelectionModel().getSelectedItems();
 		int estimatedTime = Integer.parseInt(calculatedEstimatedTimeLabel.getText());
 		String description = descriptionArea.getText();
+		String subject = subjectField.getText();
 		LocalDate startingDate = startingDatePicker.getValue();
 		
 		ArrayList<User> employees = (ArrayList<User>) obsEmployees.stream().collect(Collectors.toList());
@@ -299,7 +301,7 @@ public class CTasks implements Initializable{
 			prerequisites= new ArrayList<Activity>();
 		
 		
-		Activity activity = new Activity(activityName,prerequisites,employees,estimatedTime,description,startingDate,project);
+		Activity activity = new Activity(activityName,prerequisites,employees,estimatedTime,subject,description,startingDate,project);
 		Utils.saveActivityChanges(activity);
 		employeeTasks.add(activity.getId());
 		project.addActivity(activity);		
@@ -335,7 +337,7 @@ public class CTasks implements Initializable{
 	
 	//Fills prerequisitesInfoListView
 	private void fillPrerequisitesInfoListView(String activityID){
-		Activity activity = Utils.getSingleTaskFromFile(activityID);
+		Activity activity = Utils.getSingleActivityFromFile(activityID);
 		ArrayList<Activity> prerequisitesTasks= activity.getPrerequisites();
 		prerequisitesInfoListView.getItems().clear();
 		if(!prerequisitesTasks.isEmpty()){
@@ -362,7 +364,7 @@ public class CTasks implements Initializable{
 	private void fillTaskInfo(Activity activity){
 		this.taskNameLabel.setText(activity.getName());
 		this.startingDateLabel.setText(activity.getStartingDate().toString());
-		this.deadLineLabel.setText(activity.getDeadLine().toString());
+		this.deadLineLabel.setText(activity.getDeadline().toString());
 		this.fillEmployeesListView(activity.getEmployees(), employeesInfoListView);
 		this.fillPrerequisitesInfoListView(activity.getId());
 		this.descriptionInfoArea.setText(activity.getDescription());

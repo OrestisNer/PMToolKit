@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import application.Utils;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public abstract class User implements Serializable {
 	
 	protected String username;
@@ -71,7 +75,6 @@ public abstract class User implements Serializable {
 	}
 	
 	public HashMap<String,Boolean> getActivities(Project project){
-		
 		return activities.get(project);
 	}
 	
@@ -92,7 +95,6 @@ public abstract class User implements Serializable {
 		}
 		
 		return unfinishedTask;
-		
 	}
 	
 	public ArrayList<Message> getMessages(){

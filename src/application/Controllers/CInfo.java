@@ -66,7 +66,7 @@ public class CInfo implements Initializable {
 		ListView<String> taskListView= new ListView<String>();
 		Button backButton = new Button("  Back  ");
 		ArrayList<String> activitiesids  = project.getActivitiesIds();
-		ArrayList<Activity> activities= Utils.getTasksFromID(activitiesids);
+		ArrayList<Activity> activities= Utils.getActivitiesFromID(activitiesids);
 		activitiesids.clear();
 		for(Activity act : activities){
 			activitiesids.add(act.getName());
@@ -83,7 +83,7 @@ public class CInfo implements Initializable {
         Scene scene = new Scene(layout, 400, 200);
         
         Stage window = new Stage();
-        window.setTitle("Activities");
+        window.setTitle("Tasks");
         window.setScene(scene);
         window.initModality(Modality.APPLICATION_MODAL);
         window.show();

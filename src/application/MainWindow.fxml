@@ -42,6 +42,7 @@
                   <Insets />
                </VBox.margin>
             </Button>
+            <Button fx:id="confirmTaskButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onConfirmTaskClicked" text="Confirm Task" />
             <Button fx:id="employeesButton" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEmployeesClicked" text="Employees" VBox.vgrow="ALWAYS">
                <opaqueInsets>
                   <Insets />
@@ -69,6 +70,7 @@
             </Button>
             <Button fx:id="infoButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onInfoClicked" text="Info" />
             <Region prefHeight="500.0" prefWidth="73.0" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#refreshTaskTable" text="Refresh Table" />
             <Button alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onExitClicked" text="Exit" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets />
@@ -94,13 +96,13 @@
       </VBox>
    </top>
    <center>
-      <TableView prefHeight="1500.0" prefWidth="1500.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="taskTable" prefHeight="1500.0" prefWidth="1500.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn prefWidth="200.0" text="Task name" />
-          <TableColumn prefWidth="200.0" text="Subject" />
-            <TableColumn prefWidth="200.0" text="Starting Date" />
-            <TableColumn prefWidth="200.0" text="Deadline" />
-            <TableColumn prefWidth="200.0" text="Completed" />
+          <TableColumn fx:id="taskNameCol" prefWidth="200.0" text="Task name" />
+          <TableColumn fx:id="subjectCol" prefWidth="200.0" text="Subject" />
+            <TableColumn fx:id="startingDateCol" prefWidth="200.0" text="Starting Date" />
+            <TableColumn fx:id="deadlineCol" prefWidth="200.0" text="Deadline" />
+            <TableColumn fx:id="completedCol" prefWidth="200.0" text="Completed" />
         </columns>
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

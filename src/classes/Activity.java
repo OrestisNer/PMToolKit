@@ -1,5 +1,6 @@
 package classes;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -7,12 +8,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import classes.ProjectManager;
 
 public class Activity implements Serializable{
 	
 	private String name;
 	private ArrayList<Activity> presequisitesActivities;
 	private String description;
+	private String subject;
 	private LocalDate startingDate;
 	private LocalDate deadline;
 	private HashMap<User, Boolean> employees;
@@ -23,11 +26,13 @@ public class Activity implements Serializable{
 	private double actualManMonths;
 	private int numberOfEmployees;
 	private Project project;
-	private String id; 
+	private String id;
+	private String completedPercent;
+	//private Button confirmButton;
 	
 	
-	public Activity(String name, ArrayList<Activity> presequisitesActivities, ArrayList<User> emp, int estimatedDuration, String description
-			, LocalDate startingDate, Project project ){
+	public Activity(String name, ArrayList<Activity> presequisitesActivities, ArrayList<User> emp, int estimatedDuration, 
+			String subject, String description, LocalDate startingDate, Project project ){
 		
 		this.name=name;
 		this.presequisitesActivities=presequisitesActivities;
@@ -41,6 +46,7 @@ public class Activity implements Serializable{
 		
 		this.estimatedDuration=estimatedDuration;
 		this.description=description;
+		this.subject = subject;
 		
 		this.startingDate= startingDate;
 		this.deadline=calcDeadline(startingDate,estimatedDuration);
@@ -49,17 +55,38 @@ public class Activity implements Serializable{
 		this.project=project;
 		this.id=project.getName()+name;
 		id=id.replaceAll("\\s","").toUpperCase().trim();
+		this.completedPercent = 0 + "/" + emp.size();
+		//this.confirmButton = new Button("Confirm Task");
 	}
 	
-	public void confirmActivity(Employee employee){
+	public void confirmActivity(User employee) throws IOException{
 		employees.put(employee, true);
+		
+		int i = 0;
+		for(User emp : employees.keySet()) {
+			if(employees.get(emp))
+				i++;	
+		}		
+		this.setCompletedPercent(i);
 		
 		if(isCompleted(employees)){
 			completed=true;
 			actualDuration=calcDuration(startingDate,LocalDate.now());
 			actualManMonths=calcManMonths(numberOfEmployees,actualDuration);
+		}else {
+			int completed = 0;
+			for(User emp: employees.keySet()) {
+				if(emp instanceof Employee) {
+					if(employees.get(emp))
+						completed++;
+				}
+			}
+			
+			if(completed == employees.size()-1) {
+				ProjectManager pm = (ProjectManager) project.getProjectManager();
+				pm.sendConfirmationMessageToPM(this);
+			}
 		}
-		//Πρέπει να στέλνω στον PM ένα message ολοκλήρωσης του task.
 	}
 		
 	
@@ -107,11 +134,26 @@ public class Activity implements Serializable{
 		return x/6;
 	}
 	
+	public void setCompletedPercent(int i) {
+		this.completedPercent = i +"/"+ employees.size();
+	}
+	
+	public String getCompletedPercent(){
+		return completedPercent;
+	}
+	/*public Button getConfirmButton() {
+		return confirmButton;
+	}*/
+	
 	public String getName(){
 		return name;
 	}
 	
-	public LocalDate getDeadLine(){
+	public String getSubject() {
+		return subject;
+	}
+	
+	public LocalDate getDeadline(){
 		return deadline;
 	}
 	

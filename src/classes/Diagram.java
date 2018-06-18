@@ -39,7 +39,7 @@ public class Diagram implements Serializable {
 		TaskSeries seriesOne = new TaskSeries("Planned Implementation");
 		for(Activity activity : activities){
 			Date startingDate=Date.from(activity.getStartingDate().atStartOfDay(ZoneId.systemDefault()).toInstant());
-			Date deadline= Date.from(activity.getDeadLine().atStartOfDay(ZoneId.systemDefault()).toInstant());
+			Date deadline= Date.from(activity.getDeadline().atStartOfDay(ZoneId.systemDefault()).toInstant());
 			seriesOne.add(new Task(activity.getName(),new SimpleTimePeriod(startingDate,deadline)));
 		}
 		
@@ -102,7 +102,7 @@ public class Diagram implements Serializable {
 			return null;
 		}else{
 			Window progressWindow = Utils.createProgressBar();
-			ArrayList<Activity> tasks = Utils.getTasksFromID(tasksIds);
+			ArrayList<Activity> tasks = Utils.getActivitiesFromID(tasksIds);
 			IntervalCategoryDataset dataset = this.createDataset(tasks);
 			ganttChart = this.createChart(dataset);
 			progressWindow.getStage().close();

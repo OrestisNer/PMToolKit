@@ -61,7 +61,7 @@ public class CProjects implements Initializable{
 			projects = Utils.getProjectsFromFile();
 			fillProjectListView();
 			if(employee instanceof Employee)
-				createButton.setVisible(false);
+				createProjectButton.setVisible(false);
 		}
 	}
 	

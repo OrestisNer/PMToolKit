@@ -134,6 +134,8 @@
             </GridPane>
             <VBox prefHeight="200.0" prefWidth="350.0">
                <children>
+                  <Label text="Subject" />
+                  <TextField fx:id="subjectField" />
                   <Label text="Description" />
                   <TextArea fx:id="descriptionArea" prefHeight="200.0" prefWidth="200.0" />
                </children>

@@ -234,25 +234,24 @@ public class Utils {
 		
 	}
 	
-	public static ArrayList<Activity> getTasksFromID(ArrayList<String> tasksId){
+	public static ArrayList<Activity> getActivitiesFromID(ArrayList<String> actId){
 		ArrayList<Activity> allTasks = getActivitiesFromFile();
 		ArrayList<Activity> returnedTasks= new ArrayList<Activity>();
 		for(Iterator<Activity> iterator = allTasks.iterator(); iterator.hasNext();){
 			Activity t=iterator.next();
-			if(tasksId.contains(t.getId()))
+			if(actId.contains(t.getId()))
 				returnedTasks.add(t);
 		}
 		return returnedTasks;
 	}
 	
-	public static Activity getSingleTaskFromFile(String taskId){
+	public static Activity getSingleActivityFromFile(String actId){
 		ArrayList<Activity> allTasks = getActivitiesFromFile();
 		for(Iterator<Activity> iterator = allTasks.iterator(); iterator.hasNext();){
 			Activity t= iterator.next();
-			if(t.getId().equalsIgnoreCase(taskId))
+			if(t.getId().equalsIgnoreCase(actId))
 				return t;
 		}
-		return null;
-	
+		return null;	
 	}
 }

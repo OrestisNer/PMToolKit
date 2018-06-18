@@ -12,9 +12,9 @@ public class Message implements Serializable {
 	private boolean read;
 	
 	
-	public Message(User sender, ArrayList<User> recievers, String subject, String message){
+	public Message(User sender, ArrayList<User> receivers, String subject, String message){
 		this.sender=sender;
-		this.receivers=recievers;
+		this.receivers=receivers;
 		this.subject=subject;
 		this.message=message;
 		read=false;

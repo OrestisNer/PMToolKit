@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 public class Employee extends User  {
 	
-	private String speciality;
 	private String evaluation;
 	private String grade;
 	private LocalDate employmentDate;
