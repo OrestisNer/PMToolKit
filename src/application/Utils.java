@@ -133,17 +133,17 @@ public class Utils {
 	}
 	
 	public static void saveActivityChanges(Activity task) throws IOException{
-		ArrayList<Activity> tasks= getActivitiesFromFile();
+		ArrayList<Activity> activities= getActivitiesFromFile();
 		
-		for(Iterator<Activity> iterator = tasks.iterator(); iterator.hasNext();){
+		for(Iterator<Activity> iterator = activities.iterator(); iterator.hasNext();){
 			Activity t = iterator.next();
 			if(t.getId().equalsIgnoreCase(task.getId())){
 				iterator.remove();
 			}
 		}
 		
-		tasks.add(task);
-		writeToTaskFile(tasks);
+		activities.add(task);
+		writeToActivitiesFile(activities);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -181,7 +181,7 @@ public class Utils {
 	@SuppressWarnings("unchecked")
 	public static ArrayList<Activity> getActivitiesFromFile(){
 		ArrayList<Activity> activities=null;
-		String filename="Tasks";
+		String filename="Activities";
 		ObjectInputStream inputStream= null;
 		try{
 			inputStream=new ObjectInputStream(new FileInputStream(filename));
@@ -220,9 +220,9 @@ public class Utils {
 		
 	}
 	
-	public static void writeToTaskFile(ArrayList<Activity> activities) throws IOException{
+	public static void writeToActivitiesFile(ArrayList<Activity> activities) throws IOException{
 		ObjectOutputStream  outStream=null;
-		String filename="Tasks";
+		String filename="Activities";
 		try{
 			outStream=new ObjectOutputStream(new FileOutputStream(filename));
 	    	outStream.writeObject(activities);
@@ -232,6 +232,27 @@ public class Utils {
 	    	e.printStackTrace();
 		}
 		
+	}
+	
+	public static User getSingleEmployeeFromFile(String empUsername){
+		ArrayList<User> allEmployees = getEmployeesFromFile();
+		for(Iterator<User> iterator = allEmployees.iterator(); iterator.hasNext();){
+			User employee= iterator.next();
+			if(employee.getUsername().equalsIgnoreCase(empUsername))
+				return employee;
+		}
+		return null;
+	}
+	
+	public static ArrayList<User> getEmployeesFromUsername(ArrayList<String> empUsernames){
+		ArrayList<User> allEmployees= getEmployeesFromFile();
+		ArrayList<User> returnedEmployees= new ArrayList<User>();
+		for(Iterator<User> iterator= allEmployees.iterator(); iterator.hasNext();){
+			User e = iterator.next();
+			if(empUsernames.contains(e.getUsername()))
+				returnedEmployees.add(e);
+		}
+		return returnedEmployees;
 	}
 	
 	public static ArrayList<Activity> getActivitiesFromID(ArrayList<String> actId){

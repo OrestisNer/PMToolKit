@@ -10,6 +10,7 @@ import application.Utils;
 import application.Window;
 import classes.Employee;
 import classes.Project;
+import classes.ProjectManager;
 import classes.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -146,7 +147,7 @@ public class CProjects implements Initializable{
 				}
 			}
 			
-			Project project = new Project(projectName, category, kloc, employee);
+			Project project = new Project(projectName, category, kloc, (ProjectManager) employee);
 			project.createFolder();
 			employee.addProject(project.getName());
 			

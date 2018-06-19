@@ -23,13 +23,13 @@ public class Main extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		
 		Window window = new Window("Log In","LogIn.fxml",new CLogIn(),true);	
-		window.createWindow();
+		window.createWindow();	
 		/*createEmpFile();
 		createProjectFile();
 		createTaskFile();
 		System.exit(0);*/
 	}
-	
+
 	private void createEmpFile() throws IOException{
 		ArrayList<User> emp= new ArrayList<User>();
 		User pm = new ProjectManager("ProjectManager","123","Stefanos","Mpitzenis",50000,"Project Manager");
@@ -63,7 +63,7 @@ public class Main extends Application{
 	
 	private void createTaskFile() throws IOException{
 		ArrayList<Project> tasks = new ArrayList<>();
-		String filename = "Tasks";
+		String filename = "Activities";
 		ObjectOutputStream  outStream=null;
 		
 	    try{

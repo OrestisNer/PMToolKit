@@ -33,7 +33,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class CTasks implements Initializable{
+public class CActivities implements Initializable{
 	
 	private Window window;
 	private Project project;
@@ -71,7 +71,7 @@ public class CTasks implements Initializable{
 	@FXML private Label actualTimeLabel;
 	@FXML private Label actutalManMonthsLabel;
 	
-	public CTasks(Project project, User employee,  String buttonText) {
+	public CActivities(Project project, User employee,  String buttonText) {
 		this.project=project;
 		this.employee=employee;
 		employeeTasks = employee.getUnfinishedActivities(project);
@@ -365,7 +365,8 @@ public class CTasks implements Initializable{
 		this.taskNameLabel.setText(activity.getName());
 		this.startingDateLabel.setText(activity.getStartingDate().toString());
 		this.deadLineLabel.setText(activity.getDeadline().toString());
-		this.fillEmployeesListView(activity.getEmployees(), employeesInfoListView);
+		ArrayList<User> employees = Utils.getEmployeesFromUsername(activity.getEmployees());
+		this.fillEmployeesListView(employees, employeesInfoListView);
 		this.fillPrerequisitesInfoListView(activity.getId());
 		this.descriptionInfoArea.setText(activity.getDescription());
 		this.estimatedTimeLabel.setText(activity.getEstimatedDuration()+"");

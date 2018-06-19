@@ -15,12 +15,10 @@ public class ProjectManager extends User{
 		ArrayList<User> receivers = new ArrayList<>();
 		receivers.add(this);
 		String subject = "Confirm Task";
-		String message = "All the employees included to the Task: "+ activity.getName()
-				+ "have confirmed it. Check if everything is done and confirm it too!";
+		String message = "All the employees included in the Task: "+ activity.getName()
+				+ " \nhave confirmed it. Check if everything is done and confirm it too!";
 		
 		Message confirmMessage = new Message(this,receivers,subject,message);
 		this.addMessage(confirmMessage);
-		Utils.saveEmployeeChanges(this);
 	}
-
 }

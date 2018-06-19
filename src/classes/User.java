@@ -1,5 +1,6 @@
 package classes;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,8 +63,11 @@ public abstract class User implements Serializable {
 		return specialty;
 	}
 	
+	public void confirmActivity(Project project, Activity act) throws IOException {
+		activities.get(project.getName()).put(act.getId(), true);
+	}
+	
 	public void addActivity(Project project,Activity act){
-		
 		try{
 			activities.get(project.getName()).put(act.getId(), false);
 		}catch(NullPointerException e){
@@ -75,7 +79,7 @@ public abstract class User implements Serializable {
 	}
 	
 	public HashMap<String,Boolean> getActivities(Project project){
-		return activities.get(project);
+		return activities.get(project.getName());
 	}
 	
 	public ArrayList<String> getUnfinishedActivities(Project project){

@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import application.Utils;
 import classes.ProjectManager;
 
 public class Activity implements Serializable{
@@ -18,7 +20,7 @@ public class Activity implements Serializable{
 	private String subject;
 	private LocalDate startingDate;
 	private LocalDate deadline;
-	private HashMap<User, Boolean> employees;
+	private HashMap<String, Boolean> employees;
 	private boolean completed;
 	private int estimatedDuration;
 	private double estimatedManMonths;
@@ -39,9 +41,10 @@ public class Activity implements Serializable{
 		
 		this.numberOfEmployees=emp.size();
 		
-		employees= new HashMap<User, Boolean>();
+		employees= new HashMap<String, Boolean>();
 		for(User employee: emp){
-			employees.put(employee, false);			
+			System.out.println(employee.getUsername());
+			employees.put(employee.getUsername(), false);			
 		}
 		
 		this.estimatedDuration=estimatedDuration;
@@ -60,31 +63,37 @@ public class Activity implements Serializable{
 	}
 	
 	public void confirmActivity(User employee) throws IOException{
-		employees.put(employee, true);
-		
-		int i = 0;
-		for(User emp : employees.keySet()) {
-			if(employees.get(emp))
-				i++;	
-		}		
-		this.setCompletedPercent(i);
-		
-		if(isCompleted(employees)){
-			completed=true;
-			actualDuration=calcDuration(startingDate,LocalDate.now());
-			actualManMonths=calcManMonths(numberOfEmployees,actualDuration);
-		}else {
-			int completed = 0;
-			for(User emp: employees.keySet()) {
-				if(emp instanceof Employee) {
-					if(employees.get(emp))
-						completed++;
-				}
+		if(employee instanceof Employee) {
+			String empUsername = employee.getUsername();
+			employees.put(empUsername, true);
+	
+			int completedTask = 0 ;
+			for(String username : employees.keySet()) {
+				if(employees.get(username))
+					completedTask++;
 			}
 			
-			if(completed == employees.size()-1) {
-				ProjectManager pm = (ProjectManager) project.getProjectManager();
+			this.setCompletedPercent(completedTask);
+			
+			int i = 0 ;
+			for(String empUserName : employees.keySet()) {
+				if(!empUserName.equals("ProjectManager") && employees.get(empUserName)) 
+					i++;
+			}
+			if(i == employees.size()-1) {
+				ProjectManager pm = (ProjectManager) Utils.getSingleEmployeeFromFile("ProjectManager");
 				pm.sendConfirmationMessageToPM(this);
+				Utils.saveEmployeeChanges(pm);
+			}
+		
+		}else {
+			String empUsername = employee.getUsername();
+			employees.put(empUsername, true);
+	
+			if(isCompleted(employees)){
+				completed=true;
+				actualDuration=calcDuration(startingDate,LocalDate.now());
+				actualManMonths=calcManMonths(numberOfEmployees,actualDuration);
 			}
 		}
 	}
@@ -106,6 +115,10 @@ public class Activity implements Serializable{
 		return deadline;
 	}
 	
+	public void deleteEmployee(String employeeUsername){
+		System.out.println(employeeUsername);
+		employees.remove(employeeUsername);
+	}
 	private int calcDuration(LocalDate startingDate, LocalDate finishDate){
 		LocalDate temp = LocalDate.of(startingDate.getYear(), startingDate.getMonth(), startingDate.getDayOfMonth());
 		int duration=0;
@@ -118,10 +131,10 @@ public class Activity implements Serializable{
 		return duration;
 	}
 	
-	private boolean isCompleted(HashMap<User,Boolean> emp){
-		Iterator<Entry<User, Boolean>> it = emp.entrySet().iterator();
+	private boolean isCompleted(HashMap<String,Boolean> emp){
+		Iterator<Entry<String, Boolean>> it = emp.entrySet().iterator();
 	    while (it.hasNext()) {
-	        Map.Entry<User,Boolean> pair = (Map.Entry<User,Boolean>)it.next();
+	        Map.Entry<String,Boolean> pair = (Map.Entry<String,Boolean>)it.next();
 	        if(!pair.getValue())
 	        	return false;
 	    }
@@ -134,8 +147,8 @@ public class Activity implements Serializable{
 		return x/6;
 	}
 	
-	public void setCompletedPercent(int i) {
-		this.completedPercent = i +"/"+ employees.size();
+	public void setCompletedPercent(int completedTask) {
+		this.completedPercent = completedTask +"/"+ employees.size();
 	}
 	
 	public String getCompletedPercent(){
@@ -165,10 +178,10 @@ public class Activity implements Serializable{
 		return startingDate;
 	}
 	
-	public ArrayList<User> getEmployees(){
-		ArrayList<User> emp = new ArrayList<User>();
-		for (User anEmployee : employees.keySet()) {
-		   emp.add(anEmployee);
+	public ArrayList<String> getEmployees(){
+		ArrayList<String> emp = new ArrayList<String>();
+		for (String empUsername : employees.keySet()) {
+		   emp.add(empUsername);
 		}
 		return emp;
 	}

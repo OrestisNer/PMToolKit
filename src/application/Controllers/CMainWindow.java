@@ -84,7 +84,8 @@ public class CMainWindow implements Initializable {
 		//actionCol.setCellValueFactory(new PropertyValueFactory<>("confirmButton"));
 		
 		ArrayList<String> userActID = employee.getUnfinishedActivities(project);
-		ObservableList<Activity> activityList = FXCollections.observableArrayList(Utils.getActivitiesFromID(userActID));
+		ArrayList<Activity> userActs = Utils.getActivitiesFromID(userActID);
+		ObservableList<Activity> activityList = FXCollections.observableArrayList(userActs);
 		taskTable.setItems(activityList);
 	}
 	
@@ -94,7 +95,7 @@ public class CMainWindow implements Initializable {
 	
 	//Tasks button clicked
 	public void onTasksClicked() throws Exception{
-		controller=new CTasks(project,employee,tasksButton.getText());
+		controller=new CActivities(project,employee,tasksButton.getText());
 		window= new Window("Tasks","Tasks.fxml",controller,true);
 		window.createWindow();		
 	}
@@ -115,6 +116,9 @@ public class CMainWindow implements Initializable {
 	public void onConfirmTaskClicked() throws IOException {
 		Activity selectedActivity = getSelectedAct();
 		selectedActivity.confirmActivity(employee);
+		employee.confirmActivity(project, selectedActivity);
+		Utils.saveActivityChanges(selectedActivity);
+		Utils.saveEmployeeChanges(employee);
 	}
 	
 	//Employees button clicked

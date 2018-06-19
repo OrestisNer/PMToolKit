@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 import application.Utils;
 import application.Window;
+import classes.Activity;
 import classes.Employee;
 import classes.Project;
 import classes.ProjectManager;
@@ -119,6 +120,11 @@ public class CEmployees implements Initializable{
 	private void deleteEmployeeFromProject(Employee employee) throws IOException {
 		ArrayList<User> employees = project.getEmployees();
 		ArrayList<String> projects = employee.getProjects();
+		ArrayList<String> activitiesIds = employee.getUnfinishedActivities(project);
+		for(String a : activitiesIds)
+			System.out.println(a);
+		/*ArrayList<Activity> activities = Utils.getActivitiesFromID(activitiesIds);
+				
 		
 		Iterator<String> iter1 = projects.iterator();
 		while(iter1.hasNext()) {
@@ -136,7 +142,18 @@ public class CEmployees implements Initializable{
 				iter2.remove();
 		}
 		
-		Utils.saveProjectChanges(project);
+		Utils.saveProjectChanges(project);*/
+		
+		/*Iterator<Activity> iter3 = activities.iterator();	
+		while(iter3.hasNext()) {
+			Activity activity  = iter3.next();
+			activity.deleteEmployee(employee.getUsername());
+			Utils.saveActivityChanges(activity);
+		}*/
+		
+		
+		
+		
 	}
 	
 	private User getSelectedEmployee() {
@@ -146,9 +163,6 @@ public class CEmployees implements Initializable{
 	//Fills the employeeListView
 	public void fillEmployeesList(){
 		ArrayList<User> employees = project.getEmployees();
-		
-		for(User emp: employees)
-			System.out.println(emp.getName());
 		
 		ObservableList<User> list = FXCollections.observableArrayList(employees);
 		employeeListView.getItems().clear();
