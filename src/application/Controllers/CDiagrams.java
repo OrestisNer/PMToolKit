@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 
 import org.jfree.chart.JFreeChart;
 
-import application.Utils;
+import application.AlertUtils;
 import classes.Diagram;
 import classes.Project;
 import javafx.event.ActionEvent;
@@ -30,6 +30,7 @@ public class CDiagrams implements Initializable{
 	public CDiagrams(Project project){
 		this.project= project;
 	}
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		diagramsComboBox.getItems().addAll("Gantt","Pert");
@@ -51,11 +52,11 @@ public class CDiagrams implements Initializable{
 			JFreeChart gantt=diagram.createGanttDiagram();
 			if(gantt!=null){
 				Diagram.openGanttWindow(gantt);
-				Utils.closeWindow(actionEvent);
-				Alert alert=Utils.createCustomConfirmationAlert("Save as" , null, "Do you want to save diagram as .jpg?");
+				AlertUtils.closeWindow(actionEvent);
+				Alert alert=AlertUtils.createCustomConfirmationAlert("Save as" , null, "Do you want to save diagram as .jpg?");
 				Optional<ButtonType> result = alert.showAndWait();
 				if(result.get().getText().equals("Yes")){
-					String filename = Utils.createInputDialog("Filename", null , "Please enter the filename");
+					String filename = AlertUtils.createInputDialog("Filename", null , "Please enter the filename");
 					filename+=".jpg";
 					if(!filename.equals(""))
 						diagram.saveChart(gantt,filename);
@@ -67,6 +68,6 @@ public class CDiagrams implements Initializable{
 	}
 	
 	public void onCancelClicked(ActionEvent actionEvent){
-		Utils.closeWindow(actionEvent);
+		AlertUtils.closeWindow(actionEvent);
 	}
 }

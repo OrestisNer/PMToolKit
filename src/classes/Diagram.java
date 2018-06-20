@@ -20,7 +20,8 @@ import org.jfree.data.gantt.TaskSeries;
 import org.jfree.data.gantt.TaskSeriesCollection;
 import org.jfree.data.time.SimpleTimePeriod;
 
-import application.Utils;
+import application.AlertUtils;
+import application.FileUtils;
 import application.Window;
 
 public class Diagram implements Serializable {
@@ -98,21 +99,18 @@ public class Diagram implements Serializable {
 	public JFreeChart createGanttDiagram() throws Exception{
 		ArrayList<String> tasksIds = project.getActivitiesIds();
 		if(tasksIds.isEmpty()){
-			Utils.createInfoAlert("Information", "Project has no task to create Gantt Diagram");
+			AlertUtils.createInfoAlert("Information", "Project has no task to create Gantt Diagram");
 			return null;
 		}else{
-			Window progressWindow = Utils.createProgressBar();
-			ArrayList<Activity> tasks = Utils.getActivitiesFromID(tasksIds);
+			Window progressWindow = AlertUtils.createProgressBar();
+			ArrayList<Activity> tasks = FileUtils.getActivitiesFromID(tasksIds);
 			IntervalCategoryDataset dataset = this.createDataset(tasks);
 			ganttChart = this.createChart(dataset);
 			progressWindow.getStage().close();
 			return ganttChart;
-		}
-		
-		
+		}	
 	}
-	
-	
+
 	public static void openGanttWindow(JFreeChart chart){
 		JFrame frame= new JFrame();
         ChartPanel panel = new ChartPanel(chart);

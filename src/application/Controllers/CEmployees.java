@@ -7,7 +7,8 @@ import java.util.Iterator;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import application.Utils;
+import application.AlertUtils;
+import application.FileUtils;
 import application.Window;
 import classes.Activity;
 import classes.Employee;
@@ -81,7 +82,7 @@ public class CEmployees implements Initializable{
 	
 	//Create Employee button
 	public void onCreateEmployeeClicked(ActionEvent actionEvent) throws Exception{
-		Stage stage= Utils.getStageFromEvent(actionEvent);
+		Stage stage= AlertUtils.getStageFromEvent(actionEvent);
 		this.buttonText= this.createEmployeeButton.getText();
 		window = new Window(stage);
 		window.changeScene("CreateEmployee.fxml", this);
@@ -91,28 +92,28 @@ public class CEmployees implements Initializable{
 	public void onEditEmployeeClicked(ActionEvent actionEvent) throws IOException{
 		User selectedEmployee = getSelectedEmployee();
 		if(selectedEmployee instanceof Employee) {
-			Stage stage= Utils.getStageFromEvent(actionEvent);
+			Stage stage= AlertUtils.getStageFromEvent(actionEvent);
 			this.buttonText=editEmployeeButton.getText();
 			window = new Window(stage);
 			window.changeScene("EditEmployee.fxml", this);
 		}else if( selectedEmployee instanceof ProjectManager)
-			Utils.createInfoAlert("Information", "Select an employee!");
+			AlertUtils.createInfoAlert("Information", "Select an employee!");
 		else
-			Utils.createInfoAlert("Information", "Select an employee first!");
+			AlertUtils.createInfoAlert("Information", "Select an employee first!");
 	}
 	
 	//Cancel button
 	public void onCancelClicked(ActionEvent actionEvent){
-		Utils.closeWindow(actionEvent);
+		AlertUtils.closeWindow(actionEvent);
 	}
 	
 	//Delete button
 	public void onDeleteClicked(ActionEvent actionEvent) throws IOException{
 		User selectedEmployee = getSelectedEmployee();
 		if(selectedEmployee instanceof ProjectManager) 
-			Utils.createInfoAlert("Information", "You can't delete the Project Manager");
+			AlertUtils.createInfoAlert("Information", "You can't delete the Project Manager");
 		else {
-			Alert alert=Utils.createCustomConfirmationAlert("Delete", "Are you sure you want to delete "+selectedEmployee.getName()+" from project?",
+			Alert alert=AlertUtils.createCustomConfirmationAlert("Delete", "Are you sure you want to delete "+selectedEmployee.getName()+" from project?",
 					"This user is involved in "+selectedEmployee.getNumberOfTasks(project)+" task(s)");
 			Optional<ButtonType> result = alert.showAndWait();
 	        if (result.get().getText().equals("Yes")){
@@ -124,10 +125,10 @@ public class CEmployees implements Initializable{
 	
 	//Deletes the selectedEmployee from the Project
 	private void deleteEmployeeFromProject(Employee employee) throws IOException {
-		ArrayList<User> employees = Utils.getEmployeesFromUsername(project.getEmployees());
+		ArrayList<User> employees = FileUtils.getEmployeesFromUsername(project.getEmployees());
 		ArrayList<String> projects = employee.getProjects();
 		ArrayList<String> activitiesIds = employee.getUnfinishedActivities(project);
-		ArrayList<Activity> activities = Utils.getActivitiesFromID(activitiesIds);
+		ArrayList<Activity> activities = FileUtils.getActivitiesFromID(activitiesIds);
 				
 		
 		Iterator<String> iter1 = projects.iterator();
@@ -137,7 +138,7 @@ public class CEmployees implements Initializable{
 				iter1.remove();
 		}
 		
-		Utils.saveEmployeeChanges(employee);
+		FileUtils.saveEmployeeChanges(employee);
 		
 		Iterator<User> iter2 = employees.iterator();		
 		while(iter2.hasNext()) {
@@ -146,18 +147,14 @@ public class CEmployees implements Initializable{
 				iter2.remove();
 		}
 		project.getEmployees().remove(employee.getUsername());
-		Utils.saveProjectChanges(project);
+		FileUtils.saveProjectChanges(project);
 		
 		Iterator<Activity> iter3 = activities.iterator();	
 		while(iter3.hasNext()) {
 			Activity activity  = iter3.next();
 			activity.deleteEmployee(employee.getUsername());
-			Utils.saveActivityChanges(activity);
+			FileUtils.saveActivityChanges(activity);
 		}
-		
-		
-		
-		
 	}
 	
 	private User getSelectedEmployee() {
@@ -166,7 +163,7 @@ public class CEmployees implements Initializable{
 	
 	//Fills the employeeListView
 	public void fillEmployeesList(){
-		ArrayList<User> employees = Utils.getEmployeesFromUsername(project.getEmployees());
+		ArrayList<User> employees = FileUtils.getEmployeesFromUsername(project.getEmployees());
 		
 		ObservableList<User> list = FXCollections.observableArrayList(employees);
 		employeeListView.getItems().clear();
@@ -190,16 +187,16 @@ public class CEmployees implements Initializable{
 		if (hasAppropriateArgs()) {
 			if(isEmployeeUsernameUnique(userNameField.getText())){
 				createEmployee();
-				Utils.createInfoAlert("Proccess", "You successfully create employee " + userNameField.getText());
-				Stage stage = Utils.getStageFromEvent(actionEvent);
+				AlertUtils.createInfoAlert("Proccess", "You successfully create employee " + userNameField.getText());
+				Stage stage = AlertUtils.getStageFromEvent(actionEvent);
 				this.buttonText = createButton.getText();
 				window = new Window(stage);
 				window.changeScene("Employees.fxml", this);
 			}else{
-				Utils.createInfoAlert("Username", "This username exists. Try again.");
+				AlertUtils.createInfoAlert("Username", "This username exists. Try again.");
 			}
 		} else
-			Utils.createInfoAlert("Information", "You have to fill in all the fields");
+			AlertUtils.createInfoAlert("Information", "You have to fill in all the fields");
 	}
 	
 	//Creates an employee object and saves it to projects and employees file
@@ -212,19 +209,17 @@ public class CEmployees implements Initializable{
 		String lastname = lastNameField.getText();
 		double salary = Double.parseDouble(salaryField.getText());
 		User employee = new Employee(username,password,firstname,lastname,salary,speciality);
-		Alert alert=Utils.createCustomConfirmationAlert("Add Employee", null, "Do you want to add employee "+username+" to this project?");
+		Alert alert=AlertUtils.createCustomConfirmationAlert("Add Employee", null, "Do you want to add employee "+username+" to this project?");
 			
 		Optional<ButtonType> result = alert.showAndWait();
 			
 		if (result.get().getText().equals("Yes")){
 			project.addEmployee(employee);
 	       	employee.addProject(project.getName());
-	       	Utils.saveProjectChanges(project);
+	       	FileUtils.saveProjectChanges(project);
 		}
 			
-	    Utils.saveEmployeeChanges(employee);
-		
-		       
+		FileUtils.saveEmployeeChanges(employee);     
 	}
 
 	//Checks if the user filled all the fields in CreateEmployee.fxml
@@ -259,22 +254,22 @@ public class CEmployees implements Initializable{
 			selectedEmployee.setLastname(editLastNameField.getText());
 			selectedEmployee.setSalary(Double.parseDouble(editSalaryField.getText()));
 			
-			Utils.saveEmployeeChanges(selectedEmployee);
-			Utils.saveProjectChanges(project);
+			FileUtils.saveEmployeeChanges(selectedEmployee);
+			FileUtils.saveProjectChanges(project);
 			
-			Stage stage = Utils.getStageFromEvent(event);
+			Stage stage = AlertUtils.getStageFromEvent(event);
 			this.buttonText = saveChangesButton.getText();
 			window = new Window(stage);
 			window.changeScene("Employees.fxml", this);
 		}else{
-			Utils.createInfoAlert("Username", "This username exists. Try again.");
+			AlertUtils.createInfoAlert("Username", "This username exists. Try again.");
 		}
 		
 	}
 	
 	//Cancel button for CreateEmployee.fxml and EditEmployee.fxml
 	public void onCancelEditCreateClicked(ActionEvent actionEvent) throws IOException {
-		Stage stage= Utils.getStageFromEvent(actionEvent);
+		Stage stage= AlertUtils.getStageFromEvent(actionEvent);
 		this.buttonText = "Cancel";
 		window = new Window(stage);
 		window.changeScene("Employees.fxml",this);
@@ -298,7 +293,7 @@ public class CEmployees implements Initializable{
 	}
 	
 	private static boolean isEmployeeUsernameUnique(String username){
-		ArrayList<User> employees = Utils.getEmployeesFromFile();
+		ArrayList<User> employees = FileUtils.getEmployeesFromFile();
 		for(User emp : employees){
 			if(emp.getUsername().equalsIgnoreCase(username))
 				return false;

@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import application.Utils;
+import application.AlertUtils;
+import application.FileUtils;
 import application.Window;
 import classes.Activity;
 import classes.Calendar;
@@ -18,7 +19,6 @@ import classes.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -31,7 +31,6 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 public class CActivities implements Initializable{
 	
@@ -69,7 +68,7 @@ public class CActivities implements Initializable{
 	@FXML private Label estimatedTimeLabel;
 	@FXML private Label estimatedManMonthsLabel;
 	@FXML private Label actualTimeLabel;
-	@FXML private Label actutalManMonthsLabel;
+	@FXML private Label actualManMonthsLabel;
 	
 	public CActivities(Project project, User employee,  String buttonText) {
 		this.project=project;
@@ -86,7 +85,7 @@ public class CActivities implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {	
 		//if the button clicked is Create Task from Tasks window
 		if(buttonText.equals(createTaskButton.getText())) {
-			employees= Utils.getEmployeesFromFile();
+			employees= FileUtils.getEmployeesFromFile();
 			fillEmployeesListView(employees,employeesListView);
 			setTextProperties();
 			
@@ -109,7 +108,7 @@ public class CActivities implements Initializable{
 	
 	//Create task button 
 	public void onCreateTaskClicked(ActionEvent actionEvent) throws Exception {
-		Stage stage = Utils.getStageFromEvent(actionEvent);
+		Stage stage = AlertUtils.getStageFromEvent(actionEvent);
 		window = new Window(stage);
 		this.setButtonText(createTaskButton.getText());
 		window.changeScene("CreateTask.fxml", this);
@@ -117,7 +116,7 @@ public class CActivities implements Initializable{
 	
 	//Select Task button
 	public void onSelectTaskClicked(ActionEvent actionEvent) throws Exception {
-		Stage stage = Utils.getStageFromEvent(actionEvent);
+		Stage stage = AlertUtils.getStageFromEvent(actionEvent);
 		this.setButtonText(selectTaskButton.getText());
 		window = new Window(stage);
 		window.changeScene("TaskInfo.fxml", this);
@@ -125,13 +124,13 @@ public class CActivities implements Initializable{
 	
 	//Cancel button 
 	public void onCancelClicked(ActionEvent actionEvent){
-		Utils.closeWindow(actionEvent);
+		AlertUtils.closeWindow(actionEvent);
 	}
 	
 	//Fills taskListView
 	private void fillTaskListView(){
 		ArrayList<String> userActivtiesID = employee.getUnfinishedActivities(project);
-		ObservableList<Activity> activityList = FXCollections.observableArrayList(Utils.getActivitiesFromID(userActivtiesID));
+		ObservableList<Activity> activityList = FXCollections.observableArrayList(FileUtils.getActivitiesFromID(userActivtiesID));
 		tasksListView.setItems(activityList);
 		tasksListView.setCellFactory(param -> new ListCell<Activity>() {
 		    @Override
@@ -155,7 +154,7 @@ public class CActivities implements Initializable{
 	 * on TaskInfo.fxml 
 	 */
 	public void onCancel_BackClicked(ActionEvent actionEvent) throws Exception{
-		Stage stage = Utils.getStageFromEvent(actionEvent);
+		Stage stage = AlertUtils.getStageFromEvent(actionEvent);
 		window = new Window(stage);
 		this.setButtonText("Tasks");
 		window.changeScene("Tasks.fxml",this);
@@ -169,7 +168,7 @@ public class CActivities implements Initializable{
 	private ArrayList<Activity> getPrerequisitesTasks(ArrayList<String> activitiesID,LocalDate startingDate){
 		ArrayList<Activity> prerequisitesActivities= new ArrayList<Activity>();
 		for(String actID: activitiesID){
-			Activity act = Utils.getSingleActivityFromFile(actID);
+			Activity act = FileUtils.getSingleActivityFromFile(actID);
 			if(Calendar.isBefore(act.getDeadline(), startingDate)){
 				prerequisitesActivities.add(act);
 			}
@@ -226,13 +225,13 @@ public class CActivities implements Initializable{
 	public void onCreateClicked(ActionEvent actionEvent) throws IOException{
 		if(hasAppropriateArgs()){
 			createActivity();
-			Utils.createInfoAlert("Proccess", "You successfully create a task");
-			Stage stage = Utils.getStageFromEvent(actionEvent);
+			AlertUtils.createInfoAlert("Proccess", "You successfully create a task");
+			Stage stage = AlertUtils.getStageFromEvent(actionEvent);
 			this.setButtonText(createButton.getText());
 			window = new Window(stage);
 			window.changeScene("Tasks.fxml", this);
 		}else{
-			Utils.createInfoAlert("Information", "You have to fill in all the fields");
+			AlertUtils.createInfoAlert("Information", "You have to fill in all the fields");
 		}
 	}
 	
@@ -302,11 +301,11 @@ public class CActivities implements Initializable{
 		
 		
 		Activity activity = new Activity(activityName,prerequisites,employees,estimatedTime,subject,description,startingDate,project);
-		Utils.saveActivityChanges(activity);
+		FileUtils.saveActivityChanges(activity);
 		employeeTasks.add(activity.getId());
 		project.addActivity(activity);		
 		employee.addActivity(project,activity);
-		Utils.saveEmployeeChanges(employee);
+		FileUtils.saveEmployeeChanges(employee);
 		
 		for(User employee : employees){
 			if(employee instanceof Employee){
@@ -321,7 +320,7 @@ public class CActivities implements Initializable{
 							employee.addProject(this.project.getName());
 					}
 				}
-				Utils.saveEmployeeChanges(employee);
+				FileUtils.saveEmployeeChanges(employee);
 			}
 		}
 		
@@ -330,14 +329,14 @@ public class CActivities implements Initializable{
 			if(!empUsernames.contains(employee.getUsername()))
 					this.project.addEmployee(employee);
 	
-		Utils.saveProjectChanges(project);
+		FileUtils.saveProjectChanges(project);
 	}
 	
 	//TaskInfo.fxml methods
 	
 	//Fills prerequisitesInfoListView
 	private void fillPrerequisitesInfoListView(String activityID){
-		Activity activity = Utils.getSingleActivityFromFile(activityID);
+		Activity activity = FileUtils.getSingleActivityFromFile(activityID);
 		ArrayList<Activity> prerequisitesTasks= activity.getPrerequisites();
 		prerequisitesInfoListView.getItems().clear();
 		if(!prerequisitesTasks.isEmpty()){
@@ -365,7 +364,7 @@ public class CActivities implements Initializable{
 		this.taskNameLabel.setText(activity.getName());
 		this.startingDateLabel.setText(activity.getStartingDate().toString());
 		this.deadLineLabel.setText(activity.getDeadline().toString());
-		ArrayList<User> employees = Utils.getEmployeesFromUsername(activity.getEmployees());
+		ArrayList<User> employees = FileUtils.getEmployeesFromUsername(activity.getEmployees());
 		this.fillEmployeesListView(employees, employeesInfoListView);
 		this.fillPrerequisitesInfoListView(activity.getId());
 		this.descriptionInfoArea.setText(activity.getDescription());
@@ -373,11 +372,10 @@ public class CActivities implements Initializable{
 		this.estimatedManMonthsLabel.setText(activity.getEstimatedManMonths()+"");
 		if(activity.isCompleted()){
 			this.actualTimeLabel.setText(activity.getActualDuration()+"");
-			this.actutalManMonthsLabel.setText(activity.getActualManMonths()+"");
+			this.actualManMonthsLabel.setText(activity.getActualManMonths()+"");
 		}else{
 			this.actualTimeLabel.setText("N/A");
-			this.actutalManMonthsLabel.setText("N/A");
+			this.actualManMonthsLabel.setText("N/A");
 		}
 	}	
 }
-

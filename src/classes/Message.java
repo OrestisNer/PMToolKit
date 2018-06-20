@@ -20,7 +20,6 @@ public class Message implements Serializable {
 		read=false;
 	}
 	
-	
 	public boolean isSender(User employee){
 		if(employee.getUsername().equalsIgnoreCase(sender.getUsername())){
 			return true;
@@ -31,6 +30,7 @@ public class Message implements Serializable {
 	public User getSender(){
 		return sender;
 	}
+	
 	public ArrayList<User> getReceivers(){
 		return receivers;
 	}

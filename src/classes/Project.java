@@ -15,7 +15,7 @@ public class Project implements Serializable{
 	private ArrayList<String> employees;
 	private ArrayList<Diagram> diagrams;
 	private LocalDate startingDate;
-	private Calendar calendar;
+	//private Calendar calendar;
 	private Cost cost;
 	private int duration;
 	private boolean isCosted;
@@ -41,7 +41,6 @@ public class Project implements Serializable{
 		for(User employee: emp){
 			employees.add(employee.getUsername());
 		}
-		
 	}
 	
 	public void addEmployee(User employee){

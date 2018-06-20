@@ -10,7 +10,6 @@ public class Employee extends User  {
 	private double rateOfEmployment;
 	private double manmonthsEmployment;
 	
-	
 	public Employee(String username, String password, String firstname, String lastname, double salary,String speciality){
 		super(username,password,firstname,lastname, salary,speciality);	
 		evaluation = "";
@@ -23,6 +22,7 @@ public class Employee extends User  {
 	public String getGrade() {
 		return grade;
 	}
+	
 	public void setEvaluation(String evaluation) {
 		this.evaluation = evaluation;
 	}

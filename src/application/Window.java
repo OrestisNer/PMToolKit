@@ -18,7 +18,6 @@ public class Window {
 	private boolean maximized;
 	private boolean closeProgramOnCloseRequest;
 	
-	
 	public Window(String title,String fxmlFilename,Object controller,boolean modality){
 		this.title= title;
 		this.fxmlFilename=fxmlFilename;
@@ -55,7 +54,7 @@ public class Window {
 		if(closeProgramOnCloseRequest){
 			window.setOnCloseRequest(e -> {
 				e.consume();
-				Utils.closeProgram(window);
+				AlertUtils.closeProgram(window);
 			});
 		}
 		

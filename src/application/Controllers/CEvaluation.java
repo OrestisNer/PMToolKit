@@ -3,10 +3,10 @@ package application.Controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.ResourceBundle;
 
-import application.Utils;
+import application.AlertUtils;
+import application.FileUtils;
 import application.Window;
 import classes.Employee;
 import classes.Project;
@@ -34,6 +34,7 @@ public class CEvaluation implements Initializable{
 	//Evaluation.fxml
 	@FXML private ListView<User> employeeListView;
 	@FXML private Button nextButton;
+	
 	//EvaluateEmployee.fxml
 	@FXML private TextArea evaluationTextArea;
 	@FXML private RadioButton poorRadioButton;
@@ -77,22 +78,22 @@ public class CEvaluation implements Initializable{
 	public void onNextClicked(ActionEvent actionEvent) throws Exception{
 		User selectedEmployee = getSelectedEmployee();
 		if(selectedEmployee instanceof Employee) {
-			Stage stage = Utils.getStageFromEvent(actionEvent);
+			Stage stage = AlertUtils.getStageFromEvent(actionEvent);
 			this.setButtonText(nextButton.getText());
 			window = new Window(stage);
 			window.changeScene("EvaluateEmployee.fxml", this);
 		}else
-			Utils.createInfoAlert("Information", "The Project Manager can't evaluate himself!");
+			AlertUtils.createInfoAlert("Information", "The Project Manager can't evaluate himself!");
 	}
 	
 	//Cancel button
 	public void onCancelClicked(ActionEvent event) {
-		Utils.closeWindow(event);
+		AlertUtils.closeWindow(event);
 	}
 	
 	//Fills employeesListView
 	private void fillEmployeesListView() {
-		ArrayList<User> employees = Utils.getEmployeesFromUsername(project.getEmployees());
+		ArrayList<User> employees = FileUtils.getEmployeesFromUsername(project.getEmployees());
 		/*Iterator<User> iter = employees.iterator();
 
 		while (iter.hasNext()) {
@@ -128,8 +129,8 @@ public class CEvaluation implements Initializable{
 	//Submit button
 	public void onSubmitClicked(ActionEvent actionEvent) throws Exception {
 		evaluateEmployee();
-		Utils.createInfoAlert("Proccess", "You successfully evaluated an employee");
-		Stage stage = Utils.getStageFromEvent(actionEvent);
+		AlertUtils.createInfoAlert("Proccess", "You successfully evaluated an employee");
+		Stage stage = AlertUtils.getStageFromEvent(actionEvent);
 		this.setButtonText(submitButton.getText());
 		window = new Window(stage);
 		window.changeScene("Evaluation.fxml", this);
@@ -152,12 +153,12 @@ public class CEvaluation implements Initializable{
 		else
 			selectedEmployee.setGrade("Excellent");
 		
-		Utils.saveEmployeeChanges(selectedEmployee);
+		FileUtils.saveEmployeeChanges(selectedEmployee);
 	}
 	
 	//Cancel button
 	public void onCancelEvaluationClicked(ActionEvent actionEvent) throws Exception{
-		Stage stage = Utils.getStageFromEvent(actionEvent);
+		Stage stage = AlertUtils.getStageFromEvent(actionEvent);
 		this.setButtonText(cancelButton.getText());
 		window = new Window(stage);
 		window.changeScene("Evaluation.fxml", this);

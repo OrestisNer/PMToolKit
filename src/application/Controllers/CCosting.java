@@ -1,9 +1,10 @@
 package application.Controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import application.Utils;
+import application.AlertUtils;
 import application.Window;
 import classes.Cost;
 import classes.Project;
@@ -32,7 +33,6 @@ public class CCosting implements Initializable{
 		this.textButton=textButton;
 	}
 	
-	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		project.initializeCost();
@@ -47,17 +47,16 @@ public class CCosting implements Initializable{
 	}
 	
 	public void onPreviousClicked(ActionEvent actionEvent) throws Exception{
-		Stage stage  = Utils.getStageFromEvent(actionEvent);
+		Stage stage  = AlertUtils.getStageFromEvent(actionEvent);
 	    window= new Window(stage);
 	    window.changeScene("Costing.fxml", this);	    
 	}
 	
 	public void onNextClicked(ActionEvent actionEvent) throws Exception{
-		Stage stage  = Utils.getStageFromEvent(actionEvent);
+		Stage stage  = AlertUtils.getStageFromEvent(actionEvent);
 	    window= new Window(stage);
 	    window.changeScene("CostingTotalProject.fxml", this);
 	}
-	
 	
 	public void onSaveClicked(ActionEvent actionEvent){
 		
@@ -67,10 +66,9 @@ public class CCosting implements Initializable{
 		
 	}
 	
-	public void onCancelClicked(ActionEvent actionEvent){
-		
+	public void onCancelClicked(ActionEvent actionEvent) throws IOException{
+		Stage stage  = AlertUtils.getStageFromEvent(actionEvent);
+	    window= new Window(stage);
+	    window.changeScene("Costing.fxml", this);
 	}
-
-	
-
 }

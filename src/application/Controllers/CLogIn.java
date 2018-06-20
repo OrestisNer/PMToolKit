@@ -4,7 +4,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import application.Utils;
+import application.AlertUtils;
+import application.FileUtils;
 import application.Window;
 import classes.Employee;
 import classes.ProjectManager;
@@ -27,7 +28,7 @@ public class CLogIn implements Initializable {
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		employees=Utils.getEmployeesFromFile();
+		employees=FileUtils.getEmployeesFromFile();
 		
 		//loginButton.setDisable(true);
 		usernameField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -42,16 +43,16 @@ public class CLogIn implements Initializable {
 		String inputPassword = passwordField.getText();
 		User employee= isEmployee(inputUsername,inputPassword);
 		if(employee instanceof ProjectManager){
-			Utils.closeWindow(actionEvent);
+			AlertUtils.closeWindow(actionEvent);
 			Window projectWindow= new Window("Project","Projects.fxml",new CProjects(employee,loginButton.getText()),false);
 			projectWindow.createWindow();
 		}else if(employee instanceof Employee){
-			Utils.closeWindow(actionEvent); //Εδώ θα ανοίγει το παράθυρο για τον απλό χρήστη
+			AlertUtils.closeWindow(actionEvent); //Εδώ θα ανοίγει το παράθυρο για τον απλό χρήστη
 			Window projectWindow= new Window("Project","Projects.fxml",new CProjects(employee,loginButton.getText()),false);
 			projectWindow.createWindow();
 
 		}else{
-			Utils.createErrorAlert("Error", "Log in Failed", "Username or Password is wrong");
+			AlertUtils.createErrorAlert("Error", "Log in Failed", "Username or Password is wrong");
 		}
 	}
 	
@@ -64,8 +65,4 @@ public class CLogIn implements Initializable {
 		}
 		return null;
 	}
-
-
-	
-	
 }

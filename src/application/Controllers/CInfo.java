@@ -4,7 +4,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import application.Utils;
+import application.AlertUtils;
+import application.FileUtils;
 import classes.Activity;
 import classes.Project;
 import classes.User;
@@ -45,7 +46,7 @@ public class CInfo implements Initializable {
 	}
 	
 	public void onBackClicked(ActionEvent actionEvent) throws Exception{
-		Utils.closeWindow(actionEvent);
+		AlertUtils.closeWindow(actionEvent);
 	}
 
 	@Override
@@ -66,7 +67,7 @@ public class CInfo implements Initializable {
 		ListView<String> taskListView= new ListView<String>();
 		Button backButton = new Button("  Back  ");
 		ArrayList<String> activitiesids  = project.getActivitiesIds();
-		ArrayList<Activity> activities= Utils.getActivitiesFromID(activitiesids);
+		ArrayList<Activity> activities= FileUtils.getActivitiesFromID(activitiesids);
 		activitiesids.clear();
 		for(Activity act : activities){
 			activitiesids.add(act.getName());
@@ -100,7 +101,7 @@ public class CInfo implements Initializable {
 	public void onShowEmployeeClicked(){
 		ListView<String> employeeListView= new ListView<String>();
 		Button backButton = new Button("  Back  ");
-		ArrayList<User> employees  = Utils.getEmployeesFromUsername(project.getEmployees());
+		ArrayList<User> employees  = FileUtils.getEmployeesFromUsername(project.getEmployees());
 		ArrayList<String> empInfo = new ArrayList<String>();
 		for(User emp : employees){
 			empInfo.add(emp.getName()+"-"+emp.getSpecialty());
@@ -118,8 +119,7 @@ public class CInfo implements Initializable {
         
         
         Stage window = new Stage();
-        
-       
+              
         window.setTitle("Employees");
         window.setScene(scene);
         window.initModality(Modality.APPLICATION_MODAL);

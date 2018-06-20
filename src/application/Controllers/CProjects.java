@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import application.Utils;
+import application.AlertUtils;
+import application.FileUtils;
 import application.Window;
 import classes.Employee;
 import classes.Project;
@@ -59,7 +60,7 @@ public class CProjects implements Initializable{
 			categoryCombobox.getItems().addAll("Organic", "Semi-detached","Embedded");
 			setProperties();
 		}else {
-			projects = Utils.getProjectsFromFile();
+			projects = FileUtils.getProjectsFromFile();
 			fillProjectListView();
 			if(employee instanceof Employee)
 				createProjectButton.setVisible(false);
@@ -70,7 +71,7 @@ public class CProjects implements Initializable{
 	
 	//Create Project button
 	public void onCreateProjectClicked(ActionEvent actionEvent) throws Exception{
-		Stage stage= Utils.getStageFromEvent(actionEvent);
+		Stage stage= AlertUtils.getStageFromEvent(actionEvent);
 		this.setButtonText(createProjectButton.getText());
 		window = new Window(stage);
 		window.changeScene("CreateProject.fxml", this);
@@ -80,11 +81,11 @@ public class CProjects implements Initializable{
 	public void onSelectClicked(ActionEvent actionEvent) throws Exception{
 		Project project = getSelectedProject();
 		if(project!=null){
-			Utils.closeWindow(actionEvent);
+			AlertUtils.closeWindow(actionEvent);
 			Window window = new Window("Main Window","MainWindow.fxml",new CMainWindow(employee,project),true,true);
 			window.createWindow();
 		}else{
-			Utils.createInfoAlert("Information", "Select a project first!");
+			AlertUtils.createInfoAlert("Information", "Select a project first!");
 		}
 	}
 	
@@ -94,10 +95,10 @@ public class CProjects implements Initializable{
 	
 	//Cancel button
 	public void onCancelClicked(ActionEvent actionEvent) throws Exception{
-		Alert alert = Utils.createConfirmationAlert("Log out", "Log Out Confirmation", "Are sure you want to log out?");
+		Alert alert = AlertUtils.createConfirmationAlert("Log out", "Log Out Confirmation", "Are sure you want to log out?");
 		Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
-        	Utils.closeWindow(actionEvent);
+        	AlertUtils.closeWindow(actionEvent);
         	Window window = new Window("Log In","LogIn.fxml",new CLogIn(),true);
     		window.createWindow();
         }
@@ -142,7 +143,7 @@ public class CProjects implements Initializable{
 		if(!projectName.isEmpty() || !category.isEmpty()){
 			for(String project : employee.getProjects()){
 				if(project.equalsIgnoreCase(projectName)){
-					Utils.createErrorAlert("Error", "Project Name", "This project name already exists");
+					AlertUtils.createErrorAlert("Error", "Project Name", "This project name already exists");
 					return;
 				}
 			}
@@ -151,16 +152,16 @@ public class CProjects implements Initializable{
 			project.createFolder();
 			employee.addProject(project.getName());
 			
-			Utils.saveEmployeeChanges(employee);
-			Utils.saveProjectChanges(project);
+			FileUtils.saveEmployeeChanges(employee);
+			FileUtils.saveProjectChanges(project);
 			//fillProjectListView();
 			
 			this.setButtonText(createButton.getText());
-			Stage stage= Utils.getStageFromEvent(actionEvent);
+			Stage stage= AlertUtils.getStageFromEvent(actionEvent);
 			window = new Window(stage);
 			window.changeScene("Projects.fxml", this);			
 		}else
-			Utils.createInfoAlert("Information", "Fill all the fields!");
+			AlertUtils.createInfoAlert("Information", "Fill all the fields!");
 	}
 	
 	private void setProperties(){
@@ -175,7 +176,7 @@ public class CProjects implements Initializable{
 	
 	//Cancel button
 	public void onCancelCreateClicked(ActionEvent actionEvent) throws IOException {
-		Stage stage =Utils.getStageFromEvent(actionEvent);
+		Stage stage =AlertUtils.getStageFromEvent(actionEvent);
 		window = new Window(stage);
 		this.setButtonText(cancelButton.getText());
 		window.changeScene("Projects.fxml", this);

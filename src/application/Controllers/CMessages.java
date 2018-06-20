@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 
-import application.Utils;
+import application.AlertUtils;
+import application.FileUtils;
 import application.Window;
 import classes.Message;
 import classes.Project;
@@ -84,7 +85,7 @@ public class CMessages implements Initializable{
 	
 	//Compose button
 	public void onComposeClicked(ActionEvent actionEvent) throws Exception{	
-		Stage stage  = Utils.getStageFromEvent(actionEvent);
+		Stage stage  = AlertUtils.getStageFromEvent(actionEvent);
 	    window= new Window(stage);
 	    this.setButtonText(composeButton.getText());
 	    window.changeScene("WriteMessage.fxml", this);
@@ -94,18 +95,18 @@ public class CMessages implements Initializable{
 	public void onSelectClicked(ActionEvent actionEvent) throws IOException{
 		Message message=messagesListView.getSelectionModel().getSelectedItem();
 		if(message!=null){
-			Stage stage  = Utils.getStageFromEvent(actionEvent);
+			Stage stage  = AlertUtils.getStageFromEvent(actionEvent);
 			window= new Window(stage);
 			this.setButtonText(selectButton.getText());
 			window.changeScene("ShowMessage.fxml", this);
 		}else{
-			Utils.createInfoAlert("Information", "Select message first");
+			AlertUtils.createInfoAlert("Information", "Select message first");
 		}
 	}
 	
 	//Cancel button
 	public void onCancelClicked(ActionEvent actionEvent) {
-		Utils.closeWindow(actionEvent);
+		AlertUtils.closeWindow(actionEvent);
 	}
 	
 	//Fills messagesListView 
@@ -144,9 +145,9 @@ public class CMessages implements Initializable{
 	//Send message button
 	public void onSendMessageClicked(ActionEvent actionEvent) throws IOException {
 		createMessage();
-		Utils.createInfoAlert("Message", "You successfully send the message");
+		AlertUtils.createInfoAlert("Message", "You successfully send the message");
 		
-		Stage stage = Utils.getStageFromEvent(actionEvent);
+		Stage stage = AlertUtils.getStageFromEvent(actionEvent);
 		window = new Window(stage);
 		this.setButtonText(sendMessageButton.getText());
 		window.changeScene("Messages.fxml", this);
@@ -158,7 +159,7 @@ public class CMessages implements Initializable{
 		
 		if(selectAllCheckBox.isSelected()){
 			ArrayList<String> usersnames=project.getEmployees();
-			receivers = Utils.getEmployeesFromUsername(usersnames);
+			receivers = FileUtils.getEmployeesFromUsername(usersnames);
 		}else{
 			receivers.add(employeesComboBox.getValue());
 		}
@@ -168,16 +169,16 @@ public class CMessages implements Initializable{
 		Message messageObj = new Message(employee,receivers,subject,message);
 		
 		employee.addMessage(messageObj);
-		Utils.saveEmployeeChanges(employee);
+		FileUtils.saveEmployeeChanges(employee);
 		for(User receiver: receivers){
 			receiver.addMessage(messageObj);
-			Utils.saveEmployeeChanges(receiver);
+			FileUtils.saveEmployeeChanges(receiver);
 		}
 	}
 	
 	//Cancel button 
 	public void onCancelComposeClicked(ActionEvent actionEvent) throws IOException {
-		Stage stage  = Utils.getStageFromEvent(actionEvent);
+		Stage stage  = AlertUtils.getStageFromEvent(actionEvent);
 	    window= new Window(stage);
 	    this.setButtonText(cancelComposeButton.getText());
 	    window.changeScene("Messages.fxml", this);
@@ -193,7 +194,7 @@ public class CMessages implements Initializable{
 	
 	//Fills employeesComboBox
 	private void fillEmployeeComboBox(){
-		ArrayList<User> employees = Utils.getEmployeesFromUsername(project.getEmployees());
+		ArrayList<User> employees = FileUtils.getEmployeesFromUsername(project.getEmployees());
 		
 		ObservableList<User> list = FXCollections.observableArrayList(employees);
 		employeesComboBox.getItems().clear();
@@ -221,7 +222,7 @@ public class CMessages implements Initializable{
 	
 	//Cancel Button
 	public void onCancelSelectClicked(ActionEvent actionEvent) throws IOException {
-		Stage stage  = Utils.getStageFromEvent(actionEvent);
+		Stage stage  = AlertUtils.getStageFromEvent(actionEvent);
 	    window= new Window(stage);
 	    this.setButtonText(cancelSelectButton.getText());
 	    window.changeScene("Messages.fxml", this);

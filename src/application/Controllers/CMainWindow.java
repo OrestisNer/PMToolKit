@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import application.Utils;
+import application.AlertUtils;
+import application.FileUtils;
 import application.Window;
 import classes.Activity;
 import classes.Employee;
@@ -32,7 +33,6 @@ public class CMainWindow implements Initializable {
 	private Window window;
 	private User employee;
 	private Project project;
-	
 	
 	@FXML private Label headerLabel;
 	@FXML private Label usernameLabel;
@@ -83,7 +83,7 @@ public class CMainWindow implements Initializable {
 		completedCol.setCellValueFactory(new PropertyValueFactory<>("completedPercent"));
 		
 		ArrayList<String> userActID = employee.getUnfinishedActivities(project);
-		ArrayList<Activity> userActs = Utils.getActivitiesFromID(userActID);
+		ArrayList<Activity> userActs = FileUtils.getActivitiesFromID(userActID);
 		ObservableList<Activity> activityList = FXCollections.observableArrayList(userActs);
 		taskTable.setItems(activityList);
 	}
@@ -116,9 +116,9 @@ public class CMainWindow implements Initializable {
 		Activity selectedActivity = getSelectedAct();
 		selectedActivity.confirmActivity(employee);
 		employee.confirmActivity(project, selectedActivity);
-		Utils.saveActivityChanges(selectedActivity);
-		Utils.saveEmployeeChanges(employee);
-		Utils.createInfoAlert("Confiramtion", "You successfuly confirm task "+selectedActivity.getName());
+		FileUtils.saveActivityChanges(selectedActivity);
+		FileUtils.saveEmployeeChanges(employee);
+		AlertUtils.createInfoAlert("Confiramtion", "You successfuly confirm task "+selectedActivity.getName());
 		refreshTaskTable();
 	}
 	
@@ -149,7 +149,7 @@ public class CMainWindow implements Initializable {
 		if(!project.isCosted()){
 			startCosting=true;
 		}else{
-			Alert alert=Utils.createCustomConfirmationAlert("Cost", "This project has already benn costed.", "Do you want to cost this project again?");
+			Alert alert=AlertUtils.createCustomConfirmationAlert("Cost", "This project has already benn costed.", "Do you want to cost this project again?");
 			Optional<ButtonType> result = alert.showAndWait();
 			
 			if (result.get().getText().equals("Yes")){
@@ -172,25 +172,21 @@ public class CMainWindow implements Initializable {
 	
 	//Exit button Clicked
 	public void onExitClicked(ActionEvent actionEvent){
-		Alert alert = Utils.createConfirmationAlert("Exit","Exit Confirmation", "Are sure you want to exit?");
+		Alert alert = AlertUtils.createConfirmationAlert("Exit","Exit Confirmation", "Are sure you want to exit?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
-        	Utils.closeWindow(actionEvent);
+        	AlertUtils.closeWindow(actionEvent);
         }
 	}
 	
 	//Log out button clicked
 	public void onLogOutClicked(ActionEvent actionEvent) throws Exception{
-		Alert alert = Utils.createConfirmationAlert("Log out", "Log Out Confirmation", "Are sure you want to log out?");
+		Alert alert = AlertUtils.createConfirmationAlert("Log out", "Log Out Confirmation", "Are sure you want to log out?");
 		Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
-        	Utils.closeWindow(actionEvent);
+        	AlertUtils.closeWindow(actionEvent);
         	window = new Window("Log In","LogIn.fxml",new CLogIn(),true);
     		window.createWindow();
         }
     }
-
-
-
-	
 }

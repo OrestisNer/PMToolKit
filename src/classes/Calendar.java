@@ -5,7 +5,6 @@ import java.time.LocalDate;
 
 public class Calendar implements Serializable{
 	
-	
 	public static boolean isBefore(LocalDate deadline, LocalDate startingDate){
 	    int cmp = (deadline.getYear() - startingDate.getYear());
 	    if(cmp<0) return true;
@@ -21,5 +20,4 @@ public class Calendar implements Serializable{
 	    	}
 	    }
 	}
-
 }

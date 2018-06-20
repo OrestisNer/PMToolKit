@@ -59,8 +59,4 @@ public class Cost implements Serializable {
 		return this.amountOfEmployees;
 	}
 	
-	
-	
-	
-	
 }

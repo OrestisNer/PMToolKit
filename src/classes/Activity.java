@@ -9,8 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import application.Utils;
-import classes.ProjectManager;
+import application.FileUtils;
 
 public class Activity implements Serializable{
 	
@@ -87,9 +86,9 @@ public class Activity implements Serializable{
 			}
 			if(i == employees.size()-1 && !confirmationSended) {
 				confirmationSended=true;
-				ProjectManager pm = (ProjectManager) Utils.getSingleEmployeeFromFile("ProjectManager");
+				ProjectManager pm = (ProjectManager) FileUtils.getSingleEmployeeFromFile("ProjectManager");
 				pm.sendConfirmationMessageToPM(this);
-				Utils.saveEmployeeChanges(pm);
+				FileUtils.saveEmployeeChanges(pm);
 			}
 		
 		}else {
@@ -124,6 +123,7 @@ public class Activity implements Serializable{
 	public void deleteEmployee(String employeeUsername){
 		employees.remove(employeeUsername);
 	}
+	
 	private int calcDuration(LocalDate startingDate, LocalDate finishDate){
 		LocalDate temp = LocalDate.of(startingDate.getYear(), startingDate.getMonth(), startingDate.getDayOfMonth());
 		int duration=0;
@@ -179,7 +179,7 @@ public class Activity implements Serializable{
 	}
 	
 	public ArrayList<Activity> getPrerequisites(){
-		ArrayList<Activity> presequisitesAct = Utils.getActivitiesFromID(presequisitesActivities);
+		ArrayList<Activity> presequisitesAct = FileUtils.getActivitiesFromID(presequisitesActivities);
 		return presequisitesAct;
 	}
 	
