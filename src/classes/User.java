@@ -78,8 +78,21 @@ public abstract class User implements Serializable {
 		}
 	}
 	
-	public HashMap<String,Boolean> getActivities(Project project){
-		return activities.get(project.getName());
+/*	public HashMap<String,Boolean> getActivities(Project project){
+		try{
+			return activities.get(project.getName());
+		}catch(NullPointerException e){
+			HashMap<String,Boolean> activityList = new HashMap<String,Boolean>();
+			return activityList;
+		}
+	}*/
+	
+	public int getNumberOfTasks(Project project){
+		try{
+			return activities.get(project.getName()).keySet().size();
+		}catch(NullPointerException e){
+			return 0;
+		}
 	}
 	
 	public ArrayList<String> getUnfinishedActivities(Project project){

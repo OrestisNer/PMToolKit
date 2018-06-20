@@ -14,7 +14,7 @@ public class ProjectManager extends User{
 	public void sendConfirmationMessageToPM(Activity activity) throws IOException {
 		ArrayList<User> receivers = new ArrayList<>();
 		receivers.add(this);
-		String subject = "Confirm Task";
+		String subject = "Confirm Task "+ activity.getName();
 		String message = "All the employees included in the Task: "+ activity.getName()
 				+ " \nhave confirmed it. Check if everything is done and confirm it too!";
 		

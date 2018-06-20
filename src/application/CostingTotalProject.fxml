@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -34,9 +35,9 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <TextField maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label text="21240" GridPane.columnIndex="1" />
+            <TextField fx:id="equipmentCostField" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="softwareCostField" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="employeesSalaryLabel" text="21240" GridPane.columnIndex="1" />
          </children>
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -60,9 +61,9 @@
       </HBox>
       <GridPane alignment="CENTER" prefHeight="93.0" prefWidth="600.0">
          <children>
-            <Button mnemonicParsing="false" text="Calculate Total Cost" GridPane.rowIndex="1" />
+            <Button fx:id="calculateButton" mnemonicParsing="false" onAction="#onCalculateTotalCostClicked" text="Calculate Total Cost" GridPane.rowIndex="1" />
             <Label alignment="CENTER" contentDisplay="CENTER" text="Operating expenses " />
-            <Label text="50000" GridPane.columnIndex="1" />
+            <Label fx:id="expensesLabel" text="50000" GridPane.columnIndex="1" />
             <TextField maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
          <columnConstraints>
@@ -77,7 +78,12 @@
       <Region prefHeight="51.0" prefWidth="600.0" />
       <HBox alignment="CENTER" prefHeight="64.0" prefWidth="600.0">
          <children>
-            <Button mnemonicParsing="false" text="  Save   " />
+            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelClicked" text="Cancel">
+               <HBox.margin>
+                  <Insets right="25.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSaveClicked" text="  Save   " />
          </children>
       </HBox>
    </children>

@@ -92,7 +92,7 @@ public class CEvaluation implements Initializable{
 	
 	//Fills employeesListView
 	private void fillEmployeesListView() {
-		ArrayList<User> employees = project.getEmployees();
+		ArrayList<User> employees = Utils.getEmployeesFromUsername(project.getEmployees());
 		/*Iterator<User> iter = employees.iterator();
 
 		while (iter.hasNext()) {

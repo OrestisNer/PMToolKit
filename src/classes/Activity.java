@@ -15,7 +15,7 @@ import classes.ProjectManager;
 public class Activity implements Serializable{
 	
 	private String name;
-	private ArrayList<Activity> presequisitesActivities;
+	private ArrayList<String> presequisitesActivities;
 	private String description;
 	private String subject;
 	private LocalDate startingDate;
@@ -30,20 +30,24 @@ public class Activity implements Serializable{
 	private Project project;
 	private String id;
 	private String completedPercent;
-	//private Button confirmButton;
+	private boolean confirmationSended;
 	
 	
 	public Activity(String name, ArrayList<Activity> presequisitesActivities, ArrayList<User> emp, int estimatedDuration, 
 			String subject, String description, LocalDate startingDate, Project project ){
 		
 		this.name=name;
-		this.presequisitesActivities=presequisitesActivities;
+		if(presequisitesActivities.isEmpty())
+			this.presequisitesActivities= new ArrayList<String>();
+		else{
+			for(Activity act: presequisitesActivities)
+				this.presequisitesActivities.add(act.getId());
+		}
 		
 		this.numberOfEmployees=emp.size();
 		
 		employees= new HashMap<String, Boolean>();
 		for(User employee: emp){
-			System.out.println(employee.getUsername());
 			employees.put(employee.getUsername(), false);			
 		}
 		
@@ -56,9 +60,10 @@ public class Activity implements Serializable{
 		this.estimatedManMonths= calcManMonths(numberOfEmployees,estimatedDuration);
 		this.completed=false;
 		this.project=project;
-		this.id=project.getName()+name;
+		this.id=this.project.getName()+name;
 		id=id.replaceAll("\\s","").toUpperCase().trim();
 		this.completedPercent = 0 + "/" + emp.size();
+		confirmationSended=false;
 		//this.confirmButton = new Button("Confirm Task");
 	}
 	
@@ -80,7 +85,8 @@ public class Activity implements Serializable{
 				if(!empUserName.equals("ProjectManager") && employees.get(empUserName)) 
 					i++;
 			}
-			if(i == employees.size()-1) {
+			if(i == employees.size()-1 && !confirmationSended) {
+				confirmationSended=true;
 				ProjectManager pm = (ProjectManager) Utils.getSingleEmployeeFromFile("ProjectManager");
 				pm.sendConfirmationMessageToPM(this);
 				Utils.saveEmployeeChanges(pm);
@@ -100,7 +106,7 @@ public class Activity implements Serializable{
 		
 	
 	private double calcManMonths(int numberOfEmployees, int duration){
-		double manDays= duration/numberOfEmployees;
+		double manDays= duration*numberOfEmployees;
 		return manDays/30;
 	}
 	
@@ -116,19 +122,21 @@ public class Activity implements Serializable{
 	}
 	
 	public void deleteEmployee(String employeeUsername){
-		System.out.println(employeeUsername);
 		employees.remove(employeeUsername);
 	}
 	private int calcDuration(LocalDate startingDate, LocalDate finishDate){
 		LocalDate temp = LocalDate.of(startingDate.getYear(), startingDate.getMonth(), startingDate.getDayOfMonth());
 		int duration=0;
-		while(!(temp.equals(finishDate))){
-			temp.plusDays(1);
-			if(!(temp.getDayOfWeek().toString().equalsIgnoreCase("SUNDAY") 
-					|| temp.getDayOfWeek().toString().equalsIgnoreCase("SATURDAY")))
-				duration++;
+		if(temp.isBefore(finishDate)){
+			while(!(temp.equals(finishDate))){
+				if(!(temp.getDayOfWeek().toString().equalsIgnoreCase("SUNDAY") 
+						|| temp.getDayOfWeek().toString().equalsIgnoreCase("SATURDAY")))
+					duration++;
+				temp=temp.plusDays(1);
+			}
+			return duration;
 		}
-		return duration;
+		return 0;
 	}
 	
 	private boolean isCompleted(HashMap<String,Boolean> emp){
@@ -171,7 +179,8 @@ public class Activity implements Serializable{
 	}
 	
 	public ArrayList<Activity> getPrerequisites(){
-		return presequisitesActivities;
+		ArrayList<Activity> presequisitesAct = Utils.getActivitiesFromID(presequisitesActivities);
+		return presequisitesAct;
 	}
 	
 	public LocalDate getStartingDate(){

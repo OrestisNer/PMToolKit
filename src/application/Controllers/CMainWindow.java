@@ -81,7 +81,6 @@ public class CMainWindow implements Initializable {
 		startingDateCol.setCellValueFactory(new PropertyValueFactory<>("startingDate"));
 		deadlineCol.setCellValueFactory(new PropertyValueFactory<>("deadline"));
 		completedCol.setCellValueFactory(new PropertyValueFactory<>("completedPercent"));
-		//actionCol.setCellValueFactory(new PropertyValueFactory<>("confirmButton"));
 		
 		ArrayList<String> userActID = employee.getUnfinishedActivities(project);
 		ArrayList<Activity> userActs = Utils.getActivitiesFromID(userActID);
@@ -97,7 +96,7 @@ public class CMainWindow implements Initializable {
 	public void onTasksClicked() throws Exception{
 		controller=new CActivities(project,employee,tasksButton.getText());
 		window= new Window("Tasks","Tasks.fxml",controller,true);
-		window.createWindow();		
+		window.createWindow();	
 	}
 	
 	//Calendar button clicked
@@ -119,6 +118,8 @@ public class CMainWindow implements Initializable {
 		employee.confirmActivity(project, selectedActivity);
 		Utils.saveActivityChanges(selectedActivity);
 		Utils.saveEmployeeChanges(employee);
+		Utils.createInfoAlert("Confiramtion", "You successfuly confirm task "+selectedActivity.getName());
+		refreshTaskTable();
 	}
 	
 	//Employees button clicked
@@ -144,9 +145,22 @@ public class CMainWindow implements Initializable {
 	
 	//Costing button clicked
 	public void onCostingClicked() throws Exception{
-		controller= new CCosting();
-		window= new Window("Costing","Costing.fxml",controller,true);
-		window.createWindow();
+		boolean startCosting=false;
+		if(!project.isCosted()){
+			startCosting=true;
+		}else{
+			Alert alert=Utils.createCustomConfirmationAlert("Cost", "This project has already benn costed.", "Do you want to cost this project again?");
+			Optional<ButtonType> result = alert.showAndWait();
+			
+			if (result.get().getText().equals("Yes")){
+				startCosting=true;
+			}
+		}
+		if(startCosting){
+			controller= new CCosting(project,costingButton.getText());
+			window= new Window("Costing","CostingResult.fxml",controller,true);
+			window.createWindow();
+		}
 	}
 	
 	//Info button clicked

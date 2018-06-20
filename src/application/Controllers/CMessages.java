@@ -157,7 +157,8 @@ public class CMessages implements Initializable{
 		ArrayList<User> receivers= new ArrayList<User>();
 		
 		if(selectAllCheckBox.isSelected()){
-			receivers=project.getEmployees();
+			ArrayList<String> usersnames=project.getEmployees();
+			receivers = Utils.getEmployeesFromUsername(usersnames);
 		}else{
 			receivers.add(employeesComboBox.getValue());
 		}
@@ -192,7 +193,7 @@ public class CMessages implements Initializable{
 	
 	//Fills employeesComboBox
 	private void fillEmployeeComboBox(){
-		ArrayList<User> employees = project.getEmployees();
+		ArrayList<User> employees = Utils.getEmployeesFromUsername(project.getEmployees());
 		
 		ObservableList<User> list = FXCollections.observableArrayList(employees);
 		employeesComboBox.getItems().clear();

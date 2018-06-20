@@ -100,7 +100,7 @@ public class CInfo implements Initializable {
 	public void onShowEmployeeClicked(){
 		ListView<String> employeeListView= new ListView<String>();
 		Button backButton = new Button("  Back  ");
-		ArrayList<User> employees  = project.getEmployees();
+		ArrayList<User> employees  = Utils.getEmployeesFromUsername(project.getEmployees());
 		ArrayList<String> empInfo = new ArrayList<String>();
 		for(User emp : employees){
 			empInfo.add(emp.getName()+"-"+emp.getSpecialty());

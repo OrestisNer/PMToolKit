@@ -12,11 +12,13 @@ public class Project implements Serializable{
 	private String category;
 	private int kloc;
 	private ArrayList<String> activitiesID;
-	private ArrayList<User> employees;
+	private ArrayList<String> employees;
 	private ArrayList<Diagram> diagrams;
 	private LocalDate startingDate;
 	private Calendar calendar;
 	private Cost cost;
+	private int duration;
+	private boolean isCosted;
 	
 	public Project(String name, String category , int kloc, User projectManager){
 		this.name=name;
@@ -24,9 +26,10 @@ public class Project implements Serializable{
 		this.startingDate= LocalDate.now();
 		this.category = category;
 		this.kloc = kloc;
+		this.isCosted=false;
 		activitiesID= new ArrayList<String>();
-		employees= new ArrayList<User>();
-		employees.add(projectManager);
+		employees= new ArrayList<String>();
+		employees.add(projectManager.getUsername());
 		diagrams= new ArrayList<Diagram>();
 	}
 	
@@ -35,11 +38,14 @@ public class Project implements Serializable{
 	}
 	
 	public void addEmployees(ArrayList<User> emp){
-		employees.addAll(emp);
+		for(User employee: emp){
+			employees.add(employee.getUsername());
+		}
+		
 	}
 	
 	public void addEmployee(User employee){
-		employees.add(employee);
+		employees.add(employee.getUsername());
 	}
 	
 	public void addDiagram(Diagram diagram){
@@ -54,6 +60,10 @@ public class Project implements Serializable{
 		catch(SecurityException se){
 		     //Failed Message
 		}        
+	}
+	
+	public void setDuration(int duration){
+		this.duration=duration;	
 	}
 	
 	public String getName(){
@@ -72,16 +82,12 @@ public class Project implements Serializable{
 		return activitiesID;
 	}
 	
-	public ArrayList<User> getEmployees(){
+	public ArrayList<String> getEmployees(){
 		return employees;
 	}
 	
 	public ArrayList<String> getEmpUsernames(){
-		ArrayList<String> empUsernames = new ArrayList<>();
-		for(User emp : employees) 
-			empUsernames.add(emp.getUsername());
-		
-		return empUsernames;
+		return employees;
 	}
 	
 	public User getProjectManager(){
@@ -90,5 +96,21 @@ public class Project implements Serializable{
 	
 	public LocalDate getStartingDate() {
 		return startingDate;
+	}
+	
+	public boolean isCosted(){
+		return isCosted;
+	}
+	
+	public void setIsCosted(boolean value){
+		this.isCosted=value;
+	}
+	
+	public Cost getCost(){
+		return cost;
+	}
+	
+	public void initializeCost(){
+		cost= new Cost(this);
 	}
 }

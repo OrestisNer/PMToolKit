@@ -69,9 +69,10 @@ public class CEmployees implements Initializable{
 		//if edit employee button is clicked
 		if (buttonText.equalsIgnoreCase(editEmployeeButton.getText())){
 			fillEmployeeInfo();
+			setProperties(editSalaryField);
 		//if create employee is clicked
 		}else if(buttonText.equalsIgnoreCase(createEmployeeButton.getText())){
-			setProperties();
+			setProperties(salaryField);
 		}else
 			fillEmployeesList();
 	}
@@ -111,19 +112,22 @@ public class CEmployees implements Initializable{
 		if(selectedEmployee instanceof ProjectManager) 
 			Utils.createInfoAlert("Information", "You can't delete the Project Manager");
 		else {
-			deleteEmployeeFromProject((Employee) selectedEmployee);
-			fillEmployeesList();
+			Alert alert=Utils.createCustomConfirmationAlert("Delete", "Are you sure you want to delete "+selectedEmployee.getName()+" from project?",
+					"This user is involved in "+selectedEmployee.getNumberOfTasks(project)+" task(s)");
+			Optional<ButtonType> result = alert.showAndWait();
+	        if (result.get().getText().equals("Yes")){
+	        	deleteEmployeeFromProject((Employee) selectedEmployee);
+	        	fillEmployeesList();
+	        }
 		}
 	}
 	
 	//Deletes the selectedEmployee from the Project
 	private void deleteEmployeeFromProject(Employee employee) throws IOException {
-		ArrayList<User> employees = project.getEmployees();
+		ArrayList<User> employees = Utils.getEmployeesFromUsername(project.getEmployees());
 		ArrayList<String> projects = employee.getProjects();
 		ArrayList<String> activitiesIds = employee.getUnfinishedActivities(project);
-		for(String a : activitiesIds)
-			System.out.println(a);
-		/*ArrayList<Activity> activities = Utils.getActivitiesFromID(activitiesIds);
+		ArrayList<Activity> activities = Utils.getActivitiesFromID(activitiesIds);
 				
 		
 		Iterator<String> iter1 = projects.iterator();
@@ -141,15 +145,15 @@ public class CEmployees implements Initializable{
 			if(emp.getUsername().equalsIgnoreCase(employee.getUsername()))
 				iter2.remove();
 		}
+		project.getEmployees().remove(employee.getUsername());
+		Utils.saveProjectChanges(project);
 		
-		Utils.saveProjectChanges(project);*/
-		
-		/*Iterator<Activity> iter3 = activities.iterator();	
+		Iterator<Activity> iter3 = activities.iterator();	
 		while(iter3.hasNext()) {
 			Activity activity  = iter3.next();
 			activity.deleteEmployee(employee.getUsername());
 			Utils.saveActivityChanges(activity);
-		}*/
+		}
 		
 		
 		
@@ -162,7 +166,7 @@ public class CEmployees implements Initializable{
 	
 	//Fills the employeeListView
 	public void fillEmployeesList(){
-		ArrayList<User> employees = project.getEmployees();
+		ArrayList<User> employees = Utils.getEmployeesFromUsername(project.getEmployees());
 		
 		ObservableList<User> list = FXCollections.observableArrayList(employees);
 		employeeListView.getItems().clear();
@@ -184,12 +188,16 @@ public class CEmployees implements Initializable{
 	//Create button
 	public void onCreateClicked(ActionEvent actionEvent) throws IOException {
 		if (hasAppropriateArgs()) {
-			createEmployee();
-			Utils.createInfoAlert("Proccess", "You successfully create employee " + userNameField.getText());
-			Stage stage = Utils.getStageFromEvent(actionEvent);
-			this.buttonText = createButton.getText();
-			window = new Window(stage);
-			window.changeScene("Employees.fxml", this);
+			if(isEmployeeUsernameUnique(userNameField.getText())){
+				createEmployee();
+				Utils.createInfoAlert("Proccess", "You successfully create employee " + userNameField.getText());
+				Stage stage = Utils.getStageFromEvent(actionEvent);
+				this.buttonText = createButton.getText();
+				window = new Window(stage);
+				window.changeScene("Employees.fxml", this);
+			}else{
+				Utils.createInfoAlert("Username", "This username exists. Try again.");
+			}
 		} else
 			Utils.createInfoAlert("Information", "You have to fill in all the fields");
 	}
@@ -197,6 +205,7 @@ public class CEmployees implements Initializable{
 	//Creates an employee object and saves it to projects and employees file
 	public void createEmployee() throws IOException{
 		String username = userNameField.getText();
+		
 		String password = passwordField.getText();
 		String speciality = specialtyField.getText();
 		String firstname= firstNameField.getText();
@@ -204,16 +213,18 @@ public class CEmployees implements Initializable{
 		double salary = Double.parseDouble(salaryField.getText());
 		User employee = new Employee(username,password,firstname,lastname,salary,speciality);
 		Alert alert=Utils.createCustomConfirmationAlert("Add Employee", null, "Do you want to add employee "+username+" to this project?");
-		
+			
 		Optional<ButtonType> result = alert.showAndWait();
-		
+			
 		if (result.get().getText().equals("Yes")){
 			project.addEmployee(employee);
-        	employee.addProject(project.getName());
-        	Utils.saveProjectChanges(project);
+	       	employee.addProject(project.getName());
+	       	Utils.saveProjectChanges(project);
 		}
+			
+	    Utils.saveEmployeeChanges(employee);
 		
-        Utils.saveEmployeeChanges(employee);       
+		       
 	}
 
 	//Checks if the user filled all the fields in CreateEmployee.fxml
@@ -224,12 +235,12 @@ public class CEmployees implements Initializable{
 		return true;
 	}
 	
-	private void setProperties(){
-		salaryField.textProperty().addListener((observable, oldValue, newValue) -> {
+	private void setProperties(TextField field){
+		field.textProperty().addListener((observable, oldValue, newValue) -> {
 			try{
-				Double.parseDouble(salaryField.getText());
+				Double.parseDouble(field.getText());
 			}catch(NumberFormatException e){
-				salaryField.setText("");
+				field.setText("");
 			}
 		});
 	}
@@ -239,20 +250,26 @@ public class CEmployees implements Initializable{
 	//Save Changes button
 	public void onSaveChangesClicked(ActionEvent event) throws IOException {
 		Employee selectedEmployee = (Employee) getSelectedEmployee();
-		selectedEmployee.setUsername(editUserNameField.getText());
-		selectedEmployee.setPassword(editPasswordField.getText());
-		selectedEmployee.setSpecialty(editSpecialtyField.getText());
-		selectedEmployee.setFirstname(editFirstNameField.getText());
-		selectedEmployee.setLastname(editLastNameField.getText());
-		selectedEmployee.setSalary(Double.parseDouble(editSalaryField.getText()));
+		String username=editUserNameField.getText();
+		if(isEmployeeUsernameUnique(username) || username.equalsIgnoreCase(selectedEmployee.getUsername()) ){
+			selectedEmployee.setUsername(editUserNameField.getText());
+			selectedEmployee.setPassword(editPasswordField.getText());
+			selectedEmployee.setSpecialty(editSpecialtyField.getText());
+			selectedEmployee.setFirstname(editFirstNameField.getText());
+			selectedEmployee.setLastname(editLastNameField.getText());
+			selectedEmployee.setSalary(Double.parseDouble(editSalaryField.getText()));
+			
+			Utils.saveEmployeeChanges(selectedEmployee);
+			Utils.saveProjectChanges(project);
+			
+			Stage stage = Utils.getStageFromEvent(event);
+			this.buttonText = saveChangesButton.getText();
+			window = new Window(stage);
+			window.changeScene("Employees.fxml", this);
+		}else{
+			Utils.createInfoAlert("Username", "This username exists. Try again.");
+		}
 		
-		Utils.saveEmployeeChanges(selectedEmployee);
-		Utils.saveProjectChanges(project);
-		
-		Stage stage = Utils.getStageFromEvent(event);
-		this.buttonText = saveChangesButton.getText();
-		window = new Window(stage);
-		window.changeScene("Employees.fxml", this);
 	}
 	
 	//Cancel button for CreateEmployee.fxml and EditEmployee.fxml
@@ -278,5 +295,14 @@ public class CEmployees implements Initializable{
 					+ selectedEmployee.getGrade());
 		else
 			evaluationTextArea.setText("Not evaluated yet!");
+	}
+	
+	private static boolean isEmployeeUsernameUnique(String username){
+		ArrayList<User> employees = Utils.getEmployeesFromFile();
+		for(User emp : employees){
+			if(emp.getUsername().equalsIgnoreCase(username))
+				return false;
+		}
+		return true;
 	}
 }
