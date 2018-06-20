@@ -149,7 +149,7 @@ public class CMainWindow implements Initializable {
 		if(!project.isCosted()){
 			startCosting=true;
 		}else{
-			Alert alert=AlertUtils.createCustomConfirmationAlert("Cost", "This project has already benn costed.", "Do you want to cost this project again?");
+			Alert alert=AlertUtils.createCustomConfirmationAlert("Cost", "This project has already been costed.", "Do you want to cost this project again?");
 			Optional<ButtonType> result = alert.showAndWait();
 			
 			if (result.get().getText().equals("Yes")){

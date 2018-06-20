@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="630.0" spacing="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox alignment="CENTER" prefHeight="37.0" prefWidth="600.0">
+      <Label layoutX="385.0" layoutY="14.0" text="Costing Results">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <VBox layoutX="150.0" layoutY="53.0">
          <children>
-            <Label text="Results">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-      <VBox>
-         <children>
-            <HBox alignment="CENTER" prefHeight="27.0" prefWidth="600.0">
+            <HBox alignment="CENTER" prefHeight="27.0" prefWidth="600.0" spacing="10.0">
                <children>
                   <Label text="Number of estimated employees :" />
                   <Label fx:id="amountOfEmployeesLabel" layoutX="10.0" layoutY="10.0" text="4" />
                   <Label layoutX="38.0" layoutY="10.0" text="Employee(s)" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="23.0" prefWidth="600.0">
+            <HBox alignment="CENTER" prefHeight="23.0" prefWidth="600.0" spacing="10.0">
                <children>
                   <Label text="Project's estimated duration: " />
                   <Label fx:id="estimatedDurationLabel" layoutX="10.0" layoutY="10.0" text="10.5" />
                   <Label layoutX="38.0" layoutY="10.0" text="Month(s)" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="22.0" prefWidth="600.0" spacing="2.0">
+            <HBox alignment="CENTER" prefHeight="22.0" prefWidth="600.0" spacing="10.0">
                <children>
                   <Label text="Estimation of Effort : " />
                   <Label fx:id="estimatedEffortLabel" text="7,6" />
@@ -43,37 +43,72 @@
             </HBox>
          </children>
       </VBox>
-      <VBox alignment="CENTER" prefHeight="248.0" prefWidth="600.0">
+      <VBox alignment="CENTER" layoutX="150.0" layoutY="133.0" prefHeight="323.0" prefWidth="860.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
          <children>
             <Label text="Calculation of manmonths &amp; Cost/employee ">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TableView maxHeight="1.7976931348623157E308" prefHeight="246.0" prefWidth="600.0">
-              <columns>
-                <TableColumn prefWidth="75.0" text="Employee" />
-                <TableColumn prefWidth="111.0" text="Employment time" />
-                  <TableColumn prefWidth="75.0" text="Salary" />
-                  <TableColumn prefWidth="75.0" text="Monmonths" />
-                  <TableColumn prefWidth="129.0" text="Cost/Empoyee" />
-              </columns>
+            <TableView fx:id="employeeTable" maxHeight="1.7976931348623157E308" prefHeight="284.0" prefWidth="860.0">
+               <columns>
+                  <TableColumn fx:id="employeeCol" editable="false" prefWidth="170.0" text="Employee" />
+                  <TableColumn fx:id="empTimeCol" prefWidth="150.0" text="Employment time" />
+                  <TableColumn fx:id="rateCol" prefWidth="180.0" text="Rate of employment" />
+                  <TableColumn fx:id="manMonthsCol" editable="false" prefWidth="120.0" text="Manmonths" />
+                  <TableColumn fx:id="salaryCol" editable="false" prefWidth="100.0" text="Salary" />
+                  <TableColumn fx:id="costPerEmpCol" editable="false" prefWidth="140.0" text="Cost/Employee" />
+               </columns>
             </TableView>
          </children>
          <padding>
             <Insets top="10.0" />
          </padding>
       </VBox>
-      <VBox alignment="BOTTOM_CENTER" prefHeight="26.0" prefWidth="600.0">
+      <HBox alignment="CENTER_LEFT" layoutX="26.0" layoutY="549.0" prefWidth="200.0" spacing="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
          <children>
-            <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <TextField fx:id="searchField" promptText="Type username" />
+            <Button fx:id="addButton" mnemonicParsing="false" onAction="#onAddEmployeeClicked" text="Add Employee" />
+            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#onDeleteEmployeeClicked" text="Delete Employee" />
+         </children>
+      </HBox>
+      <VBox layoutX="20.0" layoutY="465.0" prefHeight="50.0" prefWidth="100.0" spacing="5.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onPreviousClicked" text="Previous" />
-                  <Button mnemonicParsing="false" onAction="#onNextClicked" text="   Next   " />
+                  <Label text="Total Employment Time: " />
+                  <Label fx:id="totalEmpTimeLabel" text="10.5" />
+                  <Label text="Month(s)" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Label text="Total Manmonths:" />
+                  <Label fx:id="totalManMonthsLabel" text="7.6" />
+                  <Label text="ManMonths" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Label text="Total Cost/Employee: " />
+                  <Label fx:id="totalCostPerEmpLabel" text="Label" />
                </children>
             </HBox>
          </children>
       </VBox>
+      <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="598.0" prefWidth="200.0" spacing="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+         <children>
+            <TextField fx:id="empTimeField" promptText="Type employment time" />
+            <Button fx:id="setEmpTimeButton" mnemonicParsing="false" onAction="#onSetEmploymentTimeClicked" text="Set Employment Time" />
+            <TextField fx:id="rateField" promptText="Type rate of employment" />
+            <Button fx:id="setRateButton" mnemonicParsing="false" onAction="#onSetRateOfEmploymentClicked" text="Set Rate Of Employment" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" layoutX="20.0" layoutY="644.0" prefWidth="200.0" spacing="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#onNextClicked" text="   Next   " />
+            <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelClicked" text="Cancel" />
+         </children>
+      </HBox>
    </children>
-</VBox>
+</AnchorPane>

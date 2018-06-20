@@ -54,12 +54,12 @@ public class CInfo implements Initializable {
 		nameLabel.setText(project.getName());
 		categoryLabel.setText(project.getCategory());
 		klocLabel.setText(Integer.toString(project.getKloc()));
-		//estimatedDurationLabel.setText(project.getEstimatedDuration());
-		//estimatedManmonthsLabel.setText(project.getEstimatedManmonths());
-		//currentManmonthsLabel.setText(project.getEstimatedManmonths());
-		//completedPercentLabel.setText(project.getCompletedPercent());
-		//totalCostLabel.setText(project.getTotalCost());
-		//currentCostLabel.setText(project.getCurrnetCost());
+		/*estimatedDurationLabel.setText(project.getEstimatedDuration());
+		estimatedManmonthsLabel.setText(project.getEstimatedManmonths());
+		currentManmonthsLabel.setText(project.getEstimatedManmonths());
+		completedPercentLabel.setText(project.getCompletedPercent());
+		totalCostLabel.setText(project.getTotalCost());
+		currentCostLabel.setText(project.getCurrnetCost());*/
 	}
 	
 	//Show Tasks button

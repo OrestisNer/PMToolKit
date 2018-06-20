@@ -65,6 +65,7 @@ public class CActivities implements Initializable{
 	@FXML private Label startingDateLabel;
 	@FXML private Label deadLineLabel;
 	@FXML private TextArea descriptionInfoArea;
+	@FXML private Label subjectLabel;
 	@FXML private Label estimatedTimeLabel;
 	@FXML private Label estimatedManMonthsLabel;
 	@FXML private Label actualTimeLabel;
@@ -293,14 +294,17 @@ public class CActivities implements Initializable{
 		
 		ArrayList<User> employees = (ArrayList<User>) obsEmployees.stream().collect(Collectors.toList());
 		ArrayList<Activity> prerequisites;
+		ArrayList<String> prerequisitesIDs = null;
 		
-		if(!obsPrerequisites.isEmpty())
+		if(!obsPrerequisites.isEmpty()) {
 			prerequisites = (ArrayList<Activity>) obsPrerequisites.stream().collect(Collectors.toList());
-		else
-			prerequisites= new ArrayList<Activity>();
+			for(Activity act: prerequisites)
+				prerequisitesIDs.add(act.getId());
+		}else
+			prerequisitesIDs= new ArrayList<String>();
 		
 		
-		Activity activity = new Activity(activityName,prerequisites,employees,estimatedTime,subject,description,startingDate,project);
+		Activity activity = new Activity(activityName,prerequisitesIDs,employees,estimatedTime,subject,description,startingDate,project);
 		FileUtils.saveActivityChanges(activity);
 		employeeTasks.add(activity.getId());
 		project.addActivity(activity);		
@@ -370,6 +374,7 @@ public class CActivities implements Initializable{
 		this.descriptionInfoArea.setText(activity.getDescription());
 		this.estimatedTimeLabel.setText(activity.getEstimatedDuration()+"");
 		this.estimatedManMonthsLabel.setText(activity.getEstimatedManMonths()+"");
+		this.subjectLabel.setText(activity.getSubject());
 		if(activity.isCompleted()){
 			this.actualTimeLabel.setText(activity.getActualDuration()+"");
 			this.actualManMonthsLabel.setText(activity.getActualManMonths()+"");

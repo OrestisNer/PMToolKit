@@ -14,7 +14,7 @@ import application.FileUtils;
 public class Activity implements Serializable{
 	
 	private String name;
-	private ArrayList<String> presequisitesActivities;
+	private ArrayList<String> prerequisitesActivities;
 	private String description;
 	private String subject;
 	private LocalDate startingDate;
@@ -32,15 +32,15 @@ public class Activity implements Serializable{
 	private boolean confirmationSended;
 	
 	
-	public Activity(String name, ArrayList<Activity> presequisitesActivities, ArrayList<User> emp, int estimatedDuration, 
+	public Activity(String name, ArrayList<String> presequisitesActivities, ArrayList<User> emp, int estimatedDuration, 
 			String subject, String description, LocalDate startingDate, Project project ){
 		
 		this.name=name;
 		if(presequisitesActivities.isEmpty())
-			this.presequisitesActivities= new ArrayList<String>();
+			this.prerequisitesActivities= new ArrayList<String>();
 		else{
-			for(Activity act: presequisitesActivities)
-				this.presequisitesActivities.add(act.getId());
+			for(String actID: presequisitesActivities)
+				this.prerequisitesActivities.add(actID);
 		}
 		
 		this.numberOfEmployees=emp.size();
@@ -179,7 +179,7 @@ public class Activity implements Serializable{
 	}
 	
 	public ArrayList<Activity> getPrerequisites(){
-		ArrayList<Activity> presequisitesAct = FileUtils.getActivitiesFromID(presequisitesActivities);
+		ArrayList<Activity> presequisitesAct = FileUtils.getActivitiesFromID(prerequisitesActivities);
 		return presequisitesAct;
 	}
 	

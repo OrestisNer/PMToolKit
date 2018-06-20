@@ -16,6 +16,7 @@ public abstract class User implements Serializable {
 	protected String password;
 	protected String firstname;
 	protected String lastname;
+	protected String fullname;
 	protected double salary;
 	protected ArrayList<Message> messages;	
 	protected ArrayList<String> projects;
@@ -27,12 +28,17 @@ public abstract class User implements Serializable {
 		this.password=password;
 		this.firstname= firstname;
 		this.lastname=lastname;
+		this.fullname = firstname +" "+lastname;
 		this.salary=salary;
 		this.specialty=specialty;
 		messages= new ArrayList<Message>();
 		projects= new ArrayList<String>();
 		activities= new HashMap<String,HashMap<String,Boolean>>();
 		
+	}
+	
+	public String getFullname() {
+		return fullname;
 	}
 	
 	public void addMessage(Message message){

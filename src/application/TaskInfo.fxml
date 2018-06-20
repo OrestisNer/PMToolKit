@@ -98,7 +98,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="actutalManMonthsLabel" text="Label">
+                  <Label fx:id="actualManMonthsLabel" text="Label">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -159,6 +159,12 @@
             </HBox>
             <ListView fx:id="prerequisitesInfoListView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
             <ListView fx:id="employeesInfoListView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+               <children>
+                  <Label text="Subject: " />
+                  <Label fx:id="subjectLabel" layoutX="10.0" layoutY="10.0" text="label" />
+               </children>
+            </HBox>
          </children>
       </GridPane>
    </children>
