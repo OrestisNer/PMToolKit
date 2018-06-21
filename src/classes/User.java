@@ -83,15 +83,7 @@ public abstract class User implements Serializable {
 			System.out.println("new HashMap<Task,Boolean> taskList ");
 		}
 	}
-	
-/*	public HashMap<String,Boolean> getActivities(Project project){
-		try{
-			return activities.get(project.getName());
-		}catch(NullPointerException e){
-			HashMap<String,Boolean> activityList = new HashMap<String,Boolean>();
-			return activityList;
-		}
-	}*/
+
 	
 	public int getNumberOfTasks(Project project){
 		try{
@@ -120,6 +112,21 @@ public abstract class User implements Serializable {
 		return unfinishedTask;
 	}
 	
+	public ArrayList<String> getAllActivities(Project project){
+		ArrayList<String> allActivities= new ArrayList<String>();
+		HashMap<String,Boolean> employeeTasks;
+		try{
+			employeeTasks=activities.get(project.getName());
+			for (Entry<String, Boolean> entry : employeeTasks.entrySet()) {
+			    String taskID = entry.getKey();
+			    allActivities.add(taskID);
+			}
+		}catch(NullPointerException e){
+			System.out.println("getAllTasks problem.");
+		}
+		
+		return allActivities;
+	}
 	public ArrayList<Message> getMessages(){
 		return messages;
 	}

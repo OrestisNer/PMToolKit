@@ -194,7 +194,9 @@ public class CMessages implements Initializable{
 	
 	//Fills employeesComboBox
 	private void fillEmployeeComboBox(){
-		ArrayList<User> employees = FileUtils.getEmployeesFromUsername(project.getEmployees());
+		ArrayList<String> employeesUsernames = project.getEmployees();
+		employeesUsernames.remove(employee.getUsername());
+		ArrayList<User> employees = FileUtils.getEmployeesFromUsername(employeesUsernames);
 		
 		ObservableList<User> list = FXCollections.observableArrayList(employees);
 		employeesComboBox.getItems().clear();

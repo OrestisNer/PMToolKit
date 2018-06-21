@@ -38,7 +38,6 @@ public class CActivities implements Initializable{
 	private Project project;
 	private String buttonText;
 	private User employee;
-	private ArrayList<String> employeeTasks;
 	private ArrayList<User> employees;
 	
 	//Tasks.fxml
@@ -74,7 +73,6 @@ public class CActivities implements Initializable{
 	public CActivities(Project project, User employee,  String buttonText) {
 		this.project=project;
 		this.employee=employee;
-		employeeTasks = employee.getUnfinishedActivities(project);
 		this.buttonText = buttonText;
 	}
 	
@@ -130,7 +128,7 @@ public class CActivities implements Initializable{
 	
 	//Fills taskListView
 	private void fillTaskListView(){
-		ArrayList<String> userActivtiesID = employee.getUnfinishedActivities(project);
+		ArrayList<String> userActivtiesID = employee.getAllActivities(project);
 		ObservableList<Activity> activityList = FXCollections.observableArrayList(FileUtils.getActivitiesFromID(userActivtiesID));
 		tasksListView.setItems(activityList);
 		tasksListView.setCellFactory(param -> new ListCell<Activity>() {
@@ -294,19 +292,17 @@ public class CActivities implements Initializable{
 		
 		ArrayList<User> employees = (ArrayList<User>) obsEmployees.stream().collect(Collectors.toList());
 		ArrayList<Activity> prerequisites;
-		ArrayList<String> prerequisitesIDs = null;
+		ArrayList<String> prerequisitesIDs = new ArrayList<String>();
 		
 		if(!obsPrerequisites.isEmpty()) {
 			prerequisites = (ArrayList<Activity>) obsPrerequisites.stream().collect(Collectors.toList());
 			for(Activity act: prerequisites)
 				prerequisitesIDs.add(act.getId());
-		}else
-			prerequisitesIDs= new ArrayList<String>();
+		}
 		
 		
 		Activity activity = new Activity(activityName,prerequisitesIDs,employees,estimatedTime,subject,description,startingDate,project);
 		FileUtils.saveActivityChanges(activity);
-		employeeTasks.add(activity.getId());
 		project.addActivity(activity);		
 		employee.addActivity(project,activity);
 		FileUtils.saveEmployeeChanges(employee);

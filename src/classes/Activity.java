@@ -36,12 +36,9 @@ public class Activity implements Serializable{
 			String subject, String description, LocalDate startingDate, Project project ){
 		
 		this.name=name;
-		if(presequisitesActivities.isEmpty())
-			this.prerequisitesActivities= new ArrayList<String>();
-		else{
-			for(String actID: presequisitesActivities)
-				this.prerequisitesActivities.add(actID);
-		}
+		this.prerequisitesActivities= new ArrayList<String>();
+		for(String actID: presequisitesActivities)
+			this.prerequisitesActivities.add(actID);
 		
 		this.numberOfEmployees=emp.size();
 		

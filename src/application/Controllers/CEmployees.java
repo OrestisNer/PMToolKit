@@ -60,9 +60,10 @@ public class CEmployees implements Initializable{
 	@FXML private TextArea evaluationTextArea;
 	@FXML private Button saveChangesButton;
 	
-	public CEmployees(Project project, String buttonText){
+	public CEmployees(Project project,User employee, String buttonText){
 		this.project=project;
 		this.buttonText=buttonText;
+		this.employee=employee;
 	}
 	
 	@Override
@@ -163,7 +164,9 @@ public class CEmployees implements Initializable{
 	
 	//Fills the employeeListView
 	public void fillEmployeesList(){
-		ArrayList<User> employees = FileUtils.getEmployeesFromUsername(project.getEmployees());
+		ArrayList<String> employeesUsernames= project.getEmployees();
+		employeesUsernames.remove(employee.getUsername());
+		ArrayList<User> employees = FileUtils.getEmployeesFromUsername(employeesUsernames);
 		
 		ObservableList<User> list = FXCollections.observableArrayList(employees);
 		employeeListView.getItems().clear();

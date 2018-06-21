@@ -101,7 +101,7 @@ public class CMainWindow implements Initializable {
 	
 	//Calendar button clicked
 	public void onCalendarClicked() throws Exception{
-		
+		AlertUtils.createErrorAlert("Error", null , "Oops... Something went wrong.");
 	}
 	
 	//Message button clicked
@@ -113,18 +113,22 @@ public class CMainWindow implements Initializable {
 	
 	//Confirm Task Button
 	public void onConfirmTaskClicked() throws IOException {
-		Activity selectedActivity = getSelectedAct();
-		selectedActivity.confirmActivity(employee);
-		employee.confirmActivity(project, selectedActivity);
-		FileUtils.saveActivityChanges(selectedActivity);
-		FileUtils.saveEmployeeChanges(employee);
-		AlertUtils.createInfoAlert("Confiramtion", "You successfuly confirm task "+selectedActivity.getName());
-		refreshTaskTable();
+		try{
+			Activity selectedActivity = getSelectedAct();
+			selectedActivity.confirmActivity(employee);
+			employee.confirmActivity(project, selectedActivity);
+			FileUtils.saveActivityChanges(selectedActivity);
+			FileUtils.saveEmployeeChanges(employee);
+			AlertUtils.createInfoAlert("Confiramtion", "You successfuly confirm task "+selectedActivity.getName());
+			refreshTaskTable();
+		}catch(NullPointerException e){
+			AlertUtils.createInfoAlert("Select task", "Please select task before the confirmation.");
+		}
 	}
 	
 	//Employees button clicked
 	public void onEmployeesClicked() throws Exception{
-		controller= new CEmployees(project,employeesButton.getText());
+		controller= new CEmployees(project,employee,employeesButton.getText());
 		window= new Window("Employees","Employees.fxml",controller,true);
 		window.createWindow();
 	}

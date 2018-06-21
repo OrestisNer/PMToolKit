@@ -63,7 +63,7 @@ public class CDiagrams implements Initializable{
 				}	
 			}
 		}else {
-			
+			AlertUtils.createErrorAlert("Error", null, "Oops... Something went wrong.");
 		}
 	}
 	

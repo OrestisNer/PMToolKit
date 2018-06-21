@@ -19,37 +19,24 @@ public class Cost implements Serializable {
 	
 	public Cost(Project project){
 		this.project=project;
+		System.out.println(project.getName());
+		System.out.println(project.getKloc());
 		if(this.project.getCategory().equals("Organic")) {
-			System.out.println(project.getName());
-			System.out.println(project.getKloc());
 			a=2.4;
 			b=1.05;
 			c=0.38;
-			
-			calculateEffort();
-			calculateDuration();
-			calculateAmountOfEmployee();
 		}else if(this.project.getCategory().equals("Semi-detached")) {
-			System.out.println(project.getName());
-			System.out.println(project.getKloc());
 			a=3.0;
 			b=1.12;
 			c=0.35;
-			
-			calculateEffort();
-			calculateDuration();
-			calculateAmountOfEmployee();
 		}else {
-			System.out.println(project.getName());
-			System.out.println(project.getKloc());
 			a=3.6;
 			b=1.20;
 			c=0.32;
-			
-			calculateEffort();
-			calculateDuration();
-			calculateAmountOfEmployee();
 		}
+		calculateEffort();
+		calculateDuration();
+		calculateAmountOfEmployee();
 	}
 	
 	private void calculateEffort(){
