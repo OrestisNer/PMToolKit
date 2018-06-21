@@ -1,14 +1,12 @@
 package classes;
 
-import java.time.LocalDate;
-
 public class Employee extends User  {
 	
 	private String evaluation;
 	private String grade;
 	//private LocalDate employmentDate;
-	private double employmentTime;
-	private double rateOfEmployment;
+	private String employmentTime;
+	private String rateOfEmployment;
 	private double manmonths;
 	private double costPerEmployee;
 	
@@ -21,19 +19,19 @@ public class Employee extends User  {
 		return costPerEmployee;
 	}
 	
-	public double getEmploymentTime() {
+	public String getEmploymentTime() {
 		return employmentTime;
 	}
 
-	public double getRateOfEmployment() {
+	public String getRateOfEmployment() {
 		return rateOfEmployment;
 	}
 
-	public void setEmploymentTime(double empTime) {
+	public void setEmploymentTime(String empTime) {
 		employmentTime = empTime;
 	}
-	
-	public void setRateOfEmployment(double rate) {
+
+	public void setRateOfEmployment(String rate) {
 		rateOfEmployment = rate;
 	}
 	
@@ -45,12 +43,12 @@ public class Employee extends User  {
 		return manmonths;
 	}
 	
-	public void calcManmonths() {
-		setManmonths(this.employmentTime * this.rateOfEmployment);
+	public double calcManmonths() {
+		return Double.parseDouble(this.employmentTime) * Double.parseDouble(this.rateOfEmployment);
 	}
 	
-	public void calcCostPerEmployee() {
-		setCostPerEmployee(manmonths*salary);
+	public double calcCostPerEmployee() {
+		return manmonths*salary;
 	}
 	
 	public void setCostPerEmployee(double costperemp) {

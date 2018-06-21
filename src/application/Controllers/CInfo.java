@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import application.AlertUtils;
 import application.FileUtils;
 import classes.Activity;
+import classes.Cost;
 import classes.Project;
 import classes.User;
 import javafx.collections.FXCollections;
@@ -54,12 +55,13 @@ public class CInfo implements Initializable {
 		nameLabel.setText(project.getName());
 		categoryLabel.setText(project.getCategory());
 		klocLabel.setText(Integer.toString(project.getKloc()));
-		/*estimatedDurationLabel.setText(project.getEstimatedDuration());
-		estimatedManmonthsLabel.setText(project.getEstimatedManmonths());
-		currentManmonthsLabel.setText(project.getEstimatedManmonths());
-		completedPercentLabel.setText(project.getCompletedPercent());
-		totalCostLabel.setText(project.getTotalCost());
-		currentCostLabel.setText(project.getCurrnetCost());*/
+		Cost cost = project.getCost();
+		estimatedDurationLabel.setText(Double.toString(cost.getDuration()));
+		estimatedManmonthsLabel.setText(Double.toString(cost.getEffort()));
+		//currentManmonthsLabel.setText(project.getEstimatedManmonths());
+		//completedPercentLabel.setText(project.getCompletedPercent());
+		totalCostLabel.setText(Double.toString(cost.getTotalCost()));
+		//currentCostLabel.setText(project.getCurrnetCost());
 	}
 	
 	//Show Tasks button

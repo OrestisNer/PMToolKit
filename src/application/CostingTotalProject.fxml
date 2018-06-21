@@ -69,7 +69,7 @@
          <children>
             <Button fx:id="calculateButton" mnemonicParsing="false" onAction="#onCalculateTotalCostClicked" text="Calculate Total Cost" GridPane.rowIndex="1" />
             <Label alignment="CENTER" contentDisplay="CENTER" text="Operating expenses " />
-            <TextField fx:id="totalCostField" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="totalCostField" editable="false" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="expencesField" maxWidth="-Infinity" GridPane.columnIndex="1" />
          </children>
          <columnConstraints>

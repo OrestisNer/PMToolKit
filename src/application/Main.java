@@ -6,8 +6,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import application.Controllers.CLogIn;
-import classes.Employee;
-import classes.Message;
 import classes.Project;
 import classes.ProjectManager;
 import classes.User;
@@ -25,10 +23,11 @@ public class Main extends Application{
 		window.createWindow();
 		/*createEmpFile();
 		createProjectFile();
-		createTaskFile();
+		createActivitiesFile();
 		System.exit(0);*/
 	}
 
+	//Creates Employees file
 	private void createEmpFile() throws IOException{
 		ArrayList<User> emp= new ArrayList<User>();
 		User pm = new ProjectManager("ProjectManager","123","Stefanos","Mpitzenis",50000,"Project Manager");
@@ -45,6 +44,7 @@ public class Main extends Application{
 	    }
 	}
 	
+	//Creates Projects File
 	private void createProjectFile() throws IOException{
 		ArrayList<Project> projects = new ArrayList<>();
 		String filename = "Projects";
@@ -60,7 +60,8 @@ public class Main extends Application{
 	    }
 	}
 	
-	private void createTaskFile() throws IOException{
+	//Creates Activities file
+	private void createActivitiesFile() throws IOException{
 		ArrayList<Project> tasks = new ArrayList<>();
 		String filename = "Activities";
 		ObjectOutputStream  outStream=null;

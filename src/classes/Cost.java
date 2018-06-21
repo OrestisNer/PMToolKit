@@ -39,6 +39,35 @@ public class Cost implements Serializable {
 		calculateAmountOfEmployee();
 	}
 	
+	public double getTotalCost() {
+		return totalCost;
+	}
+	
+	public void setDirectCost(double directCost) {
+		this.directCost = directCost;
+	}
+
+
+	public void setIndirectCost(double indirectCost) {
+		this.indirectCost = indirectCost;
+	}
+
+
+	public void setSoftwareCost(double softwareCost) {
+		this.softwareCost = softwareCost;
+	}
+
+
+	public void setEquipmentCost(double equipmentCost) {
+		this.equipmentCost = equipmentCost;
+	}
+
+
+	public void setTotalCost(double totalCost) {
+		this.totalCost = totalCost;
+	}
+
+
 	private void calculateEffort(){
 		double kloc=project.getKloc();
 		double temp= Math.pow(kloc, b);

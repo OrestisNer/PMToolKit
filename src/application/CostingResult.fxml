@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -16,14 +11,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="641.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="385.0" layoutY="14.0" text="Costing Results">
+      <Label layoutX="435.0" layoutY="14.0" text="Costing Results">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <VBox layoutX="150.0" layoutY="53.0">
+      <VBox layoutX="200.0" layoutY="51.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
          <children>
             <HBox alignment="CENTER" prefHeight="27.0" prefWidth="600.0" spacing="10.0">
                <children>
@@ -55,14 +50,14 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <TableView fx:id="employeeTable" maxHeight="1.7976931348623157E308" prefHeight="284.0" prefWidth="860.0">
+            <TableView fx:id="employeeTable" editable="true" maxHeight="1.7976931348623157E308" prefHeight="284.0" prefWidth="860.0">
                <columns>
                   <TableColumn fx:id="employeeCol" editable="false" prefWidth="170.0" text="Employee" />
-                  <TableColumn fx:id="empTimeCol" prefWidth="150.0" text="Employment time" />
-                  <TableColumn fx:id="rateCol" prefWidth="180.0" text="Rate of employment" />
-                  <TableColumn fx:id="manMonthsCol" editable="false" prefWidth="120.0" text="Manmonths" />
+                  <TableColumn fx:id="empTimeCol" onEditCommit="#setEmptimeCellevent" prefWidth="150.0" text="Employment time" />
+                  <TableColumn fx:id="rateCol" onEditCommit="#setRateCellevent" prefWidth="180.0" text="Rate of employment" />
+                  <TableColumn fx:id="manMonthsCol" prefWidth="120.0" text="Manmonths" />
                   <TableColumn fx:id="salaryCol" editable="false" prefWidth="100.0" text="Salary" />
-                  <TableColumn fx:id="costPerEmpCol" editable="false" prefWidth="140.0" text="Cost/Employee" />
+                  <TableColumn fx:id="costPerEmpCol" prefWidth="140.0" text="Cost/Employee" />
                </columns>
             </TableView>
          </children>
@@ -75,6 +70,8 @@
             <TextField fx:id="searchField" promptText="Type username" />
             <Button fx:id="addButton" mnemonicParsing="false" onAction="#onAddEmployeeClicked" text="Add Employee" />
             <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#onDeleteEmployeeClicked" text="Delete Employee" />
+            <Button mnemonicParsing="false" onAction="#calcEmployeesManmonthAndCost" text="Calculate employee values" />
+            <Button fx:id="calcValuesButton" mnemonicParsing="false" onAction="#onCalcValuesClicked" text="Calculate values" />
          </children>
       </HBox>
       <VBox layoutX="20.0" layoutY="465.0" prefHeight="50.0" prefWidth="100.0" spacing="5.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
@@ -82,34 +79,26 @@
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label text="Total Employment Time: " />
-                  <Label fx:id="totalEmpTimeLabel" text="10.5" />
+                  <Label fx:id="totalEmpTimeLabel" text="N/A" />
                   <Label text="Month(s)" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label text="Total Manmonths:" />
-                  <Label fx:id="totalManMonthsLabel" text="7.6" />
+                  <Label fx:id="totalManMonthsLabel" text="N/A" />
                   <Label text="ManMonths" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label text="Total Cost/Employee: " />
-                  <Label fx:id="totalCostPerEmpLabel" text="Label" />
+                  <Label fx:id="totalCostPerEmpLabel" text="N/A" />
                </children>
             </HBox>
          </children>
       </VBox>
-      <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="598.0" prefWidth="200.0" spacing="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
-         <children>
-            <TextField fx:id="empTimeField" promptText="Type employment time" />
-            <Button fx:id="setEmpTimeButton" mnemonicParsing="false" onAction="#onSetEmploymentTimeClicked" text="Set Employment Time" />
-            <TextField fx:id="rateField" promptText="Type rate of employment" />
-            <Button fx:id="setRateButton" mnemonicParsing="false" onAction="#onSetRateOfEmploymentClicked" text="Set Rate Of Employment" />
-         </children>
-      </HBox>
-      <HBox alignment="CENTER_RIGHT" layoutX="20.0" layoutY="644.0" prefWidth="200.0" spacing="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+      <HBox alignment="CENTER_RIGHT" layoutX="20.0" layoutY="595.0" prefWidth="200.0" spacing="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
          <children>
             <Button fx:id="nextButton" mnemonicParsing="false" onAction="#onNextClicked" text="   Next   " />
             <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#onCancelClicked" text="Cancel" />
