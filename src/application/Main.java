@@ -21,10 +21,10 @@ public class Main extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		Window window = new Window("Log In","LogIn.fxml",new CLogIn(),true);	
 		window.createWindow();
-		createEmpFile();
+		/*createEmpFile();
 		createProjectFile();
 		createActivitiesFile();
-		System.exit(0);
+		System.exit(0);*/
 	}
 
 	//Creates Employees file
