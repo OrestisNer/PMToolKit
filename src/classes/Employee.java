@@ -1,10 +1,12 @@
 package classes;
 
+import java.time.LocalDate;
+
 public class Employee extends User  {
 	
 	private String evaluation;
 	private String grade;
-	//private LocalDate employmentDate;
+	private LocalDate employmentDate;
 	private String employmentTime;
 	private String rateOfEmployment;
 	private double manmonths;
@@ -12,6 +14,7 @@ public class Employee extends User  {
 	
 	public Employee(String username, String password, String firstname, String lastname, double salary,String speciality){
 		super(username,password,firstname,lastname, salary,speciality);	
+		this.employmentDate = LocalDate.now();
 		evaluation = "";
 	}
 	

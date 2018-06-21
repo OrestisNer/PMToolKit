@@ -34,7 +34,7 @@ public class CInfo implements Initializable {
 	private @FXML Label klocLabel; // lines of code 
 	private @FXML Label estimatedDurationLabel;
 	private @FXML Label estimatedManmonthsLabel;
-	private @FXML Label currentManmonthsLabel;
+	private @FXML Label currentMonthsLabel;
 	private @FXML Label completedPercentLabel;
 	private @FXML Label totalCostLabel;
 	private @FXML Label currentCostLabel;
@@ -55,13 +55,15 @@ public class CInfo implements Initializable {
 		nameLabel.setText(project.getName());
 		categoryLabel.setText(project.getCategory());
 		klocLabel.setText(Integer.toString(project.getKloc()));
-		Cost cost = project.getCost();
-		estimatedDurationLabel.setText(Double.toString(cost.getDuration()));
-		estimatedManmonthsLabel.setText(Double.toString(cost.getEffort()));
-		//currentManmonthsLabel.setText(project.getEstimatedManmonths());
-		//completedPercentLabel.setText(project.getCompletedPercent());
-		totalCostLabel.setText(Double.toString(cost.getTotalCost()));
-		//currentCostLabel.setText(project.getCurrnetCost());
+		if(project.isCosted()) {
+			Cost cost = project.getCost();
+			estimatedDurationLabel.setText(Double.toString(cost.getDuration()));
+			estimatedManmonthsLabel.setText(Double.toString(cost.getEffort()));
+			//currentMonthsLabel.setText(project.getEstimatedManmonths());
+			//completedPercentLabel.setText(project.getCompletedPercent());
+			totalCostLabel.setText(Double.toString(cost.getTotalCost()));
+			//currentCostLabel.setText(project.getCurrnetCost());
+		}
 	}
 	
 	//Show Tasks button
